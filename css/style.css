@@ -1,0 +1,1002 @@
+/* ---------- Reset & base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --teal: #14b8a6;
+  --ink: #070e1d;
+  --bg-light: #e9e9e9;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--bg-light);
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ---------- Header ---------- */
+.header {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  z-index: 20;
+  background: rgba(7, 14, 29, 0.7);
+}
+
+.header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: 12px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+.logo-text {
+  line-height: 1.2;
+}
+
+.logo-title {
+  margin: 0;
+  font-family: "Poppins", "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 20px;
+  background: linear-gradient(90deg, #004753 0%, #3fe5d3 28%, #227573 42%, #00505e 67%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.logo-sub {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+}
+
+.nav-links {
+  display: none;
+  gap: 40px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  color: #fff;
+  font-size: 18px;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover {
+  color: var(--teal);
+}
+
+@media (min-width: 768px) {
+  .nav-links {
+    display: flex;
+  }
+}
+
+.nav-links a.active {
+  color: var(--teal);
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(7, 14, 29, 0.4);
+}
+
+.hero-content {
+  position: relative;
+  padding: 160px 24px 112px;
+}
+
+@media (min-width: 768px) {
+  .hero-content {
+    padding: 208px 24px 144px;
+  }
+}
+
+.hero-title {
+  font-family: "Poppins", "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 60px;
+  color: #fff;
+}
+
+@media (min-width: 768px) {
+  .hero-title {
+    font-size: 100px;
+  }
+}
+
+.hero-subtitle {
+  margin-top: 16px;
+  font-family: "Istok Web", "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 30px;
+  color: var(--teal);
+}
+
+@media (min-width: 768px) {
+  .hero-subtitle {
+    font-size: 48px;
+  }
+}
+
+.hero-underline {
+  margin-top: 8px;
+  height: 4px;
+  width: 160px;
+}
+
+.hero-text {
+  margin-top: 24px;
+  max-width: 700px;
+  font-size: 20px;
+  line-height: 1.6;
+  color: var(--bg-light);
+}
+
+.btn-primary {
+  margin-top: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: 999px;
+  background: var(--teal);
+  padding: 16px 32px;
+  font-family: "Istok Web", "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: #fff;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s;
+}
+
+.btn-primary:hover {
+  transform: scale(1.05);
+}
+
+.btn-primary img {
+  width: 16px;
+  height: 12px;
+}
+
+/* ---------- About ---------- */
+.about {
+  background: var(--bg-light);
+  padding: 80px 0;
+}
+
+.about .container {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: 48px;
+}
+
+@media (min-width: 768px) {
+  .about .container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.about-img {
+  width: 100%;
+  border-radius: 30px;
+  object-fit: cover;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.about-title {
+  font-size: 36px;
+  font-weight: 700;
+}
+
+@media (min-width: 768px) {
+  .about-title {
+    font-size: 48px;
+  }
+}
+
+.about-text {
+  margin-top: 24px;
+  font-size: 20px;
+  line-height: 1.6;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.about-text + .about-text {
+  margin-top: 16px;
+}
+
+.btn-outline {
+  margin-top: 32px;
+  display: inline-block;
+  border: 2px solid var(--teal);
+  border-radius: 999px;
+  padding: 16px 32px;
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--teal);
+  transition: background 0.2s, color 0.2s;
+}
+
+.btn-outline:hover {
+  background: var(--teal);
+  color: #fff;
+}
+
+/* ---------- Section heading ---------- */
+.section-title {
+  text-align: center;
+  font-size: 36px;
+  font-weight: 700;
+}
+
+@media (min-width: 768px) {
+  .section-title {
+    font-size: 48px;
+  }
+}
+
+/* ---------- Biomolecules ---------- */
+.biomolecules {
+  background: var(--bg-light);
+  padding: 80px 0;
+}
+
+.biomolecules-grid {
+  margin-top: 56px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+
+@media (min-width: 640px) {
+  .biomolecules-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 1024px) {
+  .biomolecules-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border-radius: 30px;
+  background: #fff;
+  padding: 32px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.card img {
+  width: 128px;
+  height: 128px;
+  object-fit: contain;
+}
+
+.card h3 {
+  margin-top: 16px;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.card p {
+  margin-top: 16px;
+  font-size: 18px;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.card-link {
+  margin-top: 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--teal);
+}
+
+.card-link img {
+  width: 16px;
+  height: 8px;
+}
+
+/* ---------- Applications ---------- */
+.applications {
+  background: var(--bg-light);
+  padding: 80px 0;
+}
+
+.applications-grid {
+  margin-top: 56px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+
+@media (min-width: 640px) {
+  .applications-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 1024px) {
+  .applications-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.app-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+  padding: 32px 24px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+@media (min-width: 640px) {
+  .app-item {
+    border-bottom: none;
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .app-item:nth-child(2n) {
+    border-right: none;
+  }
+}
+
+@media (min-width: 1024px) {
+  .app-item:nth-child(2n) {
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .app-item:last-child {
+    border-right: none;
+  }
+}
+
+.app-item img {
+  width: 96px;
+  height: 96px;
+  object-fit: contain;
+}
+
+.app-item h3 {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.app-item p {
+  font-size: 18px;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+/* ---------- Curiosities ---------- */
+.curiosities {
+  background: var(--ink);
+  padding: 80px 0;
+}
+
+.curiosities .section-title {
+  color: #fff;
+}
+
+.curiosities-grid {
+  margin-top: 56px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+
+@media (min-width: 768px) {
+  .curiosities-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.curiosity-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 30px;
+  padding: 40px;
+}
+
+.curiosity-card img {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.curiosity-card p {
+  font-size: 18px;
+  color: #fff;
+}
+
+/* ---------- Footer ---------- */
+.footer {
+  background: var(--ink);
+  color: #fff;
+  padding: 64px 0 32px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 48px;
+}
+
+@media (min-width: 768px) {
+  .footer-grid {
+    grid-template-columns: auto 1fr 1fr auto;
+    gap: 32px;
+  }
+}
+
+.footer-brand img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}
+
+.footer-brand-title {
+  margin-top: 12px;
+  font-size: 30px;
+  font-weight: 600;
+  background: linear-gradient(90deg, #004753 0%, #3fe5d3 28%, #227573 42%, #00505e 67%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.footer-brand-sub {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.footer h3 {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.footer-list {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-size: 18px;
+}
+
+.footer-list a:hover {
+  color: var(--teal);
+}
+
+.footer-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-contact-item img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.footer-contact-item a {
+  text-decoration: underline;
+}
+
+.footer-contact-item a:hover {
+  color: var(--teal);
+}
+
+.footer-qr {
+  width: 128px;
+  height: 128px;
+  object-fit: contain;
+  justify-self: start;
+}
+
+@media (min-width: 768px) {
+  .footer-qr {
+    justify-self: end;
+  }
+}
+
+.footer-bottom {
+  margin-top: 48px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding-top: 24px;
+}
+
+.footer-bottom p {
+  font-size: 18px;
+}
+
+/* ---------- Página: O que é Bioquímica ---------- */
+.eyebrow {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0a7a8e;
+  letter-spacing: 0.02em;
+}
+
+/* Definição */
+.definicao {
+  background: #fff;
+  padding: 80px 0;
+}
+
+.definicao .container {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: 48px;
+}
+
+@media (min-width: 768px) {
+  .definicao .container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.definicao-title {
+  margin-top: 12px;
+  font-size: 32px;
+  font-weight: 700;
+  color: #0b0446;
+}
+
+@media (min-width: 768px) {
+  .definicao-title {
+    font-size: 40px;
+  }
+}
+
+.definicao-text {
+  margin-top: 20px;
+  font-size: 20px;
+  line-height: 1.6;
+  color: #2f3a4a;
+}
+
+.definicao-text + .definicao-text {
+  margin-top: 16px;
+}
+
+.definicao-img {
+  width: 100%;
+  border-radius: 40px;
+  object-fit: cover;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+/* Importância (grid de ícones, sem linha conectora) */
+.importance {
+  background: #dfe3ea;
+  padding: 80px 0;
+}
+
+.importance-header {
+  text-align: center;
+}
+
+.importance-header .section-title {
+  margin-top: 12px;
+  color: #0b0446;
+}
+
+.importance-grid {
+  margin-top: 56px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+}
+
+@media (min-width: 640px) {
+  .importance-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 1024px) {
+  .importance-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.importance-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+}
+
+.icon-circle {
+  width: 105px;
+  height: 105px;
+  border-radius: 50%;
+  background: #c4d1e5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-circle img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.importance-item h3 {
+  font-size: 24px;
+}
+
+.importance-item p {
+  font-size: 18px;
+  color: #2f3a4a;
+  max-width: 300px;
+}
+
+/* História (timeline com linha conectora) */
+.historia {
+  background: var(--bg-light);
+  padding: 80px 0;
+}
+
+.historia-header .section-title {
+  margin-top: 12px;
+  color: #0b0446;
+}
+
+.timeline {
+  position: relative;
+  margin-top: 64px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+}
+
+@media (min-width: 640px) {
+  .timeline {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 1024px) {
+  .timeline {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .timeline::before {
+    content: "";
+    position: absolute;
+    top: 76px;
+    left: 60px;
+    right: 60px;
+    height: 3px;
+    background: rgba(11, 4, 70, 0.15);
+  }
+}
+
+.timeline-item {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+}
+
+.timeline-period {
+  font-size: 22px;
+  color: #0a7a8e;
+}
+
+.timeline-item p {
+  font-size: 18px;
+  color: #2f3a4a;
+  max-width: 300px;
+}
+
+/* ---------- Página: Biomoléculas ---------- */
+.biomol-intro {
+  background: #dfe3ea;
+  padding: 80px 0;
+  text-align: center;
+}
+
+.biomol-intro .eyebrow {
+  display: block;
+}
+
+.biomol-intro h2 {
+  margin-top: 12px;
+  font-size: 32px;
+  font-weight: 700;
+  color: #0b0446;
+}
+
+@media (min-width: 768px) {
+  .biomol-intro h2 {
+    font-size: 40px;
+  }
+}
+
+.biomol-intro p {
+  margin: 24px auto 0;
+  max-width: 900px;
+  font-size: 20px;
+  line-height: 1.6;
+  color: #2f3a4a;
+}
+
+.biomol-intro p + p {
+  margin-top: 16px;
+}
+
+.biomol-types {
+  background: var(--bg-light);
+  padding: 80px 0;
+}
+
+.biomol-grid {
+  margin-top: 56px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+
+@media (min-width: 640px) {
+  .biomol-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 1024px) {
+  .biomol-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.biomol-card {
+  border-radius: 20px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.biomol-card-top {
+  position: relative;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.biomol-card-top img.biomol-illustration {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
+
+.biomol-card-badge {
+  position: absolute;
+  right: 24px;
+  bottom: -24px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.biomol-card-badge img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.biomol-card-body {
+  padding: 40px 24px 24px;
+  text-align: center;
+}
+
+.biomol-card-body h3 {
+  font-size: 28px;
+}
+
+.biomol-card-body p {
+  margin-top: 16px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #2f3a4a;
+}
+
+.biomol-card.proteinas .biomol-card-top {
+  background: #c0b2ff;
+}
+
+.biomol-card.proteinas .biomol-card-badge {
+  background: #c0b2ff;
+}
+
+.biomol-card.proteinas h3 {
+  color: #7a5cff;
+}
+
+.biomol-card.carboidratos .biomol-card-top {
+  background: #95d5c1;
+}
+
+.biomol-card.carboidratos .biomol-card-badge {
+  background: #95d5c1;
+}
+
+.biomol-card.carboidratos h3 {
+  color: #6ba493;
+}
+
+.biomol-card.lipidios .biomol-card-top {
+  background: #f2ba22;
+}
+
+.biomol-card.lipidios .biomol-card-badge {
+  background: #f2ba22;
+}
+
+.biomol-card.lipidios h3 {
+  color: #d99b00;
+}
+
+.biomol-card.acidos .biomol-card-top {
+  background: #4690d4;
+}
+
+.biomol-card.acidos .biomol-card-badge {
+  background: #4690d4;
+}
+
+.biomol-card.acidos h3 {
+  color: #4690d4;
+}
+
+.callout {
+  margin-top: 56px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  background: #e3f6f3;
+  border-radius: 20px;
+  padding: 32px 40px;
+}
+
+.callout-icon {
+  flex-shrink: 0;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: #7fd4c9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.callout-icon img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+}
+
+.callout-title {
+  flex-shrink: 0;
+  font-size: 28px;
+  color: #4db1ac;
+}
+
+.callout-divider {
+  flex-shrink: 0;
+  width: 2px;
+  align-self: stretch;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.callout p {
+  font-size: 18px;
+  color: #2f3a4a;
+}
+
+@media (max-width: 767px) {
+  .callout {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .callout-divider {
+    width: 60%;
+    height: 2px;
+  }
+}
