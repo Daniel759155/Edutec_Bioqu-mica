@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@700&family=Istok+Web:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Quiz — Bioquímica</title>
+  </head>
+  <body>
+    <header class="header">
+      <div class="container logo">
+        <img src="assets/img/logo.png" alt="Bioquímica" />
+        <div class="logo-text">
+          <p class="logo-title">BIOQUÍMICA</p>
+          <p class="logo-sub">A química da vida</p>
+        </div>
+        <nav style="margin-left: auto">
+          <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-links">
+            <span></span><span></span><span></span>
+          </button>
+          <ul class="nav-links" id="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="inicio.html#inicio">Início</a></li>
+            <li><a href="sobre.html">O que é Bioquímica</a></li>
+            <li><a href="biomoleculas.html">Biomoléculas</a></li>
+            <li><a href="quiz.html" class="active">Quiz</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <section id="inicio" class="hero quiz-hero">
+      <img src="assets/img/quiz-hero-bg.png" alt="" class="hero-bg" />
+      <div class="hero-overlay"></div>
+      <div class="container hero-content">
+        <h1 class="hero-title">QUIZ DE<br /><span class="text-teal">BIOQUÍMICA</span></h1>
+        <p class="quiz-tagline">Teste seus conhecimentos sobre a vida!</p>
+        <p class="hero-text">
+          Responda às perguntas e descubra o quanto você sabe sobre as
+          biomoléculas, reações químicas e processos que mantêm os seres
+          vivos funcionando.
+        </p>
+        <button type="button" class="quiz-start-btn" id="quiz-start-btn">
+          <span class="play-icon" aria-hidden="true"></span>
+          Começar quiz
+        </button>
+      </div>
+    </section>
+
+    <section class="quiz-app" id="quiz-app">
+      <div class="container">
+        <div class="quiz-grid">
+          <div class="quiz-card" id="quiz-card"></div>
+
+          <aside class="quiz-side">
+            <div class="quiz-panel">
+              <p class="quiz-panel-title">PROGRESSO</p>
+              <div class="quiz-progress-ring" id="quiz-progress-ring" style="--progress: 10%">
+                <span id="quiz-progress-count">1/10</span>
+              </div>
+              <p class="quiz-progress-label">Perguntas respondidas</p>
+            </div>
+
+            <div class="quiz-panel">
+              <p class="quiz-panel-title">COMO FUNCIONA?</p>
+              <ul class="quiz-info-list">
+                <li>
+                  <img src="assets/icons/icon-quiz-check.png" alt="" />
+                  <p>Leia cada pergunta com atenção e escolha a alternativa que considerar correta.</p>
+                </li>
+                <li>
+                  <img src="assets/icons/icon-quiz-brain.png" alt="" />
+                  <p>Cada questão possui apenas uma resposta correta.</p>
+                </li>
+                <li>
+                  <img src="assets/icons/icon-quiz-trophy.png" alt="" />
+                  <p>Ao final, sua pontuação será calculada automaticamente.</p>
+                </li>
+              </ul>
+            </div>
+          </aside>
+        </div>
+
+        <div class="quiz-bands">
+          <p class="quiz-panel-title">FAIXA DE PONTUAÇÃO</p>
+          <div class="quiz-bands-grid">
+            <div class="quiz-band">
+              <img src="assets/img/medal-bronze.png" alt="" />
+              <h3>0-5 acertos</h3>
+              <p>Você está começando sua jornada na bioquímica. Continue estudando e tente novamente!</p>
+            </div>
+            <div class="quiz-band">
+              <img src="assets/img/medal-silver.png" alt="" />
+              <h3>6-8 acertos</h3>
+              <p>Bom trabalho! Você já domina diversos conceitos importantes da bioquímica.</p>
+            </div>
+            <div class="quiz-band">
+              <img src="assets/img/medal-gold.png" alt="" />
+              <h3>9-10 acertos</h3>
+              <p>Excelente desempenho! Seu conhecimento sobre bioquímica está acima da média.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <img src="assets/img/logo.png" alt="Bioquímica" />
+          <p class="footer-brand-title">BIOQUÍMICA</p>
+          <p class="footer-brand-sub">A química da vida</p>
+        </div>
+
+        <div>
+          <h3>Navegação</h3>
+          <ul class="footer-list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="inicio.html#inicio">Início</a></li>
+            <li><a href="sobre.html">O que é bioquímica</a></li>
+            <li><a href="biomoleculas.html">Biomoléculas</a></li>
+            <li><a href="quiz.html">Quiz</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3>Contato</h3>
+          <ul class="footer-list">
+            <li class="footer-contact-item">
+              <img src="assets/icons/icon-email.png" alt="" />
+              <a href="mailto:bioquimica22ati@gmail.com">bioquimica22ati@gmail.com</a>
+            </li>
+            <li class="footer-contact-item">
+              <img src="assets/icons/icon-phone.png" alt="" />
+              <span>+55 (11)4002-8922</span>
+            </li>
+            <li class="footer-contact-item">
+              <img src="assets/icons/icon-location.png" alt="" />
+              <span>Estrada de Itapecerica, 67 — Boca da Mata - SP</span>
+            </li>
+          </ul>
+        </div>
+
+        <img src="assets/img/footer-decor.png" alt="QR Code" class="footer-qr" />
+      </div>
+
+      <div class="container footer-bottom">
+        <p>2026 Bioquímica - A química da vida. Todos os direitos reservados</p>
+      </div>
+    </footer>
+
+    <script src="js/main.js" defer></script>
+    <script src="js/quiz.js" defer></script>
+  </body>
+</html>
