@@ -70,6 +70,125 @@ body {
   color: var(--text-color);
   background: var(--page-bg);
   transition: background-color 0.2s, color 0.2s;
+  animation: page-fade-in 0.35s ease;
+}
+
+body.page-exit {
+  animation: page-fade-out 0.25s ease forwards;
+}
+
+@keyframes page-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes page-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body {
+    animation: none;
+  }
+
+  body.page-exit {
+    animation: none;
+  }
+}
+
+/* ---------- Transição exclusiva da página do Quiz ---------- */
+.quiz-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at center, #0b0850 0%, var(--navy) 70%);
+  opacity: 1;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.quiz-transition-overlay.active {
+  pointer-events: auto;
+}
+
+.quiz-transition-overlay:not(.active) {
+  opacity: 0;
+}
+
+.quiz-transition-logo {
+  width: 5.5rem;
+  height: 5.5rem;
+  object-fit: contain;
+  filter: drop-shadow(0 0 18px rgba(20, 184, 166, 0.55));
+  opacity: 0;
+  transform: scale(0.5) rotate(-25deg);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.quiz-transition-overlay.active .quiz-transition-logo {
+  animation: quiz-logo-spin-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
+    quiz-logo-pulse 1.4s ease-in-out 0.6s infinite;
+}
+
+.quiz-transition-overlay.is-leaving .quiz-transition-logo {
+  animation: quiz-logo-spin-out 0.5s ease-in forwards;
+}
+
+@keyframes quiz-logo-spin-in {
+  from {
+    opacity: 0;
+    transform: scale(0.5) rotate(-25deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes quiz-logo-spin-out {
+  from {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.5) rotate(25deg);
+  }
+}
+
+@keyframes quiz-logo-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quiz-transition-overlay {
+    transition: none;
+  }
+
+  .quiz-transition-overlay.active .quiz-transition-logo,
+  .quiz-transition-overlay.is-leaving .quiz-transition-logo {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
 }
 
 h1,

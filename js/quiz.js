@@ -1,4 +1,43 @@
 document.addEventListener("DOMContentLoaded", function () {
+  var overlay = document.getElementById("quiz-transition-overlay");
+
+  if (overlay) {
+    var reduceMotion =
+      window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var INTRO_HOLD_MS = reduceMotion ? 0 : 550;
+    var EXIT_MS = reduceMotion ? 0 : 450;
+
+    // Introdução: a logo aparece por cima da página e depois se desfaz revelando o quiz.
+    setTimeout(function () {
+      overlay.classList.remove("active");
+    }, INTRO_HOLD_MS);
+
+    document.querySelectorAll("a[href]").forEach(function (link) {
+      var href = link.getAttribute("href");
+      if (
+        !href ||
+        href.charAt(0) === "#" ||
+        href.indexOf("mailto:") === 0 ||
+        href.indexOf("tel:") === 0 ||
+        link.target === "_blank" ||
+        link.hostname !== window.location.hostname
+      ) {
+        return;
+      }
+
+      link.addEventListener("click", function (e) {
+        if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) {
+          return;
+        }
+        e.preventDefault();
+        overlay.classList.add("active", "is-leaving");
+        setTimeout(function () {
+          window.location.href = link.href;
+        }, EXIT_MS);
+      });
+    });
+  }
+
   var quizCard = document.getElementById("quiz-card");
   var quizApp = document.getElementById("quiz-app");
   var startBtn = document.getElementById("quiz-start-btn");
