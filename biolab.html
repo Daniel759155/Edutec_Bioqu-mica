@@ -22,13 +22,10 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/style.css" />
-    <title>Quiz — Bioquímica</title>
+    <link rel="stylesheet" href="css/biolab.css" />
+    <title>BioLab — Bioquímica</title>
   </head>
-  <body class="has-quiz-transition">
-    <div class="quiz-transition-overlay active" id="quiz-transition-overlay" aria-hidden="true">
-      <img src="assets/img/logo.png" alt="" class="quiz-transition-logo" />
-    </div>
-
+  <body>
     <header class="header">
       <div class="container logo">
         <img src="assets/img/logo.png" alt="Bioquímica" />
@@ -63,7 +60,25 @@
             <li><a href="sobre.html">O que é Bioquímica</a></li>
             <li><a href="historia.html">História</a></li>
             <li><a href="biomoleculas.html">Biomoléculas</a></li>
-            <li><a href="quiz.html" class="active">Quiz</a></li>
+            <li class="nav-item-dropdown">
+              <button type="button" class="nav-dropdown-toggle active" aria-haspopup="true" aria-expanded="false">
+                Jogos
+                <svg class="nav-dropdown-arrow" viewBox="0 0 12 8" aria-hidden="true">
+                  <path
+                    d="M1 1l5 5 5-5"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></path>
+                </svg>
+              </button>
+              <ul class="nav-dropdown-menu">
+                <li><a href="quiz.html">Quiz</a></li>
+                <li><a href="biolab.html" class="active">BioLab</a></li>
+              </ul>
+            </li>
             <li><a href="contato.html">Contato</a></li>
           </ul>
         </nav>
@@ -74,74 +89,19 @@
       <img src="assets/img/quiz-hero-bg.png" alt="" class="hero-bg" />
       <div class="hero-overlay"></div>
       <div class="container hero-content">
-        <h1 class="hero-title">QUIZ DE<br /><span class="text-teal">BIOQUÍMICA</span></h1>
-        <p class="quiz-tagline">Teste seus conhecimentos sobre a vida!</p>
+        <h1 class="hero-title">BIOLAB<br /><span class="text-teal">CRIE O ORGANISMO PERFEITO</span></h1>
+        <p class="quiz-tagline">Um laboratório de biotecnologia dentro do site!</p>
         <p class="hero-text">
-          Responda às perguntas e descubra o quanto você sabe sobre as
-          biomoléculas, reações químicas e processos que mantêm os seres
-          vivos funcionando.
+          Assuma o papel de cientista, escolha características genéticas
+          dentro de um orçamento limitado e desenvolva organismos capazes de
+          cumprir missões ambientais reais.
         </p>
-        <button type="button" class="quiz-start-btn" id="quiz-start-btn">
-          <span class="play-icon" aria-hidden="true"></span>
-          Começar quiz
-        </button>
       </div>
     </section>
 
-    <section class="quiz-app" id="quiz-app">
+    <section class="quiz-app" id="biolab-app">
       <div class="container">
-        <div class="quiz-grid">
-          <div class="quiz-card" id="quiz-card"></div>
-
-          <aside class="quiz-side">
-            <div class="quiz-panel">
-              <p class="quiz-panel-title">PROGRESSO</p>
-              <div class="quiz-progress-ring" id="quiz-progress-ring" style="--progress: 10%">
-                <span id="quiz-progress-count">1/10</span>
-              </div>
-              <p class="quiz-progress-label">Perguntas respondidas</p>
-            </div>
-
-            <div class="quiz-panel">
-              <p class="quiz-panel-title">COMO FUNCIONA?</p>
-              <ul class="quiz-info-list">
-                <li>
-                  <img src="assets/icons/icon-quiz-check.png" alt="" />
-                  <p>Leia cada pergunta com atenção e escolha a alternativa que considerar correta.</p>
-                </li>
-                <li>
-                  <img src="assets/icons/icon-quiz-brain.png" alt="" />
-                  <p>Cada questão possui apenas uma resposta correta.</p>
-                </li>
-                <li>
-                  <img src="assets/icons/icon-quiz-trophy.png" alt="" />
-                  <p>Ao final, sua pontuação será calculada automaticamente.</p>
-                </li>
-              </ul>
-            </div>
-          </aside>
-        </div>
-
-        <div class="quiz-bands">
-          <p class="quiz-panel-title">FAIXA DE PONTUAÇÃO</p>
-          <div class="quiz-bands-grid">
-            <div class="quiz-band">
-              <img src="assets/img/medal-bronze.png" alt="" />
-              <h3>0-5 acertos</h3>
-              <p>Você está começando sua jornada na bioquímica. Continue estudando e tente novamente!</p>
-            </div>
-            <div class="quiz-band">
-              <img src="assets/img/medal-silver.png" alt="" />
-              <h3>6-8 acertos</h3>
-              <p>Bom trabalho! Você já domina diversos conceitos importantes da bioquímica.</p>
-            </div>
-            <div class="quiz-band">
-              <img src="assets/img/medal-gold.png" alt="" />
-              <h3>9-10 acertos</h3>
-              <p>Excelente desempenho! Seu conhecimento sobre bioquímica está acima da média.</p>
-            </div>
-          </div>
-        </div>
+        <div id="biolab-game"></div>
       </div>
     </section>
 
@@ -162,6 +122,7 @@
             <li><a href="historia.html">História</a></li>
             <li><a href="biomoleculas.html">Biomoléculas</a></li>
             <li><a href="quiz.html">Quiz</a></li>
+            <li><a href="biolab.html">BioLab</a></li>
             <li><a href="contato.html">Quem somos / Contato</a></li>
           </ul>
         </div>
@@ -193,6 +154,7 @@
     </footer>
 
     <script src="js/main.js" defer></script>
-    <script src="js/quiz.js" defer></script>
+    <script src="https://unpkg.com/three@0.128.0/build/three.min.js" defer></script>
+    <script src="js/biolab.js" defer></script>
   </body>
 </html>

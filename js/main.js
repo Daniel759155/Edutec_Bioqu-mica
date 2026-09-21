@@ -16,6 +16,27 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  document.querySelectorAll(".nav-item-dropdown").forEach(function (item) {
+    var dropdownToggle = item.querySelector(".nav-dropdown-toggle");
+    if (!dropdownToggle) return;
+
+    dropdownToggle.addEventListener("click", function (e) {
+      e.preventDefault();
+      var isOpen = item.classList.toggle("open");
+      dropdownToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    });
+  });
+
+  document.addEventListener("click", function (e) {
+    document.querySelectorAll(".nav-item-dropdown.open").forEach(function (item) {
+      if (!item.contains(e.target)) {
+        item.classList.remove("open");
+        var dropdownToggle = item.querySelector(".nav-dropdown-toggle");
+        if (dropdownToggle) dropdownToggle.setAttribute("aria-expanded", "false");
+      }
+    });
+  });
+
   var themeToggle = document.getElementById("theme-toggle");
   if (themeToggle) {
     var isDark = document.documentElement.getAttribute("data-theme") === "dark";
