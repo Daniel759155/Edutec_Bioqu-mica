@@ -18,10 +18,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@700&family=Istok+Web:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:ital,wght@0,600;0,700;0,900;1,500;1,600&family=Space+Mono:wght@400;700&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="css/tokens.css" />
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/components.css" />
     <link rel="stylesheet" href="css/contato.css" />
     <title>Quem Somos e Contato — Bioquímica</title>
   </head>
@@ -60,7 +62,25 @@
             <li><a href="sobre.html">O que é Bioquímica</a></li>
             <li><a href="historia.html">História</a></li>
             <li><a href="biomoleculas.html">Biomoléculas</a></li>
-            <li><a href="quiz.html">Quiz</a></li>
+            <li class="nav-item-dropdown">
+              <button type="button" class="nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                Jogos
+                <svg class="nav-dropdown-arrow" viewBox="0 0 12 8" aria-hidden="true">
+                  <path
+                    d="M1 1l5 5 5-5"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></path>
+                </svg>
+              </button>
+              <ul class="nav-dropdown-menu">
+                <li><a href="quiz.html">Quiz</a></li>
+                <li><a href="biolab.html">Fluxo</a></li>
+              </ul>
+            </li>
             <li><a href="contato.html" class="active">Contato</a></li>
           </ul>
         </nav>
@@ -81,51 +101,20 @@
       </div>
     </section>
 
-    <section class="contato-politicas">
-      <div class="container">
-        <div class="contato-card contato-politicas-card">
-          <div class="contato-politica">
-            <img src="assets/contato/politica-4.png" alt="" />
-            <h2><span class="num">1.</span> Informações que Coletamos</h2>
-            <p>
-              Coletamos apenas as informações necessárias para melhorar sua
-              experiência, como nome, e-mail e dados de uso do site.
-            </p>
-          </div>
-          <div class="contato-politica">
-            <img src="assets/contato/politica-1.png" alt="" />
-            <h2><span class="num">2.</span> Uso das Informações</h2>
-            <p>
-              Utilizamos suas informações para fornecer e melhorar nossos
-              serviços, personalizar o conteúdo e enviar comunicados importantes.
-            </p>
-          </div>
-          <div class="contato-politica">
-            <img src="assets/contato/politica-2.png" alt="" />
-            <h2><span class="num">3.</span> Compartilhamento</h2>
-            <p>
-              Não vendemos ou compartilhamos suas informações pessoais com
-              terceiros, exceto quando exigido por lei ou com seu consentimento.
-            </p>
-          </div>
-          <div class="contato-politica">
-            <img src="assets/contato/politica-3.png" alt="" />
-            <h2><span class="num">4.</span> Cookies e Tecnologias</h2>
-            <p>
-              Utilizamos cookies para melhorar sua navegação, entender
-              preferências e analisar o desempenho do site.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
+    <nav class="breadcrumb" aria-label="Você está aqui">
+      <ol class="breadcrumb-list container">
+        <li><a href="index.html">Bioquímica</a></li>
+        <li class="breadcrumb-sep" aria-hidden="true">/</li>
+        <li aria-current="page">Quem Somos e Contato</li>
+      </ol>
+    </nav>
 
     <section class="contato-time" id="time">
       <div class="container">
         <h2 class="contato-heading">Nosso <span class="text-accent">Time</span></h2>
         <p class="contato-lead">Conheça as pessoas que fazem este projeto acontecer.</p>
 
-        <div class="contato-time-grid">
+        <div class="contato-time-grid reveal">
           <article class="contato-membro">
             <img src="assets/contato/foto-guilherme.svg" alt="" class="contato-foto" />
             <h3>Guilherme C.</h3>
@@ -205,7 +194,7 @@
 
     <section class="contato-fale" id="contato">
       <div class="container">
-        <div class="contato-card contato-fale-card">
+        <div class="contato-card contato-fale-card reveal">
           <div class="contato-form-col">
             <h2 class="contato-heading">Entre em <span class="text-teal">contato</span></h2>
             <p class="contato-lead contato-lead-lg">
@@ -273,6 +262,95 @@
       </div>
     </section>
 
+    <section class="contato-politicas" id="politicas">
+      <div class="container">
+        <h2 class="contato-heading contato-heading-sm">Política de <span class="text-accent">Privacidade</span></h2>
+        <p class="contato-lead">Como coletamos, usamos e protegemos suas informações.</p>
+
+        <div class="contato-accordion">
+          <div class="accordion-item">
+            <h3>
+              <button type="button" class="accordion-trigger" aria-expanded="false">
+                <span class="accordion-trigger-label">
+                  <img src="assets/contato/politica-4.png" alt="" />
+                  1. Informações que Coletamos
+                </span>
+                <span class="accordion-trigger-icon" aria-hidden="true"></span>
+              </button>
+            </h3>
+            <div class="accordion-panel">
+              <div class="accordion-panel-inner">
+                <p>
+                  Coletamos apenas as informações necessárias para melhorar sua
+                  experiência, como nome, e-mail e dados de uso do site.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h3>
+              <button type="button" class="accordion-trigger" aria-expanded="false">
+                <span class="accordion-trigger-label">
+                  <img src="assets/contato/politica-1.png" alt="" />
+                  2. Uso das Informações
+                </span>
+                <span class="accordion-trigger-icon" aria-hidden="true"></span>
+              </button>
+            </h3>
+            <div class="accordion-panel">
+              <div class="accordion-panel-inner">
+                <p>
+                  Utilizamos suas informações para fornecer e melhorar nossos
+                  serviços, personalizar o conteúdo e enviar comunicados importantes.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h3>
+              <button type="button" class="accordion-trigger" aria-expanded="false">
+                <span class="accordion-trigger-label">
+                  <img src="assets/contato/politica-2.png" alt="" />
+                  3. Compartilhamento
+                </span>
+                <span class="accordion-trigger-icon" aria-hidden="true"></span>
+              </button>
+            </h3>
+            <div class="accordion-panel">
+              <div class="accordion-panel-inner">
+                <p>
+                  Não vendemos ou compartilhamos suas informações pessoais com
+                  terceiros, exceto quando exigido por lei ou com seu consentimento.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h3>
+              <button type="button" class="accordion-trigger" aria-expanded="false">
+                <span class="accordion-trigger-label">
+                  <img src="assets/contato/politica-3.png" alt="" />
+                  4. Cookies e Tecnologias
+                </span>
+                <span class="accordion-trigger-icon" aria-hidden="true"></span>
+              </button>
+            </h3>
+            <div class="accordion-panel">
+              <div class="accordion-panel-inner">
+                <p>
+                  Utilizamos cookies para melhorar sua navegação, entender
+                  preferências e analisar o desempenho do site.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <footer class="footer">
       <div class="container footer-grid">
         <div class="footer-brand">
@@ -290,6 +368,7 @@
             <li><a href="historia.html">História</a></li>
             <li><a href="biomoleculas.html">Biomoléculas</a></li>
             <li><a href="quiz.html">Quiz</a></li>
+            <li><a href="biolab.html">Fluxo</a></li>
             <li><a href="contato.html">Quem somos / Contato</a></li>
           </ul>
         </div>
@@ -321,6 +400,7 @@
     </footer>
 
     <script src="js/main.js" defer></script>
+    <script src="js/motion.js" defer></script>
     <script src="js/contato.js" defer></script>
   </body>
 </html>

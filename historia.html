@@ -18,10 +18,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@700&family=Istok+Web:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,wght@0,600;0,700;0,900;1,500;1,600&family=Space+Mono:wght@400;700&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="css/tokens.css" />
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/components.css" />
     <title>História — Bioquímica</title>
   </head>
   <body>
@@ -59,7 +61,25 @@
             <li><a href="sobre.html">O que é Bioquímica</a></li>
             <li><a href="historia.html" class="active">História</a></li>
             <li><a href="biomoleculas.html">Biomoléculas</a></li>
-            <li><a href="quiz.html">Quiz</a></li>
+            <li class="nav-item-dropdown">
+              <button type="button" class="nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                Jogos
+                <svg class="nav-dropdown-arrow" viewBox="0 0 12 8" aria-hidden="true">
+                  <path
+                    d="M1 1l5 5 5-5"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></path>
+                </svg>
+              </button>
+              <ul class="nav-dropdown-menu">
+                <li><a href="quiz.html">Quiz</a></li>
+                <li><a href="biolab.html">Fluxo</a></li>
+              </ul>
+            </li>
             <li><a href="contato.html">Contato</a></li>
           </ul>
         </nav>
@@ -84,40 +104,48 @@
       </div>
     </section>
 
+    <nav class="breadcrumb" aria-label="Você está aqui">
+      <ol class="breadcrumb-list container">
+        <li><a href="index.html">Bioquímica</a></li>
+        <li class="breadcrumb-sep" aria-hidden="true">/</li>
+        <li aria-current="page">História</li>
+      </ol>
+    </nav>
+
     <section id="marcos" class="marcos">
       <div class="container">
         <h2 class="section-title">Marcos importantes</h2>
 
-        <ol class="marcos-timeline">
-          <li class="marco">
+        <ol class="marcos-timeline reveal">
+          <li class="marco" tabindex="0">
             <div class="icon-circle">
               <img src="assets/icons/icon-flask.png" alt="" />
             </div>
             <p class="marco-year">1813</p>
             <p>Justus von Liebig aplica os conceitos da química para entender processos biológicos.</p>
           </li>
-          <li class="marco">
+          <li class="marco" tabindex="0">
             <div class="icon-circle">
               <img src="assets/icons/icon-atom.png" alt="" />
             </div>
             <p class="marco-year">1869</p>
             <p>Friedrich Miescher isola o DNA do núcleo das células pela primeira vez.</p>
           </li>
-          <li class="marco">
+          <li class="marco" tabindex="0">
             <div class="icon-circle">
               <img src="assets/icons/icon-dna.png" alt="" />
             </div>
             <p class="marco-year">1897</p>
             <p>Eduard Buchner demonstra que reações químicas podem ocorrer fora das células, graças às enzimas.</p>
           </li>
-          <li class="marco">
+          <li class="marco" tabindex="0">
             <div class="icon-circle">
               <img src="assets/icons/icon-atom.png" alt="" />
             </div>
             <p class="marco-year">1944</p>
             <p>Avery, MacLeod e McCarty demonstram que o DNA é o material genético.</p>
           </li>
-          <li class="marco">
+          <li class="marco" tabindex="0">
             <div class="icon-circle">
               <img src="assets/icons/icon-bar-chart.png" alt="" />
             </div>
@@ -132,7 +160,7 @@
       <div class="container">
         <h2 class="section-title">Personagens que transformaram a ciência</h2>
 
-        <div class="personagens-grid">
+        <div class="personagens-grid reveal">
           <article class="personagem-card">
             <img
               src="assets/img/personagem-liebig.png"
@@ -223,7 +251,7 @@
 
     <section id="como-comecou" class="comecou">
       <div class="container">
-        <div class="comecou-panel">
+        <div class="comecou-panel reveal">
           <div class="comecou-text">
             <h2>Como tudo começou</h2>
             <span class="comecou-line" aria-hidden="true"></span>
@@ -274,6 +302,7 @@
             <li><a href="historia.html">História</a></li>
             <li><a href="biomoleculas.html">Biomoléculas</a></li>
             <li><a href="quiz.html">Quiz</a></li>
+            <li><a href="biolab.html">Fluxo</a></li>
             <li><a href="contato.html">Quem somos / Contato</a></li>
           </ul>
         </div>
@@ -305,5 +334,6 @@
     </footer>
 
     <script src="js/main.js" defer></script>
+    <script src="js/motion.js" defer></script>
   </body>
 </html>

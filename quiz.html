@@ -18,10 +18,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@700&family=Istok+Web:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,wght@0,600;0,700;0,900;1,500;1,600&family=Space+Mono:wght@400;700&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="css/tokens.css" />
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/components.css" />
     <title>Quiz — Bioquímica</title>
   </head>
   <body class="has-quiz-transition">
@@ -63,7 +65,25 @@
             <li><a href="sobre.html">O que é Bioquímica</a></li>
             <li><a href="historia.html">História</a></li>
             <li><a href="biomoleculas.html">Biomoléculas</a></li>
-            <li><a href="quiz.html" class="active">Quiz</a></li>
+            <li class="nav-item-dropdown">
+              <button type="button" class="nav-dropdown-toggle active" aria-haspopup="true" aria-expanded="false">
+                Jogos
+                <svg class="nav-dropdown-arrow" viewBox="0 0 12 8" aria-hidden="true">
+                  <path
+                    d="M1 1l5 5 5-5"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></path>
+                </svg>
+              </button>
+              <ul class="nav-dropdown-menu">
+                <li><a href="quiz.html" class="active">Quiz</a></li>
+                <li><a href="biolab.html">Fluxo</a></li>
+              </ul>
+            </li>
             <li><a href="contato.html">Contato</a></li>
           </ul>
         </nav>
@@ -162,6 +182,7 @@
             <li><a href="historia.html">História</a></li>
             <li><a href="biomoleculas.html">Biomoléculas</a></li>
             <li><a href="quiz.html">Quiz</a></li>
+            <li><a href="biolab.html">Fluxo</a></li>
             <li><a href="contato.html">Quem somos / Contato</a></li>
           </ul>
         </div>
@@ -193,6 +214,7 @@
     </footer>
 
     <script src="js/main.js" defer></script>
+    <script src="js/motion.js" defer></script>
     <script src="js/quiz.js" defer></script>
   </body>
 </html>

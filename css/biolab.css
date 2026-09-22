@@ -1,37 +1,15 @@
 /* ==========================================================================
-   BioLab — Crie o Organismo Perfeito
-   Todos os seletores estão escopados a #biolab-game para não afetar o
-   restante do site (cores, fontes e componentes fora deste elemento).
+   FLUXO — A Jornada da Glicose
+   Jogo de navegação narrativa pela respiração celular: o jogador é a
+   molécula de glicose e atravessa glicólise → ciclo de Krebs → cadeia
+   transportadora de elétrons, com um desvio real para a fermentação láctica
+   quando o oxigênio falta. Todos os seletores estão escopados a #biolab-game
+   para não afetar o resto do site. Prefixo de classes: "fx-".
    ========================================================================== */
 
 #biolab-game {
-  --bl-bg: #060f14;
-  --bl-bg-soft: #0a1720;
-  --bl-panel: rgba(16, 34, 43, 0.72);
-  --bl-panel-border: rgba(60, 220, 200, 0.18);
-  --bl-panel-border-strong: rgba(60, 220, 200, 0.4);
-  --bl-green: #22d3a5;
-  --bl-blue: #2fa4ff;
-  --bl-cyan: #4fe3ff;
-  --bl-text: #eaf6f6;
-  --bl-text-dim: #9fc2c4;
-  --bl-danger: #ff6b6b;
-  --bl-warn: #ffc857;
-  --bl-radius: 16px;
-  --bl-font: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
-
-  position: relative;
-  display: block;
-  width: 100%;
-  box-sizing: border-box;
-  font-family: var(--bl-font);
-  color: var(--bl-text);
-  background: radial-gradient(circle at 15% 0%, #0d2530 0%, var(--bl-bg) 55%), var(--bl-bg);
-  border-radius: 20px;
-  padding: clamp(1.25rem, 3vw, 2.5rem);
-  overflow: hidden;
-  isolation: isolate;
-  line-height: 1.5;
+  --fx-radius: var(--radius-lg);
+  padding: var(--space-6) 0 var(--space-8);
 }
 
 #biolab-game *,
@@ -40,1063 +18,667 @@
   box-sizing: border-box;
 }
 
-#biolab-game .bl-wrap {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 1.75rem;
-  animation: bl-fade-in 0.45s ease both;
-}
-
-@keyframes bl-fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ---------- Tipografia geral ---------- */
 #biolab-game h1,
 #biolab-game h2,
 #biolab-game h3,
 #biolab-game p,
 #biolab-game ul,
+#biolab-game ol,
 #biolab-game li,
 #biolab-game button {
   margin: 0;
   padding: 0;
-  font-family: inherit;
-  color: inherit;
+  font-family: var(--font-body);
+  color: var(--text-color);
 }
 
-#biolab-game ul {
+#biolab-game ul,
+#biolab-game ol {
   list-style: none;
 }
 
-#biolab-game .bl-panel-title {
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  color: var(--bl-cyan);
-  text-transform: uppercase;
-  margin-bottom: 0.85rem;
+#biolab-game button {
+  font: inherit;
+  cursor: pointer;
+  background: none;
+  border: none;
 }
 
 /* ---------- Botões ---------- */
-#biolab-game .bl-btn {
-  cursor: pointer;
-  border: none;
-  border-radius: 999px;
+#biolab-game .fx-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  border-radius: var(--radius-full);
+  padding: 0.9375rem 2rem;
+  font-family: var(--font-accent);
   font-weight: 700;
-  font-size: 0.95rem;
-  letter-spacing: 0.03em;
-  padding: 0.85rem 1.6rem;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+  font-size: 1.0625rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
-#biolab-game .bl-btn:active {
+#biolab-game .fx-btn:active {
   transform: scale(0.97);
 }
 
-#biolab-game .bl-btn-primary {
-  background: linear-gradient(120deg, var(--bl-green), var(--bl-blue));
-  color: #04211c;
-  box-shadow: 0 8px 24px rgba(34, 211, 165, 0.28);
+#biolab-game .fx-btn-primary {
+  background: var(--teal);
+  color: #fff;
+  box-shadow: var(--shadow-md);
 }
 
-#biolab-game .bl-btn-primary:hover {
-  box-shadow: 0 10px 30px rgba(34, 211, 165, 0.4);
+#biolab-game .fx-btn-primary:hover {
   transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
 }
 
-#biolab-game .bl-btn-primary:disabled {
-  opacity: 0.4;
+#biolab-game .fx-btn-primary:disabled {
+  opacity: 0.5;
   cursor: not-allowed;
-  box-shadow: none;
   transform: none;
+  box-shadow: none;
 }
 
-#biolab-game .bl-btn-outline {
-  background: transparent;
-  color: var(--bl-cyan);
-  border: 1.5px solid var(--bl-panel-border-strong);
+#biolab-game .fx-btn-outline {
+  border: 2px solid var(--border-subtle);
+  color: var(--text-color);
+  background: var(--surface);
 }
 
-#biolab-game .bl-btn-outline:hover {
-  background: rgba(79, 227, 255, 0.08);
-  border-color: var(--bl-cyan);
+#biolab-game .fx-btn-outline:hover {
+  border-color: var(--teal);
+  color: var(--teal);
 }
 
-#biolab-game .bl-back-btn {
-  background: transparent;
-  border: 1px solid var(--bl-panel-border);
-  color: var(--bl-text-dim);
-  border-radius: 999px;
-  padding: 0.45rem 1rem;
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition: border-color 0.18s ease, color 0.18s ease;
-}
-
-#biolab-game .bl-back-btn:hover {
-  border-color: var(--bl-cyan);
-  color: var(--bl-cyan);
+#biolab-game .fx-btn-sm {
+  padding: 0.625rem 1.25rem;
+  font-size: 0.9375rem;
 }
 
 /* ---------- Tela inicial ---------- */
-#biolab-game .bl-start-hero {
+#biolab-game .fx-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
   text-align: center;
-  padding: clamp(1.5rem, 4vw, 3rem) 1rem;
-  border-radius: var(--bl-radius);
-  background: linear-gradient(160deg, rgba(34, 211, 165, 0.08), rgba(47, 164, 255, 0.05));
-  border: 1px solid var(--bl-panel-border);
-}
-
-#biolab-game .bl-eyebrow {
-  font-size: 0.95rem;
-  letter-spacing: 0.3em;
-  color: var(--bl-green);
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-}
-
-#biolab-game .bl-title {
-  font-size: clamp(1.6rem, 4vw, 2.4rem);
-  font-weight: 700;
-  background: linear-gradient(120deg, var(--bl-green), var(--bl-cyan));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  margin-bottom: 0.9rem;
-}
-
-#biolab-game .bl-lead {
-  max-width: 46ch;
-  margin: 0 auto 1.6rem;
-  color: var(--bl-text-dim);
-  font-size: 0.95rem;
-}
-
-#biolab-game .bl-start-stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-}
-
-#biolab-game .bl-stat-card {
-  background: var(--bl-panel);
-  border: 1px solid var(--bl-panel-border);
-  border-radius: var(--bl-radius);
-  padding: 1rem;
-  text-align: center;
-  backdrop-filter: blur(6px);
-}
-
-#biolab-game .bl-stat-value {
-  display: block;
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: var(--bl-cyan);
-  margin-bottom: 0.25rem;
-}
-
-#biolab-game .bl-stat-label {
-  display: block;
-  font-size: 0.72rem;
-  color: var(--bl-text-dim);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-#biolab-game .bl-xp-bar {
-  margin-top: 0.6rem;
-  height: 6px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
-  overflow: hidden;
-}
-
-#biolab-game .bl-xp-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--bl-green), var(--bl-cyan));
-  border-radius: 999px;
-  transition: width 0.6s ease;
-}
-
-#biolab-game .bl-missions {
-  background: var(--bl-panel);
-  border: 1px solid var(--bl-panel-border);
-  border-radius: var(--bl-radius);
-  padding: 1.25rem;
-}
-
-#biolab-game .bl-mission-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 0.85rem;
-}
-
-#biolab-game .bl-mission-card {
-  cursor: pointer;
-  text-align: left;
-  background: var(--bl-bg-soft);
-  border: 1px solid var(--bl-panel-border);
-  border-radius: 12px;
-  padding: 0.9rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  transition: border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
-}
-
-#biolab-game .bl-mission-card:hover {
-  border-color: var(--bl-panel-border-strong);
-  transform: translateY(-3px);
-  box-shadow: 0 10px 22px rgba(34, 211, 165, 0.15);
-}
-
-#biolab-game .bl-mission-icon {
-  font-size: 1.4rem;
-}
-
-#biolab-game .bl-mission-name {
-  font-size: 0.68rem;
-  letter-spacing: 0.08em;
-  color: var(--bl-green);
-  font-weight: 700;
-}
-
-#biolab-game .bl-mission-title {
-  font-size: 0.85rem;
-  color: var(--bl-text);
-  font-weight: 600;
-}
-
-/* ---------- Laboratório ---------- */
-#biolab-game .bl-lab-top {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-#biolab-game .bl-lab-heading {
-  font-size: 0.75rem;
-  letter-spacing: 0.2em;
-  color: var(--bl-text-dim);
-  font-weight: 700;
-}
-
-#biolab-game .bl-lab-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.1rem;
-}
-
-@media (min-width: 900px) {
-  #biolab-game .bl-lab-grid {
-    grid-template-columns: 240px 1fr 300px;
-    align-items: start;
-  }
-}
-
-#biolab-game .bl-panel {
-  background: var(--bl-panel);
-  border: 1px solid var(--bl-panel-border);
-  border-radius: var(--bl-radius);
-  padding: 1.1rem;
-  backdrop-filter: blur(6px);
-}
-
-#biolab-game .bl-mission-context {
-  font-size: 0.85rem;
-  color: var(--bl-text-dim);
-  margin-bottom: 0.6rem;
-}
-
-#biolab-game .bl-mission-objective {
-  font-size: 0.85rem;
-  margin-bottom: 1rem;
-}
-
-#biolab-game .bl-budget-row {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.8rem;
-  color: var(--bl-text-dim);
-  margin-bottom: 0.35rem;
-}
-
-#biolab-game .bl-budget-bar,
-#biolab-game .bl-bar-track {
-  height: 8px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
-  overflow: hidden;
-}
-
-#biolab-game .bl-budget-fill {
-  height: 100%;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--bl-blue), var(--bl-cyan));
-  transition: width 0.4s ease;
-}
-
-#biolab-game .bl-organism-panel {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.9rem;
-}
-
-#biolab-game .bl-organism-visual {
-  font-size: 3.2rem;
-  animation: bl-pulse 2.4s ease-in-out infinite;
-  filter: drop-shadow(0 0 18px rgba(34, 211, 165, 0.45));
-}
-
-@keyframes bl-pulse {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.08);
-  }
-}
-
-#biolab-game .bl-selected-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  justify-content: center;
-  min-height: 2.2rem;
-}
-
-#biolab-game .bl-chip {
-  background: rgba(34, 211, 165, 0.12);
-  border: 1px solid var(--bl-panel-border-strong);
-  color: var(--bl-green);
-  border-radius: 999px;
-  padding: 0.35rem 0.75rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  animation: bl-chip-in 0.25s ease both;
-}
-
-@keyframes bl-chip-in {
-  from {
-    opacity: 0;
-    transform: scale(0.85);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-#biolab-game .bl-empty-note {
-  font-size: 0.8rem;
-  color: var(--bl-text-dim);
-  font-style: italic;
-}
-
-#biolab-game .bl-test-btn {
-  width: 100%;
-}
-
-#biolab-game .bl-traits-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 0.7rem;
-}
-
-#biolab-game .bl-trait-card {
-  cursor: pointer;
-  text-align: left;
-  width: 100%;
-  background: var(--bl-bg-soft);
-  border: 1px solid var(--bl-panel-border);
-  border-radius: 12px;
-  padding: 0.75rem 0.85rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  transition: border-color 0.18s ease, transform 0.12s ease, background 0.18s ease;
-}
-
-#biolab-game .bl-trait-card:hover {
-  border-color: var(--bl-panel-border-strong);
-}
-
-#biolab-game .bl-trait-card:active {
-  transform: scale(0.99);
-}
-
-#biolab-game .bl-trait-card.is-active {
-  background: rgba(34, 211, 165, 0.1);
-  border-color: var(--bl-green);
-  box-shadow: 0 0 0 1px rgba(34, 211, 165, 0.25) inset;
-}
-
-#biolab-game .bl-trait-head {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-#biolab-game .bl-trait-icon {
-  font-size: 1.15rem;
-}
-
-#biolab-game .bl-trait-name {
-  font-weight: 700;
-  font-size: 0.85rem;
-}
-
-#biolab-game .bl-trait-desc {
-  font-size: 0.75rem;
-  color: var(--bl-text-dim);
-}
-
-#biolab-game .bl-trait-dots {
-  display: flex;
-  gap: 0.3rem;
-}
-
-#biolab-game .bl-dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.12);
-  transition: background 0.2s ease;
-}
-
-#biolab-game .bl-dot.is-filled {
-  background: linear-gradient(120deg, var(--bl-green), var(--bl-cyan));
-}
-
-#biolab-game .bl-trait-cost {
-  font-size: 0.7rem;
-  color: var(--bl-cyan);
-  font-weight: 600;
-}
-
-#biolab-game .bl-trait-badges {
-  display: flex;
-  gap: 0.4rem;
-  flex-wrap: wrap;
-}
-
-#biolab-game .bl-trait-badge {
-  font-size: 0.65rem;
-  padding: 0.15rem 0.5rem;
-  border-radius: 999px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-}
-
-#biolab-game .bl-trait-badge.is-good {
-  background: rgba(34, 211, 165, 0.15);
-  color: var(--bl-green);
-}
-
-#biolab-game .bl-trait-badge.is-bad {
-  background: rgba(255, 107, 107, 0.15);
-  color: var(--bl-danger);
-}
-
-/* ---------- Tela de teste ---------- */
-#biolab-game .bl-testing {
-  min-height: 320px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#biolab-game .bl-testing-box {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.1rem;
-  max-width: 380px;
+  max-width: 46rem;
   margin: 0 auto;
 }
 
-#biolab-game .bl-spinner {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  border: 3px solid rgba(79, 227, 255, 0.15);
-  border-top-color: var(--bl-cyan);
-  animation: bl-spin 0.9s linear infinite;
+#biolab-game .fx-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teal);
 }
 
-@keyframes bl-spin {
+#biolab-game .fx-eyebrow::before,
+#biolab-game .fx-eyebrow::after {
+  content: "";
+  width: 1.75rem;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.5;
+}
+
+#biolab-game .fx-intro-title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--heading-navy);
+}
+
+#biolab-game .fx-intro-lead {
+  font-size: 1.125rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+}
+
+#biolab-game .fx-intro-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+  width: 100%;
+}
+
+#biolab-game .fx-intro-stat {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  padding: var(--space-4);
+}
+
+#biolab-game .fx-intro-stat-value {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--teal);
+}
+
+#biolab-game .fx-intro-stat-label {
+  margin-top: 0.25rem;
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}
+
+/* ---------- Escolha de cenário ---------- */
+#biolab-game .fx-scenarios {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+  width: 100%;
+}
+
+#biolab-game .fx-scenario {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  text-align: center;
+  border: 2px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  padding: var(--space-5) var(--space-4);
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#biolab-game .fx-scenario:hover {
+  border-color: var(--teal);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+#biolab-game .fx-scenario-name {
+  font-weight: 700;
+  font-size: 1.0625rem;
+}
+
+#biolab-game .fx-scenario-desc {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+/* ---------- HUD ---------- */
+#biolab-game .fx-hud {
+  position: sticky;
+  top: 4.5rem;
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--surface-glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border-subtle);
+}
+
+#biolab-game .fx-hud-badge {
+  display: flex;
+  align-items: baseline;
+  gap: 0.375rem;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+}
+
+#biolab-game .fx-hud-badge strong {
+  font-size: 1.125rem;
+  color: var(--teal);
+}
+
+#biolab-game .fx-hud-badge span {
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.6875rem;
+}
+
+/* ---------- Mapa de estágios ---------- */
+#biolab-game .fx-map {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--space-6);
+  padding: 0 var(--space-2);
+}
+
+#biolab-game .fx-map::before {
+  content: "";
+  position: absolute;
+  top: 0.6875rem;
+  left: 5%;
+  right: 5%;
+  height: 2px;
+  background: var(--timeline-line);
+}
+
+#biolab-game .fx-map-node {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  flex: 1;
+  text-align: center;
+}
+
+#biolab-game .fx-map-dot {
+  width: 1.375rem;
+  height: 1.375rem;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--border-subtle);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+#biolab-game .fx-map-node.is-done .fx-map-dot {
+  background: var(--teal);
+  border-color: var(--teal);
+}
+
+#biolab-game .fx-map-node.is-current .fx-map-dot {
+  border-color: var(--coral);
+  transform: scale(1.3);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--coral) 20%, transparent);
+}
+
+#biolab-game .fx-map-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  max-width: 6rem;
+}
+
+#biolab-game .fx-map-node.is-current .fx-map-label {
+  color: var(--coral);
+}
+
+@media (max-width: 640px) {
+  #biolab-game .fx-map-label {
+    display: none;
+  }
+}
+
+/* ---------- Cartão de estágio ---------- */
+#biolab-game .fx-stage {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  background: var(--surface);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+}
+
+@media (max-width: 480px) {
+  #biolab-game .fx-stage {
+    padding: var(--space-5) var(--space-4);
+  }
+}
+
+#biolab-game .fx-stage-title {
+  margin-top: var(--space-3);
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--heading-navy);
+}
+
+#biolab-game .fx-stage-text {
+  margin-top: var(--space-3);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+  max-width: 42rem;
+}
+
+#biolab-game .fx-stage-actions {
+  margin-top: var(--space-5);
+}
+
+/* ---------- Puzzle de encaixe (enzima-substrato) ---------- */
+#biolab-game .fx-match-prompt {
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  max-width: 40rem;
+}
+
+#biolab-game .fx-match-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+}
+
+@media (max-width: 560px) {
+  #biolab-game .fx-match-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+#biolab-game .fx-match-option {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  text-align: left;
+  border: 2px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--page-bg);
+  padding: var(--space-4);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 12% 100%, 0 82%);
+  transition: border-color 0.2s ease, transform 0.15s ease, background 0.2s ease;
+}
+
+#biolab-game .fx-match-option:hover:not(:disabled) {
+  border-color: var(--teal);
+  transform: translateY(-2px);
+}
+
+#biolab-game .fx-match-option:disabled {
+  cursor: default;
+}
+
+#biolab-game .fx-match-option.is-correct {
+  border-color: var(--teal);
+  background: var(--callout-bg);
+}
+
+#biolab-game .fx-match-option.is-wrong {
+  border-color: var(--coral);
+  animation: fx-shake 0.35s ease;
+}
+
+@keyframes fx-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+#biolab-game .fx-match-glyph {
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--icon-circle-bg);
+  font-size: 1.25rem;
+}
+
+#biolab-game .fx-match-option > span {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+#biolab-game .fx-match-name {
+  display: block;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+#biolab-game .fx-match-desc {
+  display: block;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+#biolab-game .fx-feedback {
+  margin-top: var(--space-4);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
+#biolab-game .fx-feedback.is-correct {
+  background: var(--callout-bg);
+  color: var(--text-color);
+}
+
+#biolab-game .fx-feedback.is-wrong {
+  background: color-mix(in srgb, var(--coral) 12%, var(--surface));
+  color: var(--text-color);
+}
+
+#biolab-game .fx-feedback strong {
+  color: var(--teal);
+}
+
+/* ---------- Roda do ciclo de Krebs ---------- */
+#biolab-game .fx-wheel-area {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-6);
+  margin-top: var(--space-5);
+}
+
+#biolab-game .fx-wheel {
+  position: relative;
+  width: 9rem;
+  height: 9rem;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: conic-gradient(var(--teal) calc(var(--fx-turn, 0) * 180deg), var(--progress-track) 0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.6s ease;
+}
+
+#biolab-game .fx-wheel::before {
+  content: "";
+  position: absolute;
+  inset: 0.75rem;
+  border-radius: 50%;
+  background: var(--surface);
+}
+
+#biolab-game .fx-wheel-count {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+#biolab-game .fx-wheel-count span {
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+#biolab-game .fx-wheel-info {
+  flex: 1;
+  min-width: 14rem;
+}
+
+#biolab-game .fx-wheel-gain {
+  margin-top: var(--space-3);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+#biolab-game .fx-wheel-chip {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: var(--radius-full);
+  background: var(--icon-circle-bg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #biolab-game .fx-wheel {
+    transition: none;
+  }
+}
+
+/* ---------- ATP sintase ---------- */
+#biolab-game .fx-synthase-area {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-6);
+  margin-top: var(--space-5);
+}
+
+#biolab-game .fx-synthase {
+  width: 8rem;
+  height: 8rem;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 6px solid var(--icon-circle-bg);
+  border-top-color: var(--teal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+}
+
+#biolab-game .fx-synthase.is-spinning {
+  animation: fx-spin 0.6s linear infinite;
+}
+
+@keyframes fx-spin {
   to {
     transform: rotate(360deg);
   }
 }
 
-#biolab-game .bl-testing-step {
-  font-size: 0.95rem;
-  color: var(--bl-text);
-  min-height: 2.4em;
-}
-
-#biolab-game .bl-testing-bar {
-  width: 100%;
-  height: 6px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
-  overflow: hidden;
-}
-
-#biolab-game .bl-testing-fill {
-  height: 100%;
-  width: 0;
-  background: linear-gradient(90deg, var(--bl-green), var(--bl-cyan));
-  transition: width 0.6s ease;
-}
-
-/* ---------- Resultado ---------- */
-#biolab-game .bl-result-head {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-#biolab-game .bl-score-badge {
-  display: flex;
-  align-items: baseline;
-  gap: 0.2rem;
-}
-
-#biolab-game .bl-score-num {
-  font-size: 3rem;
-  font-weight: 700;
-  color: var(--bl-cyan);
-  text-shadow: 0 0 24px rgba(79, 227, 255, 0.5);
-}
-
-#biolab-game .bl-score-max {
-  font-size: 1.1rem;
-  color: var(--bl-text-dim);
-}
-
-#biolab-game .bl-score-class {
-  font-size: 1.05rem;
-  font-weight: 700;
-}
-
-#biolab-game .bl-levelup {
-  background: rgba(255, 200, 87, 0.12);
-  color: var(--bl-warn);
-  border: 1px solid rgba(255, 200, 87, 0.35);
-  border-radius: 999px;
-  padding: 0.4rem 1rem;
-  font-size: 0.8rem;
-  font-weight: 700;
-  animation: bl-chip-in 0.3s ease both;
-}
-
-#biolab-game .bl-event-banner {
-  background: rgba(255, 107, 107, 0.1);
-  border: 1px solid rgba(255, 107, 107, 0.3);
-  border-radius: 12px;
-  padding: 0.8rem 1rem;
-  font-size: 0.85rem;
-}
-
-#biolab-game .bl-event-banner.is-calm {
-  background: rgba(34, 211, 165, 0.1);
-  border-color: rgba(34, 211, 165, 0.3);
-}
-
-#biolab-game .bl-result-bars {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  background: var(--bl-panel);
-  border: 1px solid var(--bl-panel-border);
-  border-radius: var(--bl-radius);
-  padding: 1.1rem;
-}
-
-#biolab-game .bl-bar-row {
-  display: grid;
-  grid-template-columns: 150px 1fr 44px;
-  align-items: center;
-  gap: 0.6rem;
-  font-size: 0.78rem;
-}
-
-#biolab-game .bl-bar-label {
-  color: var(--bl-text-dim);
-}
-
-#biolab-game .bl-bar-fill {
-  height: 100%;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--bl-green), var(--bl-cyan));
-  transition: width 0.9s ease;
-}
-
-#biolab-game .bl-bar-fill.bl-bar-cost {
-  background: linear-gradient(90deg, var(--bl-blue), #7c5cff);
-}
-
-#biolab-game .bl-bar-value {
-  text-align: right;
-  font-weight: 700;
-  color: var(--bl-text);
-}
-
-#biolab-game .bl-feedback-box {
-  background: var(--bl-panel);
-  border: 1px solid var(--bl-panel-border);
-  border-radius: var(--bl-radius);
-  padding: 1.1rem;
-}
-
-#biolab-game .bl-feedback-title {
-  font-weight: 700;
-  color: var(--bl-cyan);
-  margin-bottom: 0.5rem;
-  font-size: 0.85rem;
-}
-
-#biolab-game .bl-feedback-text {
-  font-size: 0.85rem;
-  color: var(--bl-text-dim);
-}
-
-#biolab-game .bl-result-cols {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
-}
-
-@media (min-width: 700px) {
-  #biolab-game .bl-result-cols {
-    grid-template-columns: 1fr 1fr;
+@media (prefers-reduced-motion: reduce) {
+  #biolab-game .fx-synthase.is-spinning {
+    animation: none;
   }
 }
 
-#biolab-game .bl-result-col {
-  background: var(--bl-panel);
-  border: 1px solid var(--bl-panel-border);
-  border-radius: var(--bl-radius);
-  padding: 1rem;
-}
-
-#biolab-game .bl-col-title {
+#biolab-game .fx-synthase-yield {
+  margin-top: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: 2rem;
   font-weight: 700;
-  margin-bottom: 0.6rem;
-  font-size: 0.85rem;
+  color: var(--teal);
 }
 
-#biolab-game .bl-result-col ul {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-
-#biolab-game .bl-result-col li {
-  font-size: 0.8rem;
-  color: var(--bl-text-dim);
-}
-
-#biolab-game .bl-xp-line {
+/* ---------- Evento / desvio (oxigênio) ---------- */
+#biolab-game .fx-branch {
   text-align: center;
-  font-weight: 700;
-  color: var(--bl-warn);
-  font-size: 0.9rem;
 }
 
-#biolab-game .bl-result-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.8rem;
-  justify-content: center;
-}
-
-/* ---------- Personagens / Diálogos (RPG) ---------- */
-#biolab-game .bl-create-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 0.9rem;
-  max-width: 30rem;
-  margin: 0 auto;
-}
-
-#biolab-game .bl-create-label {
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: var(--bl-cyan);
+#biolab-game .fx-branch-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  text-transform: uppercase;
   letter-spacing: 0.04em;
 }
 
-#biolab-game .bl-name-input {
-  width: 100%;
-  background: var(--bl-bg-soft);
-  border: 1px solid var(--bl-panel-border);
-  border-radius: 10px;
-  padding: 0.75rem 0.9rem;
-  color: var(--bl-text);
-  font-size: 0.95rem;
-  font-family: inherit;
-  outline: none;
-  transition: border-color 0.18s ease;
+#biolab-game .fx-branch-badge.is-high {
+  background: var(--callout-bg);
+  color: #1f5c3c;
 }
 
-#biolab-game .bl-name-input:focus {
-  border-color: var(--bl-green);
+#biolab-game .fx-branch-badge.is-low {
+  background: color-mix(in srgb, var(--coral) 16%, var(--surface));
+  color: var(--coral);
 }
 
-#biolab-game .bl-avatar-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-}
-
-#biolab-game .bl-avatar-btn {
-  cursor: pointer;
-  width: 3rem;
-  height: 3rem;
-  font-size: 1.4rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--bl-bg-soft);
-  border: 1.5px solid var(--bl-panel-border);
-  border-radius: 12px;
-  transition: border-color 0.18s ease, transform 0.15s ease;
-}
-
-#biolab-game .bl-avatar-btn:hover {
-  transform: translateY(-2px);
-}
-
-#biolab-game .bl-avatar-btn.is-selected {
-  border-color: var(--bl-green);
-  background: rgba(34, 211, 165, 0.12);
-  box-shadow: 0 0 0 1px rgba(34, 211, 165, 0.3) inset;
-}
-
-#biolab-game .bl-create-btn {
-  align-self: flex-start;
-}
-
-#biolab-game .bl-dialogue-box {
-  display: flex;
-  gap: 0.85rem;
-  background: var(--bl-panel);
-  border: 1px solid var(--bl-panel-border);
-  border-radius: var(--bl-radius);
-  padding: 1rem;
-  animation: bl-fade-in 0.3s ease both;
-}
-
-#biolab-game .bl-dialogue-avatar {
-  flex: none;
-  width: 2.75rem;
-  height: 2.75rem;
-  border-radius: 50%;
-  background: linear-gradient(135deg, rgba(34, 211, 165, 0.18), rgba(47, 164, 255, 0.18));
-  border: 1px solid var(--bl-panel-border-strong);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.3rem;
-}
-
-#biolab-game .bl-dialogue-content {
-  flex: 1;
-  min-width: 0;
-}
-
-#biolab-game .bl-dialogue-name {
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: var(--bl-cyan);
-  margin-bottom: 0.3rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
-}
-
-#biolab-game .bl-dialogue-role {
-  font-size: 0.68rem;
-  font-weight: 500;
-  color: var(--bl-text-dim);
-}
-
-#biolab-game .bl-dialogue-text {
-  font-size: 0.88rem;
-  color: var(--bl-text);
-  line-height: 1.55;
-}
-
-#biolab-game .bl-story-progress {
-  display: flex;
-  justify-content: center;
-  gap: 0.4rem;
-}
-
-#biolab-game .bl-story-progress .bl-dot {
-  width: 7px;
-  height: 7px;
-}
-
-#biolab-game .bl-story-actions {
-  display: flex;
-  justify-content: center;
-  gap: 0.8rem;
-  flex-wrap: wrap;
-}
-
-#biolab-game .bl-testing-avatar {
-  width: 3.4rem;
-  height: 3.4rem;
-  font-size: 1.7rem;
+/* ---------- Recibo final ---------- */
+#biolab-game .fx-receipt {
+  max-width: 30rem;
   margin: 0 auto;
+  border: 2px dashed var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  padding: var(--space-6);
+  font-family: var(--font-mono);
 }
 
-#biolab-game .bl-testing-name {
-  font-size: 0.75rem;
+#biolab-game .fx-receipt-title {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
   font-weight: 700;
-  color: var(--bl-cyan);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-#biolab-game .bl-mission-done {
-  align-self: flex-start;
-  font-size: 0.65rem;
-  font-weight: 700;
-  color: var(--bl-green);
-  background: rgba(34, 211, 165, 0.12);
-  border-radius: 999px;
-  padding: 0.15rem 0.55rem;
-}
-
-#biolab-game .bl-level-desc {
-  display: block;
-  font-size: 0.68rem;
-  color: var(--bl-text-dim);
-  margin-top: 0.2rem;
-  font-style: italic;
-}
-
-#biolab-game .bl-epilogue {
-  background: linear-gradient(120deg, rgba(255, 200, 87, 0.12), rgba(34, 211, 165, 0.1));
-  border: 1px solid rgba(255, 200, 87, 0.35);
-  border-radius: var(--bl-radius);
-  padding: 1rem 1.2rem;
-  font-size: 0.88rem;
   text-align: center;
+  color: var(--heading-navy);
 }
 
-#biolab-game .bl-result-reactions {
+#biolab-game .fx-receipt-sub {
+  margin-top: var(--space-2);
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+#biolab-game .fx-receipt-divider {
+  margin: var(--space-5) 0;
+  border-top: 1px dashed var(--border-subtle);
+}
+
+#biolab-game .fx-receipt-row {
   display: flex;
-  flex-direction: column;
-  gap: 0.7rem;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: 0.4375rem 0;
+  font-size: 0.9375rem;
 }
 
-@media (max-width: 640px) {
-  #biolab-game .bl-dialogue-box {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  #biolab-game .bl-dialogue-avatar {
-    align-self: flex-start;
-  }
+#biolab-game .fx-receipt-row.is-total {
+  margin-top: var(--space-2);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-subtle);
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--teal);
 }
 
-/* ---------- Mapa 3D (hub) ---------- */
-#biolab-game .bl-hub-stage {
-  position: relative;
-  width: 100%;
-  border-radius: var(--bl-radius);
-  overflow: hidden;
-  border: 1px solid var(--bl-panel-border);
-  background: #04090c;
+#biolab-game .fx-receipt-note {
+  margin-top: var(--space-5);
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--text-muted);
 }
 
-#biolab-game .bl-hub-canvas {
-  display: block;
-  width: 100%;
-  touch-action: none;
-  cursor: crosshair;
-}
-
-#biolab-game .bl-hub-hint {
-  position: absolute;
-  top: 0.75rem;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(6, 15, 20, 0.72);
-  border: 1px solid var(--bl-panel-border);
-  border-radius: 999px;
-  padding: 0.4rem 0.9rem;
-  font-size: 0.72rem;
-  color: var(--bl-text-dim);
-  pointer-events: none;
-  white-space: nowrap;
-  max-width: 90%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-#biolab-game .bl-hub-prompt {
-  position: absolute;
-  bottom: 5.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(6, 15, 20, 0.88);
-  border: 1px solid var(--bl-panel-border-strong);
-  border-radius: 12px;
-  padding: 0.55rem 0.9rem;
-  font-size: 0.8rem;
-  max-width: 90%;
-  text-align: center;
-  animation: bl-fade-in 0.2s ease both;
-}
-
-#biolab-game .bl-hub-joystick {
-  position: absolute;
-  left: 1.2rem;
-  bottom: 1.2rem;
-  width: 5.5rem;
-  height: 5.5rem;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid var(--bl-panel-border-strong);
-  touch-action: none;
-}
-
-#biolab-game .bl-hub-joystick-knob {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 2.2rem;
-  height: 2.2rem;
-  margin: -1.1rem 0 0 -1.1rem;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--bl-green), var(--bl-cyan));
-  transition: transform 0.05s linear;
-}
-
-#biolab-game .bl-hub-interact {
-  position: absolute;
-  right: 1.2rem;
-  bottom: 1.2rem;
-}
-
-#biolab-game .bl-progress-row {
+#biolab-game .fx-receipt-actions {
+  margin-top: var(--space-6);
   display: flex;
   flex-wrap: wrap;
-  gap: 0.6rem;
-}
-
-#biolab-game .bl-progress-icon {
-  position: relative;
-  width: 2.6rem;
-  height: 2.6rem;
-  display: flex;
-  align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
-  background: var(--bl-bg-soft);
-  border: 1px solid var(--bl-panel-border);
-  border-radius: 10px;
-  opacity: 0.6;
+  gap: var(--space-3);
 }
 
-#biolab-game .bl-progress-icon.is-done {
-  opacity: 1;
-  border-color: var(--bl-green);
-  background: rgba(34, 211, 165, 0.12);
-}
-
-#biolab-game .bl-progress-check {
-  position: absolute;
-  bottom: -0.3rem;
-  right: -0.3rem;
-  font-size: 0.7rem;
-  background: var(--bl-green);
-  color: #04211c;
-  border-radius: 50%;
-  width: 1rem;
-  height: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#biolab-game .bl-lead-small {
-  font-size: 0.82rem;
-  color: var(--bl-text-dim);
-  margin-bottom: 0.8rem;
-}
-
-@media (max-width: 640px) {
-  #biolab-game .bl-hub-hint {
-    font-size: 0.66rem;
-    top: 0.5rem;
-  }
-
-  #biolab-game .bl-hub-joystick {
-    width: 4.6rem;
-    height: 4.6rem;
-  }
-
-  #biolab-game .bl-hub-interact {
-    right: 0.8rem;
-    bottom: 0.8rem;
-  }
-}
-
-/* ---------- Responsivo ---------- */
-@media (max-width: 640px) {
-  #biolab-game {
-    padding: 1rem;
-    border-radius: 14px;
-  }
-
-  #biolab-game .bl-start-stats {
+@media (max-width: 480px) {
+  #biolab-game .fx-intro-stats,
+  #biolab-game .fx-scenarios {
     grid-template-columns: 1fr;
   }
 
-  #biolab-game .bl-bar-row {
-    grid-template-columns: 110px 1fr 38px;
-    font-size: 0.72rem;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  #biolab-game .bl-wrap,
-  #biolab-game .bl-chip,
-  #biolab-game .bl-levelup,
-  #biolab-game .bl-organism-visual,
-  #biolab-game .bl-spinner {
-    animation: none !important;
-  }
-
-  #biolab-game .bl-bar-fill,
-  #biolab-game .bl-xp-fill,
-  #biolab-game .bl-budget-fill,
-  #biolab-game .bl-testing-fill {
-    transition: none !important;
+  #biolab-game .fx-hud {
+    top: 3.75rem;
   }
 }

@@ -18,10 +18,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@700&family=Istok+Web:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,wght@0,600;0,700;0,900;1,500;1,600&family=Space+Mono:wght@400;700&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="css/tokens.css" />
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/components.css" />
     <title>Biomoléculas — Bioquímica</title>
   </head>
   <body>
@@ -59,7 +61,25 @@
             <li><a href="sobre.html">O que é Bioquímica</a></li>
             <li><a href="historia.html">História</a></li>
             <li><a href="biomoleculas.html" class="active">Biomoléculas</a></li>
-            <li><a href="quiz.html">Quiz</a></li>
+            <li class="nav-item-dropdown">
+              <button type="button" class="nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                Jogos
+                <svg class="nav-dropdown-arrow" viewBox="0 0 12 8" aria-hidden="true">
+                  <path
+                    d="M1 1l5 5 5-5"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></path>
+                </svg>
+              </button>
+              <ul class="nav-dropdown-menu">
+                <li><a href="quiz.html">Quiz</a></li>
+                <li><a href="biolab.html">Fluxo</a></li>
+              </ul>
+            </li>
             <li><a href="contato.html">Contato</a></li>
           </ul>
         </nav>
@@ -80,6 +100,14 @@
         </p>
       </div>
     </section>
+
+    <nav class="breadcrumb" aria-label="Você está aqui">
+      <ol class="breadcrumb-list container">
+        <li><a href="index.html">Bioquímica</a></li>
+        <li class="breadcrumb-sep" aria-hidden="true">/</li>
+        <li aria-current="page">Biomoléculas</li>
+      </ol>
+    </nav>
 
     <section class="biomol-intro">
       <div class="container">
@@ -104,15 +132,15 @@
       <div class="container">
         <h2 class="section-title">Principais tipos de biomoléculas</h2>
 
-        <div class="biomol-grid">
-          <div class="biomol-card proteinas">
+        <div class="biomol-grid reveal">
+          <div class="biomol-card proteinas accent-proteinas">
             <div class="biomol-card-top">
               <img src="assets/img/card-proteina.png" alt="" class="biomol-illustration" />
               <span class="biomol-card-badge">
                 <img src="assets/icons/badge-protein.png" alt="" />
               </span>
             </div>
-            <div class="biomol-card-body">
+            <div class="biomol-card-body" data-collapsible>
               <h3>Proteínas</h3>
               <p>
                 As proteínas são moléculas formadas por aminoácidos e
@@ -120,17 +148,18 @@
                 defesa. Elas participam da construção dos tecidos e da
                 maioria das reações químicas do organismo.
               </p>
+              <button type="button" class="biomol-expand-btn" aria-expanded="false">Ver mais</button>
             </div>
           </div>
 
-          <div class="biomol-card carboidratos">
+          <div class="biomol-card carboidratos accent-energia">
             <div class="biomol-card-top">
               <img src="assets/img/card-carboidrato.png" alt="" class="biomol-illustration" />
               <span class="biomol-card-badge">
                 <img src="assets/icons/badge-chemical.png" alt="" />
               </span>
             </div>
-            <div class="biomol-card-body">
+            <div class="biomol-card-body" data-collapsible>
               <h3>Carboidratos</h3>
               <p>
                 Os carboidratos são a principal fonte de energia para os
@@ -138,17 +167,18 @@
                 massas, frutas e cereais, sendo fundamentais para o
                 funcionamento das células.
               </p>
+              <button type="button" class="biomol-expand-btn" aria-expanded="false">Ver mais</button>
             </div>
           </div>
 
-          <div class="biomol-card lipidios">
+          <div class="biomol-card lipidios accent-metabolismo">
             <div class="biomol-card-top">
               <img src="assets/img/card-lipidio.png" alt="" class="biomol-illustration" />
               <span class="biomol-card-badge">
                 <img src="assets/icons/badge-drop.png" alt="" />
               </span>
             </div>
-            <div class="biomol-card-body">
+            <div class="biomol-card-body" data-collapsible>
               <h3>Lipídios</h3>
               <p>
                 Os lipídios são moléculas insolúveis em água que atuam como
@@ -156,17 +186,18 @@
                 celulares. Também participam da produção de hormônios e do
                 isolamento térmico.
               </p>
+              <button type="button" class="biomol-expand-btn" aria-expanded="false">Ver mais</button>
             </div>
           </div>
 
-          <div class="biomol-card acidos">
+          <div class="biomol-card acidos accent-genetica">
             <div class="biomol-card-top">
               <img src="assets/img/card-acido-nucleico.png" alt="" class="biomol-illustration" />
               <span class="biomol-card-badge">
                 <img src="assets/icons/badge-dna.png" alt="" />
               </span>
             </div>
-            <div class="biomol-card-body">
+            <div class="biomol-card-body" data-collapsible>
               <h3>Ácidos Nucleicos</h3>
               <p>
                 Os ácidos nucleicos, representados pelo DNA e pelo RNA,
@@ -174,11 +205,12 @@
                 pelo desenvolvimento, funcionamento e reprodução dos seres
                 vivos.
               </p>
+              <button type="button" class="biomol-expand-btn" aria-expanded="false">Ver mais</button>
             </div>
           </div>
         </div>
 
-        <div class="callout">
+        <div class="callout reveal">
           <span class="callout-icon">
             <img src="assets/icons/icon-lamp.png" alt="" />
           </span>
@@ -194,28 +226,28 @@
     </section>
 
     <section class="biomol-intro" id="energia-informacao">
-      <div class="container">
+      <div class="container reveal">
         <p class="eyebrow">DNA, ENZIMAS E ENERGIA</p>
         <h2>Informação e energia da vida</h2>
         <p>
-          <strong>DNA:</strong> a molécula de DNA é formada por nucleotídeos
+          <strong class="accent-genetica">DNA:</strong> a molécula de DNA é formada por nucleotídeos
           que contêm o açúcar desoxirribose (no RNA, o açúcar é a ribose). A
           informação genética é escrita por quatro bases nitrogenadas:
           adenina, guanina, citosina e timina. No RNA, a timina é substituída
           pela uracila.
         </p>
         <p>
-          <strong>Enzimas:</strong> são proteínas que atuam como catalisadores
+          <strong class="accent-enzimas">Enzimas:</strong> são proteínas que atuam como catalisadores
           biológicos. Elas aceleram as reações químicas do organismo sem
           serem consumidas no processo, podendo ser usadas várias vezes.
         </p>
         <p>
-          <strong>Respiração celular:</strong> é o processo pelo qual as
+          <strong class="accent-metabolismo">Respiração celular:</strong> é o processo pelo qual as
           células produzem energia a partir dos nutrientes, como a glicose,
           principalmente com a participação do oxigênio.
         </p>
         <p>
-          <strong>ATP:</strong> sigla de adenosina trifosfato, a molécula que
+          <strong class="accent-energia">ATP:</strong> sigla de adenosina trifosfato, a molécula que
           armazena e fornece a energia liberada na respiração celular para as
           atividades da célula, como movimento, transporte e síntese de
           substâncias.
@@ -240,6 +272,7 @@
             <li><a href="historia.html">História</a></li>
             <li><a href="biomoleculas.html">Biomoléculas</a></li>
             <li><a href="quiz.html">Quiz</a></li>
+            <li><a href="biolab.html">Fluxo</a></li>
             <li><a href="contato.html">Quem somos / Contato</a></li>
           </ul>
         </div>
@@ -271,5 +304,6 @@
     </footer>
 
     <script src="js/main.js" defer></script>
+    <script src="js/motion.js" defer></script>
   </body>
 </html>

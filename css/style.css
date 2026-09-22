@@ -22,47 +22,8 @@
   box-sizing: border-box;
 }
 
-:root {
-  --teal: #14b8a6;
-  --ink: #070e1d;
-  --bg-light: #e9e9e9;
-  --navy: #050032;
-
-  /* Tema (claro por padrão) */
-  --page-bg: #e9e9e9;
-  --surface: #ffffff;
-  --surface-alt: #dfe3ea;
-  --text-color: #070e1d;
-  --text-muted: rgba(7, 14, 29, 0.8);
-  --text-navy: #2f3a4a;
-  --heading-navy: #0b0446;
-  --border-subtle: rgba(7, 14, 29, 0.1);
-  --divider-subtle: rgba(7, 14, 29, 0.15);
-  --timeline-line: rgba(11, 4, 70, 0.15);
-  --icon-circle-bg: #c4d1e5;
-  --progress-track: #d9d9d9;
-  --option-hover-bg: #dcdcdc;
-  --option-radio-border: #b3b3b3;
-  --callout-bg: #e3f6f3;
-}
-
-:root[data-theme="dark"] {
-  --page-bg: #0d1017;
-  --surface: #161b26;
-  --surface-alt: #1b2130;
-  --text-color: #e8eaf0;
-  --text-muted: rgba(232, 234, 240, 0.75);
-  --text-navy: #c3c9d6;
-  --heading-navy: #f1f3fa;
-  --border-subtle: rgba(255, 255, 255, 0.1);
-  --divider-subtle: rgba(255, 255, 255, 0.15);
-  --timeline-line: rgba(255, 255, 255, 0.15);
-  --icon-circle-bg: #232a3b;
-  --progress-track: #2a303f;
-  --option-hover-bg: #232a3a;
-  --option-radio-border: #4a5266;
-  --callout-bg: #16303a;
-}
+/* Tokens de cor (paleta, espaçamento, sombras, tipografia) vêm de
+   css/tokens.css, carregado antes deste arquivo — não redefinir aqui. */
 
 body {
   margin: 0;
@@ -113,7 +74,7 @@ body.page-exit {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at center, #0b0850 0%, var(--navy) 70%);
+  background: radial-gradient(circle at center, #3a2c14 0%, var(--navy) 70%);
   opacity: 1;
   pointer-events: none;
   transition: opacity 0.4s ease;
@@ -131,7 +92,7 @@ body.page-exit {
   width: 5.5rem;
   height: 5.5rem;
   object-fit: contain;
-  filter: drop-shadow(0 0 18px rgba(20, 184, 166, 0.55));
+  filter: drop-shadow(0 0 18px rgba(47, 125, 82, 0.55));
   opacity: 0;
   transform: scale(0.5) rotate(-25deg);
   transition: opacity 0.35s ease, transform 0.35s ease;
@@ -225,11 +186,11 @@ img {
 
 /* ---------- Header ---------- */
 .header {
-  position: absolute;
+  position: fixed;
   inset-inline: 0;
   top: 0;
   z-index: 20;
-  background: rgba(7, 14, 29, 0.7);
+  /* background/blur/scroll state: css/components.css */
 }
 
 .header .container {
@@ -264,10 +225,10 @@ img {
 
 .logo-title {
   margin: 0;
-  font-family: "Poppins", "Inter", sans-serif;
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-weight: 700;
   font-size: 1.25rem; /* 20px */
-  background: linear-gradient(90deg, #004753 0%, #3fe5d3 28%, #227573 42%, #00505e 67%);
+  background: linear-gradient(90deg, #1f5c3c 0%, #4c8f5b 30%, #c99a2e 65%, #c1592c 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -498,7 +459,7 @@ img {
 }
 
 .nav-dropdown-menu a:hover {
-  background: rgba(20, 184, 166, 0.12);
+  background: rgba(47, 125, 82, 0.12);
 }
 
 @media (max-width: 768px) {
@@ -575,12 +536,13 @@ img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  filter: sepia(0.3) saturate(1.2) hue-rotate(-10deg) brightness(0.85);
 }
 
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(7, 14, 29, 0.4);
+  background: linear-gradient(180deg, rgba(23, 20, 15, 0.35) 0%, rgba(23, 20, 15, 0.65) 100%);
 }
 
 .hero-content {
@@ -595,30 +557,20 @@ img {
 }
 
 .hero-title {
-  font-family: "Poppins", "Inter", sans-serif;
+  font-family: var(--font-display);
   font-weight: 700;
-  font-size: 6.25rem; /* 100px */
+  font-size: var(--fs-hero);
+  line-height: 1.05;
   color: #fff;
-}
-
-@media (max-width: 768px) {
-  .hero-title {
-    font-size: 3.75rem; /* 60px */
-  }
-}
-
-@media (max-width: 480px) {
-  .hero-title {
-    font-size: 2.75rem; /* 44px */
-  }
 }
 
 .hero-subtitle {
   margin-top: 1rem; /* 16px */
-  font-family: "Istok Web", "Inter", sans-serif;
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 600;
   font-size: 3rem; /* 48px */
-  color: var(--teal);
+  color: #e08a4f;
 }
 
 @media (max-width: 768px) {
@@ -655,11 +607,12 @@ img {
   border-radius: 999px;
   background: var(--teal);
   padding: 1rem 2rem; /* 16px 32px */
-  font-family: "Istok Web", "Inter", sans-serif;
+  font-family: var(--font-accent);
   font-weight: 700;
+  letter-spacing: 0.01em;
   font-size: 1.25rem; /* 20px */
   color: #fff;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-md);
   transition: transform 0.2s;
 }
 
@@ -699,14 +652,9 @@ img {
 }
 
 .about-title {
-  font-size: 3rem; /* 48px */
+  font-family: var(--font-display);
+  font-size: var(--fs-section);
   font-weight: 700;
-}
-
-@media (max-width: 768px) {
-  .about-title {
-    font-size: 2.25rem; /* 36px */
-  }
 }
 
 .about-text {
@@ -740,14 +688,9 @@ img {
 /* ---------- Section heading ---------- */
 .section-title {
   text-align: center;
-  font-size: 3rem; /* 48px */
+  font-family: var(--font-display);
+  font-size: var(--fs-section);
   font-weight: 700;
-}
-
-@media (max-width: 768px) {
-  .section-title {
-    font-size: 2.25rem; /* 36px */
-  }
 }
 
 /* ---------- Biomolecules ---------- */
@@ -971,9 +914,10 @@ img {
 
 .footer-brand-title {
   margin-top: 0.75rem; /* 12px */
+  font-family: var(--font-display);
   font-size: 1.875rem; /* 30px */
-  font-weight: 600;
-  background: linear-gradient(90deg, #004753 0%, #3fe5d3 28%, #227573 42%, #00505e 67%);
+  font-weight: 700;
+  background: linear-gradient(90deg, #1f5c3c 0%, #4c8f5b 30%, #c99a2e 65%, #c1592c 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -1050,7 +994,7 @@ img {
 .eyebrow {
   font-size: 1.25rem; /* 20px */
   font-weight: 700;
-  color: #0a7a8e;
+  color: #1f5c3c;
   letter-spacing: 0.02em;
 }
 
@@ -1075,15 +1019,10 @@ img {
 
 .definicao-title {
   margin-top: 0.75rem; /* 12px */
-  font-size: 2.5rem; /* 40px */
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
   font-weight: 700;
   color: var(--heading-navy);
-}
-
-@media (max-width: 768px) {
-  .definicao-title {
-    font-size: 2rem; /* 32px */
-  }
 }
 
 .definicao-text {
@@ -1231,7 +1170,7 @@ img {
 
 .timeline-period {
   font-size: 1.375rem; /* 22px */
-  color: #0a7a8e;
+  color: #1f5c3c;
 }
 
 .timeline-item p {
@@ -1253,15 +1192,10 @@ img {
 
 .biomol-intro h2 {
   margin-top: 0.75rem; /* 12px */
-  font-size: 2.5rem; /* 40px */
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
   font-weight: 700;
   color: var(--heading-navy);
-}
-
-@media (max-width: 768px) {
-  .biomol-intro h2 {
-    font-size: 2rem; /* 32px */
-  }
 }
 
 .biomol-intro p {
@@ -1565,12 +1499,13 @@ img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  filter: sepia(0.3) saturate(1.2) hue-rotate(-10deg) brightness(0.85);
 }
 
 .home-cta-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, rgba(7, 14, 29, 0.85) 0%, rgba(7, 14, 29, 0.35) 60%, rgba(7, 14, 29, 0.1) 100%);
+  background: linear-gradient(90deg, rgba(23, 20, 15, 0.88) 0%, rgba(23, 20, 15, 0.4) 60%, rgba(23, 20, 15, 0.1) 100%);
 }
 
 .home-cta-content {
@@ -1586,15 +1521,10 @@ img {
 }
 
 .home-cta-content h2 {
-  font-size: 2.75rem; /* 44px */
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
   font-weight: 700;
   color: #fff;
-}
-
-@media (max-width: 768px) {
-  .home-cta-content h2 {
-    font-size: 2rem; /* 32px */
-  }
 }
 
 .home-cta-content p {
@@ -1625,7 +1555,7 @@ img {
   width: 5.625rem; /* 90px */
   height: 5.625rem;
   border-radius: 50%;
-  background: #7fd4c9;
+  background: #e6b48c;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1640,7 +1570,7 @@ img {
 .callout-title {
   flex-shrink: 0;
   font-size: 1.75rem; /* 28px */
-  color: #4db1ac;
+  color: #b84f22;
 }
 
 .callout-divider {
@@ -2088,25 +2018,17 @@ img {
 }
 
 /* ---------- Página: História ---------- */
-:root {
-  --personagem-name: #0d9488;
-}
-
-:root[data-theme="dark"] {
-  --personagem-name: #3fe5d3;
-}
-
 .historia-hero-bg {
   object-position: right center;
 }
 
 .historia-hero-overlay {
-  background: linear-gradient(90deg, rgba(7, 14, 29, 0.85) 0%, rgba(7, 14, 29, 0.55) 45%, rgba(7, 14, 29, 0.15) 100%);
+  background: linear-gradient(90deg, rgba(23, 20, 15, 0.88) 0%, rgba(23, 20, 15, 0.58) 45%, rgba(23, 20, 15, 0.15) 100%);
 }
 
 @media (max-width: 768px) {
   .historia-hero-overlay {
-    background: rgba(7, 14, 29, 0.7);
+    background: rgba(23, 20, 15, 0.72);
   }
 }
 
@@ -2178,7 +2100,7 @@ img {
 
 .marco-year {
   font-size: 1.5rem; /* 24px */
-  color: #0a7a8e;
+  color: #1f5c3c;
 }
 
 .marco p:last-child {
@@ -2293,15 +2215,10 @@ img {
 }
 
 .comecou-text h2 {
-  font-size: 3rem; /* 48px */
+  font-family: var(--font-display);
+  font-size: var(--fs-section);
   font-weight: 700;
   color: var(--heading-navy);
-}
-
-@media (max-width: 768px) {
-  .comecou-text h2 {
-    font-size: 2.25rem; /* 36px */
-  }
 }
 
 .comecou-line {

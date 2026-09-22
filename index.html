@@ -18,10 +18,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@700&family=Istok+Web:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,wght@0,600;0,700;0,900;1,500;1,600&family=Space+Mono:wght@400;700&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="css/tokens.css" />
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/components.css" />
     <title>Bioquímica — A química da vida</title>
   </head>
   <body>
@@ -59,7 +61,25 @@
             <li><a href="sobre.html">O que é Bioquímica</a></li>
             <li><a href="historia.html">História</a></li>
             <li><a href="biomoleculas.html">Biomoléculas</a></li>
-            <li><a href="quiz.html">Quiz</a></li>
+            <li class="nav-item-dropdown">
+              <button type="button" class="nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                Jogos
+                <svg class="nav-dropdown-arrow" viewBox="0 0 12 8" aria-hidden="true">
+                  <path
+                    d="M1 1l5 5 5-5"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></path>
+                </svg>
+              </button>
+              <ul class="nav-dropdown-menu">
+                <li><a href="quiz.html">Quiz</a></li>
+                <li><a href="biolab.html">Fluxo</a></li>
+              </ul>
+            </li>
             <li><a href="contato.html">Contato</a></li>
           </ul>
         </nav>
@@ -70,6 +90,7 @@
       <img src="assets/img/hero-bg.png" alt="" class="hero-bg" />
       <div class="hero-overlay"></div>
       <div class="container hero-content">
+        <p class="hero-eyebrow">Caderno de Bioquímica</p>
         <h1 class="hero-title">Bioquímica</h1>
         <p class="hero-subtitle">A química da vida</p>
         <img src="assets/icons/underline.svg" alt="" class="hero-underline" />
@@ -78,17 +99,20 @@
           e promovem a vida em sua forma mais completa.
         </p>
         <p class="hero-text">Explore e descubra mais sobre essa área da ciência.</p>
-        <a href="inicio.html#inicio" class="btn-primary">
-          Explorar conteúdo
-          <img src="assets/icons/arrow-white.svg" alt="" />
-        </a>
+        <div class="hero-cta-row">
+          <a href="inicio.html#inicio" class="btn-primary">
+            Explorar conteúdo
+            <img src="assets/icons/arrow-white.svg" alt="" />
+          </a>
+          <a href="biolab.html" class="btn-ghost">Entrar no Laboratório</a>
+        </div>
       </div>
       <img src="assets/icons/hero-wave.svg" alt="" class="hero-wave" />
     </section>
 
     <section class="home-features">
       <div class="container">
-        <div class="home-features-card">
+        <div class="home-features-card reveal">
           <div class="home-feature">
             <img src="assets/icons/icon-aprenda.png" alt="" />
             <h3>Aprenda</h3>
@@ -119,8 +143,8 @@
 
     <section class="home-areas">
       <div class="container">
-        <p class="home-areas-label">ÁREAS DE ATUAÇÃO</p>
-        <div class="home-areas-grid">
+        <p class="home-areas-label reveal">ÁREAS DE ATUAÇÃO</p>
+        <div class="home-areas-grid reveal reveal-1">
           <div class="home-area">
             <img src="assets/img/area-medicina.png" alt="Medicina" />
             <h3>Medicina</h3>
@@ -147,7 +171,7 @@
 
     <section class="home-cta">
       <div class="container">
-        <div class="home-cta-panel">
+        <div class="home-cta-panel reveal">
           <img src="assets/img/cta-lab.png" alt="" class="home-cta-bg" />
           <div class="home-cta-overlay"></div>
           <div class="home-cta-content">
@@ -182,6 +206,7 @@
             <li><a href="historia.html">História</a></li>
             <li><a href="biomoleculas.html">Biomoléculas</a></li>
             <li><a href="quiz.html">Quiz</a></li>
+            <li><a href="biolab.html">Fluxo</a></li>
             <li><a href="contato.html">Quem somos / Contato</a></li>
           </ul>
         </div>
@@ -213,5 +238,6 @@
     </footer>
 
     <script src="js/main.js" defer></script>
+    <script src="js/motion.js" defer></script>
   </body>
 </html>

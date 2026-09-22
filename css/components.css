@@ -1,0 +1,438 @@
+/* ==========================================================================
+   Componentes novos do redesign — usam os tokens de tokens.css.
+   Não duplica .card/.btn-primary/etc. (continuam em style.css).
+   ========================================================================== */
+
+/* ---------- Header agora é fixo: compensa âncoras (#id) e o topo do breadcrumb ---------- */
+html {
+  scroll-padding-top: 5.5rem;
+}
+
+.breadcrumb {
+  scroll-margin-top: 5.5rem;
+}
+
+/* ---------- Header: vidro fosco + encolhimento ao rolar ---------- */
+.header {
+  background: var(--header-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: background-color 0.25s ease, box-shadow 0.25s ease, padding 0.25s ease;
+}
+
+.header.is-scrolled {
+  background: var(--header-bg-scrolled);
+  box-shadow: 0 1px 0 var(--border-subtle), var(--shadow-sm);
+}
+
+.header.is-scrolled .container {
+  padding-block: 0.5rem;
+}
+
+.header.is-scrolled .logo-sub,
+.header.is-scrolled .theme-toggle {
+  color: var(--header-text-scrolled);
+}
+
+.header.is-scrolled .theme-toggle {
+  border-color: color-mix(in srgb, var(--header-text-scrolled) 30%, transparent);
+  background: color-mix(in srgb, var(--header-text-scrolled) 10%, transparent);
+}
+
+/* .nav-links: o painel mobile (<=768px) é sempre escuro (ver style.css),
+   então o texto claro dele só muda de cor no desktop, onde fica sobre o header. */
+@media (min-width: 769px) {
+  .header.is-scrolled .nav-links a,
+  .header.is-scrolled .nav-dropdown-toggle {
+    color: var(--header-text-scrolled);
+  }
+}
+
+/* O botão hamburguer (mobile) fica na barra do header, não no painel escuro. */
+@media (max-width: 768px) {
+  .header.is-scrolled .nav-toggle span {
+    background: var(--header-text-scrolled);
+  }
+}
+
+/* ---------- Revelação ao rolar ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.reveal-1.is-visible {
+  transition-delay: 0.06s;
+}
+.reveal-2.is-visible {
+  transition-delay: 0.12s;
+}
+.reveal-3.is-visible {
+  transition-delay: 0.18s;
+}
+.reveal-4.is-visible {
+  transition-delay: 0.24s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ---------- Breadcrumb "você está aqui" ---------- */
+.breadcrumb {
+  background: var(--surface-alt);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.breadcrumb-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-3) 0;
+  list-style: none;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem; /* 13px */
+  letter-spacing: 0.01em;
+  color: var(--text-muted);
+}
+
+.breadcrumb-list a {
+  color: var(--text-muted);
+  transition: color 0.2s;
+}
+
+.breadcrumb-list a:hover {
+  color: var(--teal);
+}
+
+.breadcrumb-list li[aria-current="page"] {
+  color: var(--teal);
+}
+
+.breadcrumb-sep {
+  opacity: 0.5;
+}
+
+/* ---------- Cores de destaque por área ---------- */
+.accent-biologia {
+  --accent: var(--accent-biologia);
+}
+.accent-genetica {
+  --accent: var(--accent-genetica);
+}
+.accent-metabolismo {
+  --accent: var(--accent-metabolismo);
+}
+.accent-energia {
+  --accent: var(--accent-energia);
+}
+.accent-proteinas {
+  --accent: var(--accent-proteinas);
+}
+.accent-enzimas {
+  --accent: var(--accent-enzimas);
+}
+
+.card[class*="accent-"] {
+  border-top: 4px solid var(--accent, var(--teal));
+}
+
+.biomol-intro strong[class*="accent-"] {
+  color: var(--accent, var(--teal));
+}
+
+.accent-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent, var(--teal));
+}
+
+.accent-tag::before {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--accent, var(--teal));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent, var(--teal)) 25%, transparent);
+}
+
+/* ---------- Accordion (marcos, biomoléculas, políticas) ---------- */
+.accordion-item {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.accordion-item + .accordion-item {
+  margin-top: var(--space-3);
+}
+
+.accordion-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-4) var(--space-5);
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  text-align: left;
+  color: var(--text-color);
+  cursor: pointer;
+}
+
+.accordion-trigger-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.accordion-trigger-label img {
+  width: 1.75rem;
+  height: 1.75rem;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.accordion-trigger-icon {
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  position: relative;
+}
+
+.accordion-trigger-icon::before,
+.accordion-trigger-icon::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: currentColor;
+  transform: translate(-50%, -50%);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.accordion-trigger-icon::before {
+  width: 100%;
+  height: 2px;
+}
+
+.accordion-trigger-icon::after {
+  width: 2px;
+  height: 100%;
+}
+
+.accordion-item.is-open .accordion-trigger-icon::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+  opacity: 0;
+}
+
+.accordion-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.25s ease;
+}
+
+.accordion-item.is-open .accordion-panel {
+  grid-template-rows: 1fr;
+}
+
+.accordion-panel-inner {
+  overflow: hidden;
+  padding: 0 var(--space-5);
+}
+
+.accordion-item.is-open .accordion-panel-inner {
+  padding: 0 var(--space-5) var(--space-5);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .accordion-panel,
+  .accordion-trigger-icon::before,
+  .accordion-trigger-icon::after {
+    transition: none;
+  }
+}
+
+/* Cards curtos que também podem expandir (biomoléculas) */
+.biomol-card-body[data-collapsible] p {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.biomol-card.is-expanded .biomol-card-body[data-collapsible] p {
+  -webkit-line-clamp: unset;
+  overflow: visible;
+}
+
+.biomol-expand-btn {
+  margin-top: var(--space-3);
+  border: none;
+  background: none;
+  padding: 0;
+  font-family: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--teal);
+  cursor: pointer;
+}
+
+/* ---------- Selo editorial do hero (substitui o antigo hero animado) ---------- */
+.hero-eyebrow {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.hero-eyebrow::before {
+  content: "";
+  width: 2.25rem;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.6;
+}
+
+/* ---------- CTA secundário (hero) ---------- */
+.hero-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.hero-cta-row .btn-primary,
+.hero-cta-row .btn-ghost {
+  margin-top: var(--space-6);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 0.9375rem 1.875rem;
+  font-family: var(--font-accent);
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: #fff;
+  transition: background 0.2s, transform 0.2s, border-color 0.2s;
+}
+
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.7);
+  transform: scale(1.03);
+}
+
+/* ---------- Marcos da história: destaque interativo ---------- */
+.marco {
+  cursor: pointer;
+  border-radius: var(--radius-lg);
+  padding: var(--space-3);
+}
+
+.marco .icon-circle {
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.marco.is-active {
+  background: var(--surface);
+  box-shadow: var(--shadow-glow-teal);
+}
+
+.marco.is-active .icon-circle {
+  background: var(--teal);
+  transform: scale(1.08);
+}
+
+.marco.is-active .icon-circle img {
+  filter: brightness(0) invert(1);
+}
+
+/* ---------- Microinterações de elevação (cards) ---------- */
+.card,
+.biomol-card,
+.personagem-card,
+.curiosity-card,
+.quiz-band,
+.timeline-item,
+.marco {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover,
+.biomol-card:hover,
+.personagem-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+}
+
+@media (hover: none) {
+  .card:hover,
+  .biomol-card:hover,
+  .personagem-card:hover {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .biomol-card,
+  .personagem-card,
+  .curiosity-card,
+  .quiz-band,
+  .timeline-item,
+  .marco {
+    transition: none;
+  }
+
+  .card:hover,
+  .biomol-card:hover,
+  .personagem-card:hover {
+    transform: none;
+  }
+}
+
+/* ---------- Foco visível consistente ---------- */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+.accordion-trigger:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
