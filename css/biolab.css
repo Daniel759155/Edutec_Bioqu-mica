@@ -682,3 +682,220 @@
     top: 3.75rem;
   }
 }
+
+/* ---------- Voltar aos modos ---------- */
+#biolab-game .fx-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--teal);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+#biolab-game .fx-back-link:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Escolha de modo ---------- */
+#biolab-game .fx-mode-select {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  #biolab-game .fx-mode-select {
+    grid-template-columns: 1fr;
+  }
+}
+
+#biolab-game .fx-mode-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  text-align: center;
+  border: 2px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  padding: var(--space-6) var(--space-5);
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#biolab-game .fx-mode-card:hover {
+  border-color: var(--teal);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+#biolab-game .fx-mode-card-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--heading-navy);
+}
+
+#biolab-game .fx-mode-card-desc {
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+/* ---------- Aventura no Mapa (canvas) ---------- */
+#biolab-game .fx-arena {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#biolab-game .fx-arena-hud {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  width: 100%;
+  margin-bottom: var(--space-5);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--surface-glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border-subtle);
+}
+
+#biolab-game .fx-arena-hud-badge {
+  display: flex;
+  align-items: baseline;
+  gap: 0.375rem;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+}
+
+#biolab-game .fx-arena-hud-badge strong {
+  font-size: 1.125rem;
+  color: var(--teal);
+}
+
+#biolab-game .fx-arena-hud-label {
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.6875rem;
+}
+
+#biolab-game .fx-arena-canvas-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 36rem;
+}
+
+#biolab-game .fx-arena-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  background: var(--surface);
+}
+
+#biolab-game .fx-arena-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  background: color-mix(in srgb, var(--page-bg) 78%, transparent);
+  border-radius: var(--radius-lg);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+#biolab-game .fx-arena-overlay.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#biolab-game .fx-arena-overlay-card {
+  max-width: 22rem;
+  text-align: center;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  padding: var(--space-6) var(--space-5);
+  box-shadow: var(--shadow-lg);
+}
+
+#biolab-game .fx-arena-overlay-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--heading-navy);
+}
+
+#biolab-game .fx-arena-overlay-card p {
+  margin-top: var(--space-3);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+#biolab-game .fx-arena-overlay-card .fx-btn {
+  margin-top: var(--space-5);
+}
+
+#biolab-game .fx-arena-dpad {
+  display: grid;
+  grid-template-columns: repeat(3, 3rem);
+  grid-template-rows: repeat(2, 3rem);
+  gap: var(--space-2);
+  justify-content: center;
+  margin-top: var(--space-5);
+}
+
+#biolab-game .fx-arena-dpad-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  font-size: 1.25rem;
+  color: var(--text-color);
+  touch-action: none;
+  user-select: none;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+#biolab-game .fx-arena-dpad-btn:active {
+  border-color: var(--teal);
+  background: var(--callout-bg);
+}
+
+#biolab-game .fx-arena-dpad-btn[data-dir="up"] {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+#biolab-game .fx-arena-dpad-btn[data-dir="left"] {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+#biolab-game .fx-arena-dpad-btn[data-dir="down"] {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+#biolab-game .fx-arena-dpad-btn[data-dir="right"] {
+  grid-column: 3;
+  grid-row: 2;
+}

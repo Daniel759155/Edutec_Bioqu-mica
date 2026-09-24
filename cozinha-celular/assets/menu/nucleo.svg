@@ -1,0 +1,17 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="660" height="600" viewBox="0 0 660 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="N&#195;&#186;cleo (desfocado &#226;&#128;&#147; profundidade de campo)" filter="url(#filter0_f_0_80)">
+<ellipse cx="330" cy="300" rx="310" ry="280" fill="url(#paint0_radial_0_80)"/>
+</g>
+<defs>
+<filter id="filter0_f_0_80" x="0" y="0" width="660" height="600" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="10" result="effect1_foregroundBlur_0_80"/>
+</filter>
+<radialGradient id="paint0_radial_0_80" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(330 300) scale(310 280)">
+<stop stop-color="#FF7AD9" stop-opacity="0.55"/>
+<stop offset="0.6" stop-color="#B23CFF" stop-opacity="0.35"/>
+<stop offset="1" stop-color="#6A1FB5" stop-opacity="0"/>
+</radialGradient>
+</defs>
+</svg>

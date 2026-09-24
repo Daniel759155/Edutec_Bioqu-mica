@@ -57,33 +57,28 @@ document.addEventListener("DOMContentLoaded", function () {
     window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var PAGE_EXIT_MS = reduceMotion ? 0 : 250;
 
-  // A página do Quiz usa sua própria transição com a logo (ver js/quiz.js).
-  var hasCustomTransition = document.body.classList.contains("has-quiz-transition");
+  document.querySelectorAll("a[href]").forEach(function (link) {
+    var href = link.getAttribute("href");
+    if (
+      !href ||
+      href.charAt(0) === "#" ||
+      href.indexOf("mailto:") === 0 ||
+      href.indexOf("tel:") === 0 ||
+      link.target === "_blank" ||
+      link.hostname !== window.location.hostname
+    ) {
+      return;
+    }
 
-  if (!hasCustomTransition) {
-    document.querySelectorAll("a[href]").forEach(function (link) {
-      var href = link.getAttribute("href");
-      if (
-        !href ||
-        href.charAt(0) === "#" ||
-        href.indexOf("mailto:") === 0 ||
-        href.indexOf("tel:") === 0 ||
-        link.target === "_blank" ||
-        link.hostname !== window.location.hostname
-      ) {
+    link.addEventListener("click", function (e) {
+      if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) {
         return;
       }
-
-      link.addEventListener("click", function (e) {
-        if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) {
-          return;
-        }
-        e.preventDefault();
-        document.body.classList.add("page-exit");
-        setTimeout(function () {
-          window.location.href = link.href;
-        }, PAGE_EXIT_MS);
-      });
+      e.preventDefault();
+      document.body.classList.add("page-exit");
+      setTimeout(function () {
+        window.location.href = link.href;
+      }, PAGE_EXIT_MS);
     });
-  }
+  });
 });

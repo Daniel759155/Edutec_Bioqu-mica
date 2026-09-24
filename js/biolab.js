@@ -66,11 +66,82 @@ document.addEventListener("DOMContentLoaded", function () {
     },
   };
 
+  var QUIZZES = {
+    glicolise: {
+      prompt: "Quantos ATP líquidos (saldo final) a glicólise produz a partir de uma molécula de glicose?",
+      opcoes: ["2 ATP", "4 ATP", "36 ATP", "Nenhum — a glicólise só consome energia"],
+      correta: 0,
+      explicacao:
+        "A glicólise consome 2 ATP no início e produz 4 ao longo do processo — o saldo líquido é de 2 ATP por glicose.",
+    },
+    transicao: {
+      prompt: "O que acontece com o carbono que o piruvato perde na descarboxilação oxidativa?",
+      opcoes: [
+        "É liberado como CO₂",
+        "Vira parte do NADH",
+        "É armazenado dentro da coenzima A",
+        "Volta para a glicólise",
+      ],
+      correta: 0,
+      explicacao: "A piruvato desidrogenase remove um carbono do piruvato na forma de CO₂ — o mesmo gás que expiramos.",
+    },
+    krebs: {
+      prompt: "Em qual compartimento da célula o ciclo de Krebs acontece?",
+      opcoes: ["No citoplasma", "Na matriz mitocondrial", "No núcleo", "Na membrana plasmática"],
+      correta: 1,
+      explicacao: "O ciclo de Krebs se passa na matriz mitocondrial, o compartimento interno da mitocôndria.",
+    },
+    cadeia: {
+      prompt: "Na respiração aeróbica, qual molécula funciona como aceptor final dos elétrons na cadeia transportadora?",
+      opcoes: ["Glicose", "Piruvato", "Oxigênio (O₂)", "Água"],
+      correta: 2,
+      explicacao: "O oxigênio recebe os elétrons ao final da cadeia e forma água — sem ele, a cadeia trava.",
+    },
+    finalAerobico: {
+      prompt: "Por que o rendimento real de ATP por glicose costuma ficar abaixo do valor clássico de 38?",
+      opcoes: [
+        "Parte da energia se perde como calor e no transporte do NADH citosólico para dentro da mitocôndria",
+        "A célula guarda ATP extra para emergências",
+        "O oxigênio bloqueia parte da cadeia transportadora",
+        "O ciclo de Krebs só roda pela metade em condições normais",
+      ],
+      correta: 0,
+      explicacao:
+        "Parte do gradiente de prótons vaza como calor, e importar o NADH do citosol para a mitocôndria tem um custo energético — por isso estimativas mais realistas ficam entre 30 e 32 ATP.",
+    },
+    fermentacao: {
+      prompt: "Qual é o principal motivo da célula fazer fermentação láctica quando falta oxigênio?",
+      opcoes: [
+        "Para produzir mais ATP do que a respiração aeróbica",
+        "Para reciclar NADH em NAD⁺ e manter a glicólise funcionando",
+        "Para armazenar energia em forma de gordura",
+        "Para eliminar o excesso de glicose do sangue",
+      ],
+      correta: 1,
+      explicacao:
+        "Sem O₂ para aceitar elétrons no fim da cadeia, o NADH acumulado devolve seus elétrons ao piruvato (virando lactato) para regenerar NAD⁺ — assim a glicólise não trava.",
+    },
+    finalFermentacao: {
+      prompt: "Comparada à respiração aeróbica completa, quanto ATP a fermentação láctica gera a partir de uma glicose?",
+      opcoes: [
+        "A mesma quantidade",
+        "O dobro",
+        "Bem menos — só os 2 ATP líquidos da própria glicólise",
+        "Nenhum ATP",
+      ],
+      correta: 2,
+      explicacao:
+        "A fermentação não gera ATP extra — ela só recicla o NAD⁺ para a glicólise continuar. Por isso rende cerca de 19x menos energia que a via aeróbica completa.",
+    },
+  };
+
   /* ==========================================================================
      Estado
      ========================================================================== */
 
   var state = null;
+  var mode = null;
+  var arenaHandle = null;
 
   function loadProgress() {
     try {
@@ -91,21 +162,29 @@ document.addEventListener("DOMContentLoaded", function () {
       return [
         { id: "glicolise-intro", type: "intro", milestone: 0 },
         { id: "glicolise-match", type: "match", milestone: 0, matchKey: "glicolise" },
+        { id: "quiz-glicolise", type: "quiz", milestone: 0, quizKey: "glicolise" },
         { id: "branch", type: "branch", milestone: 1 },
         { id: "fermentacao-intro", type: "fermentacao", milestone: 1 },
+        { id: "quiz-fermentacao", type: "quiz", milestone: 1, quizKey: "fermentacao" },
+        { id: "quiz-final-fermentacao", type: "quiz", milestone: 2, quizKey: "finalFermentacao" },
         { id: "receipt", type: "receipt", milestone: 2 },
       ];
     }
     return [
       { id: "glicolise-intro", type: "intro", milestone: 0 },
       { id: "glicolise-match", type: "match", milestone: 0, matchKey: "glicolise" },
+      { id: "quiz-glicolise", type: "quiz", milestone: 0, quizKey: "glicolise" },
       { id: "branch", type: "branch", milestone: 1 },
       { id: "transicao-intro", type: "intro", milestone: 1 },
       { id: "transicao-match", type: "match", milestone: 1, matchKey: "transicao" },
+      { id: "quiz-transicao", type: "quiz", milestone: 1, quizKey: "transicao" },
       { id: "krebs-intro", type: "intro", milestone: 2 },
       { id: "krebs-wheel", type: "wheel", milestone: 2 },
+      { id: "quiz-krebs", type: "quiz", milestone: 2, quizKey: "krebs" },
       { id: "cadeia-intro", type: "intro", milestone: 3 },
       { id: "cadeia-synthase", type: "synthase", milestone: 3 },
+      { id: "quiz-cadeia", type: "quiz", milestone: 3, quizKey: "cadeia" },
+      { id: "quiz-final-aerobico", type: "quiz", milestone: 4, quizKey: "finalAerobico" },
       { id: "receipt", type: "receipt", milestone: 4 },
     ];
   }
@@ -167,12 +246,78 @@ document.addEventListener("DOMContentLoaded", function () {
      Telas
      ========================================================================== */
 
+  function backToModesLink() {
+    var link = el('<button type="button" class="fx-back-link">← Voltar aos modos</button>');
+    link.addEventListener("click", function () {
+      if (arenaHandle) {
+        arenaHandle.stop();
+        arenaHandle = null;
+      }
+      state = null;
+      mode = null;
+      render();
+    });
+    return link;
+  }
+
+  var MODES = [
+    {
+      id: "jornada",
+      name: "Jornada da Glicose",
+      desc: "Percorra a respiração celular tomando as decisões reais que definem quanta energia sua célula extrai da glicose.",
+    },
+    {
+      id: "mapa",
+      name: "Aventura no Mapa",
+      desc: "Guie a glicose por um mapa cheio de obstáculos até chegar à célula. Puro desafio, sem perguntas.",
+    },
+  ];
+
+  function renderModeSelect() {
+    root.innerHTML = "";
+
+    var wrap = el('<div class="fx-intro"></div>');
+    wrap.appendChild(el('<p class="fx-eyebrow">Fluxo</p>'));
+    wrap.appendChild(el('<h2 class="fx-intro-title">Escolha como quer jogar.</h2>'));
+    wrap.appendChild(
+      el(
+        '<p class="fx-intro-lead">O Fluxo tem dois modos: um pela ciência, acompanhando de verdade o caminho da glicose dentro da célula, e outro só pela diversão, desviando de obstáculos até chegar ao destino.</p>'
+      )
+    );
+
+    var grid = el('<div class="fx-mode-select"></div>');
+    MODES.forEach(function (m) {
+      var card = el(
+        '<button type="button" class="fx-mode-card">' +
+          '<span class="fx-mode-card-name">' +
+          esc(m.name) +
+          "</span>" +
+          '<span class="fx-mode-card-desc">' +
+          esc(m.desc) +
+          "</span>" +
+          "</button>"
+      );
+      card.addEventListener("click", function () {
+        mode = m.id;
+        if (mode === "jornada") {
+          state = null;
+        }
+        render();
+      });
+      grid.appendChild(card);
+    });
+    wrap.appendChild(grid);
+
+    root.appendChild(wrap);
+  }
+
   function renderIntro() {
     var progress = loadProgress();
     root.innerHTML = "";
 
     var wrap = el('<div class="fx-intro"></div>');
-    wrap.appendChild(el('<p class="fx-eyebrow">Fluxo</p>'));
+    wrap.appendChild(backToModesLink());
+    wrap.appendChild(el('<p class="fx-eyebrow">Jornada da Glicose</p>'));
     wrap.appendChild(el('<h2 class="fx-intro-title">Você é uma molécula de glicose.</h2>'));
     wrap.appendChild(
       el(
@@ -380,6 +525,62 @@ document.addEventListener("DOMContentLoaded", function () {
       state.nadh += 2;
       state.co2 += 2;
     }
+  }
+
+  var LETRAS_ALTERNATIVA = ["A", "B", "C", "D"];
+
+  function renderQuizStep(container) {
+    var step = currentStep();
+    var quiz = QUIZZES[step.quizKey];
+    var stage = stageShell(container, state.stepIndex + 1);
+    stage.appendChild(el('<h3 class="fx-stage-title">Pergunta rápida</h3>'));
+    stage.appendChild(el('<p class="fx-match-prompt">' + esc(quiz.prompt) + "</p>"));
+
+    var grid = el('<div class="fx-match-grid"></div>');
+    var feedbackHolder = el('<div></div>');
+    var resolved = false;
+
+    quiz.opcoes.forEach(function (opcao, indice) {
+      var isCorrect = indice === quiz.correta;
+      var btn = el(
+        '<button type="button" class="fx-match-option">' +
+          '<span class="fx-match-glyph">' +
+          LETRAS_ALTERNATIVA[indice] +
+          "</span>" +
+          '<span><span class="fx-match-name">' +
+          esc(opcao) +
+          "</span></span>" +
+          "</button>"
+      );
+      btn.addEventListener("click", function () {
+        if (resolved) return;
+        if (isCorrect) {
+          resolved = true;
+          btn.classList.add("is-correct");
+          grid.querySelectorAll(".fx-match-option").forEach(function (b) {
+            b.disabled = true;
+          });
+          feedbackHolder.innerHTML = "";
+          feedbackHolder.appendChild(
+            el('<div class="fx-feedback is-correct"><strong>Isso mesmo.</strong> ' + esc(quiz.explicacao) + "</div>")
+          );
+          var cont = el('<div class="fx-stage-actions"></div>');
+          var contBtn = el('<button type="button" class="fx-btn fx-btn-primary">Continuar</button>');
+          contBtn.addEventListener("click", advance);
+          cont.appendChild(contBtn);
+          feedbackHolder.appendChild(cont);
+        } else {
+          btn.classList.add("is-wrong");
+          btn.disabled = true;
+          feedbackHolder.innerHTML = "";
+          feedbackHolder.appendChild(el('<div class="fx-feedback is-wrong">Não é essa. Tente outra alternativa.</div>'));
+        }
+      });
+      grid.appendChild(btn);
+    });
+
+    stage.appendChild(grid);
+    stage.appendChild(feedbackHolder);
   }
 
   function renderBranchStep(container) {
@@ -594,6 +795,26 @@ document.addEventListener("DOMContentLoaded", function () {
      ========================================================================== */
 
   function render() {
+    if (arenaHandle && mode !== "mapa") {
+      arenaHandle.stop();
+      arenaHandle = null;
+    }
+
+    if (!mode) {
+      renderModeSelect();
+      return;
+    }
+
+    if (mode === "mapa") {
+      if (arenaHandle) return;
+      root.innerHTML = "";
+      root.appendChild(backToModesLink());
+      var arenaMount = el('<div></div>');
+      root.appendChild(arenaMount);
+      arenaHandle = window.FluxoMapa.mount(arenaMount);
+      return;
+    }
+
     if (!state) {
       renderIntro();
       return;
@@ -611,6 +832,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (step.type === "intro") renderIntroStep(root);
     else if (step.type === "match") renderMatchStep(root);
+    else if (step.type === "quiz") renderQuizStep(root);
     else if (step.type === "branch") renderBranchStep(root);
     else if (step.type === "fermentacao") renderFermentacaoStep(root);
     else if (step.type === "wheel") renderWheelStep(root);

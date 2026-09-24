@@ -1,0 +1,20 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="232.658" height="225.676" viewBox="0 0 232.658 225.676" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Star" filter="url(#filter0_d_0_8)">
+<path d="M116.329 45L137.49 90.8754L187.658 96.8237L150.567 131.125L160.413 180.676L116.329 156L72.2453 180.676L82.0912 131.125L45 96.8237L95.169 90.8754L116.329 45Z" fill="url(#paint0_linear_0_8)"/>
+</g>
+<defs>
+<filter id="filter0_d_0_8" x="0" y="0" width="232.658" height="225.676" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset/>
+<feGaussianBlur stdDeviation="22.5"/>
+<feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 0.815686 0 0 0 0 0 0 0 0 0.9 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_0_8"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_0_8" result="shape"/>
+</filter>
+<linearGradient id="paint0_linear_0_8" x1="169.362" y1="66.967" x2="63.2962" y2="173.033" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FFF3B0"/>
+<stop offset="1" stop-color="#FFB000"/>
+</linearGradient>
+</defs>
+</svg>

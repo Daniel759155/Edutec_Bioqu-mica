@@ -387,7 +387,6 @@ html {
 .biomol-card,
 .personagem-card,
 .curiosity-card,
-.quiz-band,
 .timeline-item,
 .marco {
   transition: transform 0.25s ease, box-shadow 0.25s ease;
@@ -413,7 +412,6 @@ html {
   .biomol-card,
   .personagem-card,
   .curiosity-card,
-  .quiz-band,
   .timeline-item,
   .marco {
     transition: none;
