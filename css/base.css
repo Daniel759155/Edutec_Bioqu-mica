@@ -163,6 +163,11 @@ button {
 }
 
 /* Letras do título animado letra por letra */
+.palavra {
+  display: inline-block;
+  white-space: nowrap;
+}
+
 .letra {
   display: inline-block;
   transform-origin: 50% 100%;
@@ -244,7 +249,7 @@ button {
 
 /* Transição entre páginas: fade + blur 200ms */
 body {
-  animation: pagina-entra var(--dur-fast) ease-out both;
+  animation: pagina-entra var(--dur-fast) ease-out backwards; /* "backwards": não deixa filter no body depois (filter quebraria position: fixed) */
 }
 
 body.saindo {

@@ -1094,3 +1094,154 @@ body.menu-aberto {
   flex: 0 0 auto;
   scroll-snap-align: start;
 }
+
+/* =========================================================
+   BREADCRUMB — "Bioquímica / Início" no topo dos heros internos
+   ========================================================= */
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.breadcrumb li + li::before {
+  content: "/";
+  margin-right: 10px;
+  color: var(--faint);
+}
+
+.breadcrumb a:hover {
+  color: var(--text);
+}
+
+.breadcrumb [aria-current="page"] {
+  font-weight: 500;
+  color: var(--teal);
+}
+
+/* =========================================================
+   HERO INTERNO — base comum dos heros das páginas de conteúdo
+   (Início, O que é, História, Biomoléculas). Frame de 720px no Figma.
+   ========================================================= */
+.hero-pagina {
+  position: relative;
+  min-height: 600px;
+  margin-top: calc(var(--nav-h) * -1);
+  padding: calc(var(--nav-h) + 72px) 0 72px;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--bg-900);
+}
+
+.hero-pagina__foto {
+  position: absolute;
+  inset: 0 0 -20%;
+  z-index: -4;
+  opacity: 0.22;
+  pointer-events: none;
+}
+
+.hero-pagina__foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Grade de 80px (linhas brancas a 4%) */
+.hero-pagina__grade {
+  position: absolute;
+  inset: 0;
+  z-index: -3;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+
+.hero-pagina__brilho {
+  position: absolute;
+  z-index: -2;
+  width: 1020px;
+  height: 1020px;
+  pointer-events: none;
+}
+
+.hero-pagina__brilho img {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+}
+
+/* Degradê no pé para fundir com a próxima seção */
+.hero-pagina::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  height: 340px;
+  background: linear-gradient(180deg, rgba(6, 10, 19, 0) 0%, var(--bg-900) 100%);
+  pointer-events: none;
+}
+
+.hero-pagina__conteudo {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 22px;
+  max-width: 820px;
+}
+
+.hero-pagina__titulo {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-display);
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+  color: var(--text);
+}
+
+.hero-pagina__slogan {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.625rem, 1.1rem + 2vw, 2.5rem);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  background: linear-gradient(90deg, var(--teal) 0%, var(--cyan) 50%, var(--violet) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero-pagina__texto {
+  max-width: 600px;
+  font-size: clamp(1rem, 0.9rem + 0.45vw, 1.1875rem);
+  line-height: 1.6;
+  color: #9fb3d1;
+}
+
+.hero-pagina__botoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.hero-pagina__botoes .btn {
+  font-weight: 600;
+}
+
+@media (min-width: 1100px) {
+  .hero-pagina {
+    min-height: 720px;
+    padding: 190px 0 96px;
+  }
+}

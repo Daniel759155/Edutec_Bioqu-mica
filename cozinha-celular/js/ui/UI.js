@@ -366,7 +366,7 @@ export class UI {
   // --- Tela final --------------------------------------------------------
 
   mostrarFinal({ vitoria, pontos, recorde, novoRecorde, upgrades }, { aoJogarNovamente, aoMenu }) {
-    $("final-titulo").textContent = vitoria ? "PROTOCOLO CONCLUÍDO" : "ENZIMA DESNATURADA";
+    $("final-titulo").textContent = vitoria ? "CÉLULA SALVA!" : "ENZIMA DESNATURADA";
     $("final-mensagem").textContent = vitoria
       ? "Você neutralizou o Radical Livre Supremo e manteve a célula funcionando. A bioquímica agradece!"
       : "Acabaram as vidas: a célula precisa de uma enzima nova. Tente de novo e use o que aprendeu!";

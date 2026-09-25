@@ -2,336 +2,278 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <script>
-      (function () {
-        try {
-          var stored = localStorage.getItem("theme");
-          var theme =
-            stored ||
-            (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-          document.documentElement.setAttribute("data-theme", theme);
-        } catch (e) {}
-      })();
-    </script>
-    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>História da Bioquímica | Bioquímica</title>
+    <meta
+      name="description"
+      content="De Liebig à dupla hélice: os marcos e os cientistas que construíram a Bioquímica, de 1813 até a descoberta da estrutura do DNA."
+    />
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+
+    <!-- Fontes: Space Grotesk (títulos), Inter (texto), JetBrains Mono (rótulos) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,wght@0,600;0,700;0,900;1,500;1,600&family=Space+Mono:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&family=Space+Grotesk:wght@500;700&display=swap"
       rel="stylesheet"
     />
+
     <link rel="stylesheet" href="css/tokens.css" />
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/components.css" />
-    <title>História — Bioquímica</title>
+    <link rel="stylesheet" href="css/historia.css" />
+
+    <!-- Esconde os elementos [data-reveal] antes da primeira pintura (o JS anima a entrada). -->
+    <script>
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("js-anima");
+    </script>
+
+    <!-- Three.js e addons via CDN (módulos ES, sem Node/npm) -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
+    <!-- GSAP + ScrollTrigger e vanilla-tilt (globais: window.gsap, window.VanillaTilt) -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js" defer></script>
+    <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/historia.js"></script>
   </head>
-  <body>
-    <header class="header">
-      <div class="container logo">
-        <img src="assets/img/logo.png" alt="Bioquímica" />
-        <div class="logo-text">
-          <p class="logo-title">BIOQUÍMICA</p>
-          <p class="logo-sub">A química da vida</p>
+  <body data-pagina="historia">
+    <header data-navbar></header>
+
+    <main>
+      <!-- ================= HERO ================= -->
+      <section class="hero-pagina hero-historia" aria-labelledby="titulo-historia">
+        <div class="hero-pagina__foto" data-parallax="0.3" aria-hidden="true"><img src="assets/historia/hero-bg.png" alt="" /></div>
+        <div class="hero-pagina__grade" aria-hidden="true"></div>
+        <div class="hero-pagina__brilho hero-pagina__brilho--1" aria-hidden="true"><img src="assets/inicio/glow-hero-1.svg" alt="" /></div>
+        <div class="hero-pagina__brilho hero-pagina__brilho--2" aria-hidden="true"><img src="assets/inicio/glow-hero-2.svg" alt="" /></div>
+        <div class="hero-historia__dna" data-3d="dna" data-fallback="assets/3d/dna-helix.svg" data-fallback-alt="" aria-hidden="true"></div>
+
+        <div class="container">
+          <div class="hero-pagina__conteudo">
+            <nav aria-label="Você está em">
+              <ol class="breadcrumb">
+                <li><a href="index.html">Bioquímica</a></li>
+                <li><span aria-current="page">História</span></li>
+              </ol>
+            </nav>
+            <span class="eyebrow"><span class="eyebrow__ponto" aria-hidden="true"><img src="assets/ui/pulse-dot.svg" alt="" /></span>História</span>
+            <h1 class="hero-pagina__titulo" id="titulo-historia" data-letras>História da Bioquímica</h1>
+            <p class="hero-pagina__texto">
+              A Bioquímica surgiu da união entre a Biologia e a Química, revelando os processos moleculares que sustentam a vida.
+            </p>
+            <div class="hero-pagina__botoes">
+              <a class="btn btn--primary" href="#marcos">Explorar conteúdo <span class="btn__seta" aria-hidden="true">↓</span></a>
+            </div>
+          </div>
         </div>
-        <button
-          id="theme-toggle"
-          class="theme-toggle"
-          type="button"
-          aria-label="Alternar modo escuro"
-          aria-pressed="false"
-        >
-          <svg class="theme-toggle-icon icon-sun" viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="12" cy="12" r="5"></circle>
-            <path
-              d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
-            ></path>
-          </svg>
-          <svg class="theme-toggle-icon icon-moon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 1020.354 15.354z"></path>
-          </svg>
-        </button>
-        <nav style="margin-left: auto">
-          <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-links">
-            <span></span><span></span><span></span>
-          </button>
-          <ul class="nav-links" id="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="inicio.html#inicio">Início</a></li>
-            <li><a href="sobre.html">O que é Bioquímica</a></li>
-            <li><a href="historia.html" class="active">História</a></li>
-            <li><a href="biomoleculas.html">Biomoléculas</a></li>
-            <li class="nav-item-dropdown">
-              <button type="button" class="nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
-                Jogos
-                <svg class="nav-dropdown-arrow" viewBox="0 0 12 8" aria-hidden="true">
-                  <path
-                    d="M1 1l5 5 5-5"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  ></path>
-                </svg>
-              </button>
-              <ul class="nav-dropdown-menu">
-                <li><a href="cozinha-celular/index.html">Código Celular</a></li>
-              </ul>
+      </section>
+
+      <!-- ================= MARCOS IMPORTANTES (timeline vertical) ================= -->
+      <section class="section marcos" id="marcos" aria-labelledby="titulo-marcos">
+        <div class="container">
+          <div class="secao-cabeca secao-cabeca--centro" data-reveal>
+            <span class="eyebrow"><span class="eyebrow__ponto" aria-hidden="true"><img src="assets/ui/pulse-dot.svg" alt="" /></span>Linha do tempo</span>
+            <h2 class="secao-titulo" id="titulo-marcos">Marcos importantes</h2>
+            <p class="secao-sub">Role para viajar de 1813 até a dupla hélice.</p>
+          </div>
+
+          <ol class="marcos__lista" data-marcos>
+            <li class="marco-h">
+              <span class="marco-h__ponto" aria-hidden="true">
+                <img class="marco-h__ponto-apagado" src="assets/historia/marco-ponto-apagado.svg" alt="" />
+                <img class="marco-h__ponto-aceso" src="assets/historia/marco-ponto.svg" alt="" />
+              </span>
+              <article class="card-glass marco-h__card">
+                <div class="marco-h__topo">
+                  <span class="marco-h__icone"><img src="assets/sobre/marco-seculo-xix.png" alt="" /></span>
+                  <h3 class="marco-h__ano">1813</h3>
+                </div>
+                <p class="marco-h__texto">Justus von Liebig aplica os conceitos da química para entender processos biológicos.</p>
+              </article>
+              <span class="marco-h__fantasma" aria-hidden="true">1813</span>
             </li>
-            <li><a href="contato.html">Contato</a></li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-
-    <section id="inicio" class="hero">
-      <img src="assets/img/historia-hero-bg.png" alt="" class="hero-bg historia-hero-bg" />
-      <div class="hero-overlay historia-hero-overlay"></div>
-      <div class="container hero-content">
-        <h1 class="hero-title">HISTÓRIA</h1>
-        <p class="hero-subtitle">História da Bioquímica</p>
-        <img src="assets/icons/underline.svg" alt="" class="hero-underline" />
-        <p class="hero-text">
-          A Bioquímica surgiu da união entre a Biologia e a Química, revelando
-          os processos moleculares que sustentam a vida.
-        </p>
-        <a href="#marcos" class="btn-primary">
-          EXPLORAR CONTEÚDO
-          <img src="assets/icons/arrow-white.svg" alt="" />
-        </a>
-      </div>
-    </section>
-
-    <nav class="breadcrumb" aria-label="Você está aqui">
-      <ol class="breadcrumb-list container">
-        <li><a href="index.html">Bioquímica</a></li>
-        <li class="breadcrumb-sep" aria-hidden="true">/</li>
-        <li aria-current="page">História</li>
-      </ol>
-    </nav>
-
-    <section id="marcos" class="marcos">
-      <div class="container">
-        <h2 class="section-title">Marcos importantes</h2>
-
-        <ol class="marcos-timeline reveal">
-          <li class="marco" tabindex="0">
-            <div class="icon-circle">
-              <img src="assets/icons/icon-flask.png" alt="" />
-            </div>
-            <p class="marco-year">1813</p>
-            <p>Justus von Liebig aplica os conceitos da química para entender processos biológicos.</p>
-          </li>
-          <li class="marco" tabindex="0">
-            <div class="icon-circle">
-              <img src="assets/icons/icon-atom.png" alt="" />
-            </div>
-            <p class="marco-year">1869</p>
-            <p>Friedrich Miescher isola o DNA do núcleo das células pela primeira vez.</p>
-          </li>
-          <li class="marco" tabindex="0">
-            <div class="icon-circle">
-              <img src="assets/icons/icon-dna.png" alt="" />
-            </div>
-            <p class="marco-year">1897</p>
-            <p>Eduard Buchner demonstra que reações químicas podem ocorrer fora das células, graças às enzimas.</p>
-          </li>
-          <li class="marco" tabindex="0">
-            <div class="icon-circle">
-              <img src="assets/icons/icon-atom.png" alt="" />
-            </div>
-            <p class="marco-year">1944</p>
-            <p>Avery, MacLeod e McCarty demonstram que o DNA é o material genético.</p>
-          </li>
-          <li class="marco" tabindex="0">
-            <div class="icon-circle">
-              <img src="assets/icons/icon-bar-chart.png" alt="" />
-            </div>
-            <p class="marco-year">1953</p>
-            <p>Watson e Crick desvendam a estrutura do DNA em forma de dupla hélice.</p>
-          </li>
-        </ol>
-      </div>
-    </section>
-
-    <section id="personagens" class="personagens">
-      <div class="container">
-        <h2 class="section-title">Personagens que transformaram a ciência</h2>
-
-        <div class="personagens-grid reveal">
-          <article class="personagem-card">
-            <img
-              src="assets/img/personagem-liebig.png"
-              alt="Retrato de Justus von Liebig"
-              class="personagem-foto"
-              width="234"
-              height="234"
-              loading="lazy"
-            />
-            <h3>Justus von Liebig</h3>
-            <p class="personagem-anos">1803 – 1873</p>
-            <p>
-              Considerado um dos pais da bioquímica moderna. Aplicou métodos
-              químicos para estudar os processos vitais.
-            </p>
-          </article>
-
-          <article class="personagem-card">
-            <img
-              src="assets/img/personagem-miescher.png"
-              alt="Retrato de Friedrich Miescher"
-              class="personagem-foto"
-              width="234"
-              height="234"
-              loading="lazy"
-            />
-            <h3>Friedrich Miescher</h3>
-            <p class="personagem-anos">1844 – 1895</p>
-            <p>
-              Descobriu a “nucleína”, que mais tarde foi identificada como DNA,
-              abrindo caminho para a genética.
-            </p>
-          </article>
-
-          <article class="personagem-card">
-            <img
-              src="assets/img/personagem-buchner.png"
-              alt="Retrato de Eduard Buchner"
-              class="personagem-foto"
-              width="234"
-              height="234"
-              loading="lazy"
-            />
-            <h3>Eduard Buchner</h3>
-            <p class="personagem-anos">1860 – 1917</p>
-            <p>
-              Pioneiro no estudo das enzimas. Provou que fermentações podem
-              ocorrer fora das células vivas.
-            </p>
-          </article>
-
-          <article class="personagem-card">
-            <img
-              src="assets/img/personagem-watson.png"
-              alt="Retrato de James D. Watson"
-              class="personagem-foto"
-              width="234"
-              height="234"
-              loading="lazy"
-            />
-            <h3>James D. Watson</h3>
-            <p class="personagem-anos">Nascido em 1928</p>
-            <p>
-              Cientista americano que, junto com Crick, propôs a estrutura da
-              dupla hélice do DNA.
-            </p>
-          </article>
-
-          <article class="personagem-card">
-            <img
-              src="assets/img/personagem-crick.png"
-              alt="Retrato de Francis Crick"
-              class="personagem-foto"
-              width="234"
-              height="234"
-              loading="lazy"
-            />
-            <h3>Francis Crick</h3>
-            <p class="personagem-anos">1916 – 2004</p>
-            <p>
-              Físico e biólogo molecular que colaborou na descoberta da
-              estrutura do DNA e em diversos avanços da biologia molecular.
-            </p>
-          </article>
+            <li class="marco-h">
+              <span class="marco-h__ponto" aria-hidden="true">
+                <img class="marco-h__ponto-apagado" src="assets/historia/marco-ponto-apagado.svg" alt="" />
+                <img class="marco-h__ponto-aceso" src="assets/historia/marco-ponto.svg" alt="" />
+              </span>
+              <article class="card-glass marco-h__card">
+                <div class="marco-h__topo">
+                  <span class="marco-h__icone"><img src="assets/sobre/marco-1900.png" alt="" /></span>
+                  <h3 class="marco-h__ano">1869</h3>
+                </div>
+                <p class="marco-h__texto">Friedrich Miescher isola o DNA do núcleo das células pela primeira vez.</p>
+              </article>
+              <span class="marco-h__fantasma" aria-hidden="true">1869</span>
+            </li>
+            <li class="marco-h">
+              <span class="marco-h__ponto" aria-hidden="true">
+                <img class="marco-h__ponto-apagado" src="assets/historia/marco-ponto-apagado.svg" alt="" />
+                <img class="marco-h__ponto-aceso" src="assets/historia/marco-ponto.svg" alt="" />
+              </span>
+              <article class="card-glass marco-h__card">
+                <div class="marco-h__topo">
+                  <span class="marco-h__icone"><img src="assets/sobre/icon-biotecnologia.png" alt="" /></span>
+                  <h3 class="marco-h__ano">1897</h3>
+                </div>
+                <p class="marco-h__texto">Eduard Buchner demonstra que reações químicas podem ocorrer fora das células, graças às enzimas.</p>
+              </article>
+              <span class="marco-h__fantasma" aria-hidden="true">1897</span>
+            </li>
+            <li class="marco-h">
+              <span class="marco-h__ponto" aria-hidden="true">
+                <img class="marco-h__ponto-apagado" src="assets/historia/marco-ponto-apagado.svg" alt="" />
+                <img class="marco-h__ponto-aceso" src="assets/historia/marco-ponto.svg" alt="" />
+              </span>
+              <article class="card-glass marco-h__card">
+                <div class="marco-h__topo">
+                  <span class="marco-h__icone"><img src="assets/sobre/marco-1900.png" alt="" /></span>
+                  <h3 class="marco-h__ano">1944</h3>
+                </div>
+                <p class="marco-h__texto">Avery, MacLeod e McCarty demonstram que o DNA é o material genético.</p>
+              </article>
+              <span class="marco-h__fantasma" aria-hidden="true">1944</span>
+            </li>
+            <li class="marco-h">
+              <span class="marco-h__ponto" aria-hidden="true">
+                <img class="marco-h__ponto-apagado" src="assets/historia/marco-ponto-apagado.svg" alt="" />
+                <img class="marco-h__ponto-aceso" src="assets/historia/marco-ponto.svg" alt="" />
+              </span>
+              <article class="card-glass marco-h__card">
+                <div class="marco-h__topo">
+                  <span class="marco-h__icone"><img src="assets/sobre/marco-2000.png" alt="" /></span>
+                  <h3 class="marco-h__ano">1953</h3>
+                </div>
+                <p class="marco-h__texto">Watson e Crick desvendam a estrutura do DNA em forma de dupla hélice.</p>
+              </article>
+              <span class="marco-h__fantasma" aria-hidden="true">1953</span>
+            </li>
+          </ol>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section id="como-comecou" class="comecou">
-      <div class="container">
-        <div class="comecou-panel reveal">
-          <div class="comecou-text">
-            <h2>Como tudo começou</h2>
-            <span class="comecou-line" aria-hidden="true"></span>
+      <!-- ================= PERSONAGENS ================= -->
+      <section class="section personagens" aria-labelledby="titulo-personagens">
+        <div class="container">
+          <div class="secao-cabeca secao-cabeca--centro" data-reveal>
+            <span class="eyebrow"><span class="eyebrow__ponto" aria-hidden="true"><img src="assets/ui/pulse-dot.svg" alt="" /></span>Personagens</span>
+            <h2 class="secao-titulo" id="titulo-personagens">Personagens que transformaram a ciência</h2>
+            <p class="secao-sub">Passe o mouse para revelar a descoberta de cada um.</p>
+          </div>
+
+          <ul class="personagens__grade" role="list">
+            <li data-reveal>
+              <button class="card-glass personagem" type="button" data-personagem="liebig" aria-haspopup="dialog">
+                <span class="personagem__anel"><img class="personagem__retrato" src="assets/historia/liebig.png" alt="Retrato de Justus von Liebig" /></span>
+                <span class="personagem__nome">Justus von Liebig</span>
+                <span class="personagem__datas">1803 – 1873</span>
+                <span class="personagem__texto">
+                  Considerado um dos pais da bioquímica moderna. Aplicou métodos químicos para estudar os processos vitais.
+                </span>
+                <span class="personagem__mais">VER MAIS +</span>
+              </button>
+            </li>
+            <li data-reveal>
+              <button class="card-glass personagem" type="button" data-personagem="miescher" aria-haspopup="dialog">
+                <span class="personagem__anel"
+                  ><img class="personagem__retrato" src="assets/historia/miescher.png" alt="Retrato de Friedrich Miescher"
+                /></span>
+                <span class="personagem__nome">Friedrich Miescher</span>
+                <span class="personagem__datas">1844 – 1895</span>
+                <span class="personagem__texto">
+                  Descobriu a “nucleína”, que mais tarde foi identificada como DNA, abrindo caminho para a genética.
+                </span>
+                <span class="personagem__mais">VER MAIS +</span>
+              </button>
+            </li>
+            <li data-reveal>
+              <button class="card-glass personagem" type="button" data-personagem="buchner" aria-haspopup="dialog">
+                <span class="personagem__anel"><img class="personagem__retrato" src="assets/historia/buchner.png" alt="Retrato de Eduard Buchner" /></span>
+                <span class="personagem__nome">Eduard Buchner</span>
+                <span class="personagem__datas">1860 – 1917</span>
+                <span class="personagem__texto">Pioneiro no estudo das enzimas. Provou que fermentações podem ocorrer fora das células vivas.</span>
+                <span class="personagem__mais">VER MAIS +</span>
+              </button>
+            </li>
+            <li data-reveal>
+              <button class="card-glass personagem" type="button" data-personagem="watson" aria-haspopup="dialog">
+                <span class="personagem__anel"><img class="personagem__retrato" src="assets/historia/watson.png" alt="Retrato de James D. Watson" /></span>
+                <span class="personagem__nome">James D. Watson</span>
+                <span class="personagem__datas">Nascido em 1928</span>
+                <span class="personagem__texto">Cientista americano que, junto com Crick, propôs a estrutura da dupla hélice do DNA.</span>
+                <span class="personagem__mais">VER MAIS +</span>
+              </button>
+            </li>
+            <li data-reveal>
+              <button class="card-glass personagem" type="button" data-personagem="crick" aria-haspopup="dialog">
+                <span class="personagem__anel"><img class="personagem__retrato" src="assets/historia/crick.png" alt="Retrato de Francis Crick" /></span>
+                <span class="personagem__nome">Francis Crick</span>
+                <span class="personagem__datas">1916 – 2004</span>
+                <span class="personagem__texto">
+                  Físico e biólogo molecular que colaborou na descoberta da estrutura do DNA e em diversos avanços da biologia molecular.
+                </span>
+                <span class="personagem__mais">VER MAIS +</span>
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <dialog class="modal-personagem" data-modal-personagem aria-labelledby="modal-personagem-nome">
+          <div class="modal-personagem__corpo">
+            <div class="modal-personagem__topo">
+              <img src="" alt="" data-modal-foto />
+              <div>
+                <h3 class="modal-personagem__nome" id="modal-personagem-nome" data-modal-nome></h3>
+                <span class="modal-personagem__datas" data-modal-datas></span>
+              </div>
+            </div>
+            <p data-modal-texto></p>
+            <ul class="modal-personagem__fatos" data-modal-fatos></ul>
+          </div>
+          <button class="modal-personagem__fechar" type="button" aria-label="Fechar" data-modal-fechar>×</button>
+        </dialog>
+      </section>
+
+      <!-- ================= COMO TUDO COMEÇOU ================= -->
+      <section class="section origens" aria-labelledby="titulo-origens">
+        <div class="container origens__grade">
+          <div class="origens__texto" data-reveal>
+            <span class="eyebrow"><span class="eyebrow__ponto" aria-hidden="true"><img src="assets/ui/pulse-dot.svg" alt="" /></span>Origens</span>
+            <h2 class="secao-titulo" id="titulo-origens">Como tudo começou</h2>
             <p>
-              A Bioquímica nasceu da necessidade de entender os processos
-              químicos que acontecem nos seres vivos. No século XIX, os
-              cientistas começaram a aplicar técnicas da química para
-              investigar a fermentação, a respiração e a composição dos
-              tecidos.
+              A Bioquímica nasceu da necessidade de entender os processos químicos que acontecem nos seres vivos. No século XIX, os cientistas
+              começaram a aplicar técnicas da química para investigar a fermentação, a respiração e a composição dos tecidos.
             </p>
             <p>
-              Com o tempo, novas tecnologias e descobertas permitiram
-              aprofundar esse conhecimento, revelando moléculas essenciais e
-              mecanismos que sustentam a vida em nível molecular.
+              Com o tempo, novas tecnologias e descobertas permitiram aprofundar esse conhecimento, revelando moléculas essenciais e mecanismos que
+              sustentam a vida em nível molecular.
             </p>
             <p>
-              Hoje, a Bioquímica está presente em diversas áreas, como
-              medicina, biotecnologia, nutrição, farmacologia e tantas outras,
-              impactando diretamente a qualidade de vida das pessoas.
+              Hoje, a Bioquímica está presente em diversas áreas, como medicina, biotecnologia, nutrição, farmacologia e tantas outras, impactando
+              diretamente a qualidade de vida das pessoas.
             </p>
           </div>
-          <img
-            src="assets/img/historia-como-comecou.png"
-            alt="Microscópio, vidrarias de laboratório e uma molécula de DNA"
-            class="comecou-img"
-            width="1920"
-            height="1080"
-            loading="lazy"
-          />
+          <div class="origens__cena" data-reveal>
+            <figure class="origens__moldura" data-moldura-3d>
+              <img
+                src="assets/historia/microscopio-dna.png"
+                alt="Microscópio e vidrarias de laboratório ao lado de uma dupla hélice de DNA e modelos moleculares"
+                loading="lazy"
+              />
+            </figure>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </main>
 
-    <footer class="footer">
-      <div class="container footer-grid">
-        <div class="footer-brand">
-          <img src="assets/img/logo.png" alt="Bioquímica" />
-          <p class="footer-brand-title">BIOQUÍMICA</p>
-          <p class="footer-brand-sub">A química da vida</p>
-        </div>
-
-        <div>
-          <h3>Navegação</h3>
-          <ul class="footer-list">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="inicio.html#inicio">Início</a></li>
-            <li><a href="sobre.html">O que é bioquímica</a></li>
-            <li><a href="historia.html">História</a></li>
-            <li><a href="biomoleculas.html">Biomoléculas</a></li>
-            <li><a href="cozinha-celular/index.html">Código Celular</a></li>
-            <li><a href="contato.html">Quem somos / Contato</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <h3><a href="contato.html#contato">Contato</a></h3>
-          <ul class="footer-list">
-            <li class="footer-contact-item">
-              <img src="assets/icons/icon-email.png" alt="" />
-              <a href="mailto:bioquimica22ati@gmail.com">bioquimica22ati@gmail.com</a>
-            </li>
-            <li class="footer-contact-item">
-              <img src="assets/icons/icon-phone.png" alt="" />
-              <span>+55 (11)4002-8922</span>
-            </li>
-            <li class="footer-contact-item">
-              <img src="assets/icons/icon-location.png" alt="" />
-              <span>Estrada de Itapecerica, 67 — Boca da Mata - SP</span>
-            </li>
-          </ul>
-        </div>
-
-        <img src="assets/img/footer-decor.png" alt="QR Code" class="footer-qr" />
-      </div>
-
-      <div class="container footer-bottom">
-        <p>2026 Bioquímica - A química da vida. Todos os direitos reservados</p>
-      </div>
-    </footer>
-
-    <script src="js/main.js" defer></script>
-    <script src="js/motion.js" defer></script>
+    <footer data-footer></footer>
   </body>
 </html>

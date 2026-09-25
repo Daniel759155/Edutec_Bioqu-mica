@@ -2,161 +2,259 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <script>
-      (function () {
-        try {
-          var stored = localStorage.getItem("theme");
-          var theme =
-            stored ||
-            (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-          document.documentElement.setAttribute("data-theme", theme);
-        } catch (e) {}
-      })();
-    </script>
-    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fluxo — Escolha seu caminho | Bioquímica</title>
+    <meta
+      name="description"
+      content="Fluxo: dois jogos de bioquímica. Siga a glicose pela respiração celular na Jornada da Glicose ou desvie dos obstáculos na Aventura no Mapa."
+    />
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+
+    <!-- Fontes: Space Grotesk (títulos), Inter (texto), JetBrains Mono (rótulos) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,wght@0,600;0,700;0,900;1,500;1,600&family=Space+Mono:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&family=Space+Grotesk:wght@500;700&display=swap"
       rel="stylesheet"
     />
+
     <link rel="stylesheet" href="css/tokens.css" />
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/components.css" />
-    <link rel="stylesheet" href="css/biolab.css" />
-    <title>Fluxo — Bioquímica</title>
+    <link rel="stylesheet" href="css/fluxo.css" />
+
+    <!-- Esconde os elementos [data-reveal] antes da primeira pintura (o JS anima a entrada). -->
+    <script>
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("js-anima");
+    </script>
+
+    <!-- Three.js e addons via CDN (módulos ES, sem Node/npm) -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
+    <!-- GSAP + ScrollTrigger e vanilla-tilt (globais: window.gsap, window.VanillaTilt) -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js" defer></script>
+    <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/fluxo/pagina.js"></script>
   </head>
-  <body>
-    <header class="header">
-      <div class="container logo">
-        <img src="assets/img/logo.png" alt="Bioquímica" />
-        <div class="logo-text">
-          <p class="logo-title">BIOQUÍMICA</p>
-          <p class="logo-sub">A química da vida</p>
-        </div>
-        <button
-          id="theme-toggle"
-          class="theme-toggle"
-          type="button"
-          aria-label="Alternar modo escuro"
-          aria-pressed="false"
-        >
-          <svg class="theme-toggle-icon icon-sun" viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="12" cy="12" r="5"></circle>
-            <path
-              d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
-            ></path>
-          </svg>
-          <svg class="theme-toggle-icon icon-moon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 1020.354 15.354z"></path>
-          </svg>
-        </button>
-        <nav style="margin-left: auto">
-          <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-links">
-            <span></span><span></span><span></span>
-          </button>
-          <ul class="nav-links" id="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="inicio.html#inicio">Início</a></li>
-            <li><a href="sobre.html">O que é Bioquímica</a></li>
-            <li><a href="historia.html">História</a></li>
-            <li><a href="biomoleculas.html">Biomoléculas</a></li>
-            <li class="nav-item-dropdown">
-              <button type="button" class="nav-dropdown-toggle active" aria-haspopup="true" aria-expanded="false">
-                Jogos
-                <svg class="nav-dropdown-arrow" viewBox="0 0 12 8" aria-hidden="true">
-                  <path
-                    d="M1 1l5 5 5-5"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  ></path>
-                </svg>
-              </button>
-              <ul class="nav-dropdown-menu">
-                <li><a href="biolab.html" class="active">Fluxo</a></li>
-              </ul>
-            </li>
-            <li><a href="contato.html">Contato</a></li>
-          </ul>
-        </nav>
-      </div>
-    </header>
+  <body data-pagina="fluxo">
+    <header data-navbar></header>
 
-    <section id="inicio" class="hero game-hero">
-      <img src="assets/img/quiz-hero-bg.png" alt="" class="hero-bg" />
-      <div class="hero-overlay"></div>
-      <div class="container hero-content">
-        <h1 class="hero-title">FLUXO<br /><span class="text-teal">ESCOLHA SEU CAMINHO</span></h1>
-        <p class="game-tagline">Dois jeitos de viver a bioquímica: um pela ciência, outro pelo desafio.</p>
-        <p class="hero-text">
-          Assuma o lugar de uma molécula de glicose recém-absorvida na
-          corrente sanguínea. Siga o caminho real da respiração celular na
-          Jornada da Glicose, ou enfrente um mapa cheio de obstáculos até
-          chegar à célula na Aventura no Mapa — puro desafio, sem perguntas.
-        </p>
-      </div>
-    </section>
+    <main>
+      <!-- ================= HERO ================= -->
+      <section class="hero-fluxo" aria-labelledby="titulo-fluxo">
+        <div class="hero-fluxo__foto" aria-hidden="true"><img src="assets/fluxo/hero-bg.png" alt="" /></div>
+        <div class="hero-pagina__grade" aria-hidden="true"></div>
+        <div class="hero-fluxo__brilho hero-fluxo__brilho--1" aria-hidden="true"><img src="assets/fluxo/glow-hero-1.svg" alt="" /></div>
+        <div class="hero-fluxo__brilho hero-fluxo__brilho--2" aria-hidden="true"><img src="assets/fluxo/glow-hero-2.svg" alt="" /></div>
+        <canvas class="hero-fluxo__sangue" data-sangue aria-hidden="true"></canvas>
 
-    <section class="game-app" id="biolab-app">
-      <div class="container">
-        <div id="biolab-game"></div>
-      </div>
-    </section>
-
-    <footer class="footer">
-      <div class="container footer-grid">
-        <div class="footer-brand">
-          <img src="assets/img/logo.png" alt="Bioquímica" />
-          <p class="footer-brand-title">BIOQUÍMICA</p>
-          <p class="footer-brand-sub">A química da vida</p>
+        <!-- Trilha tracejada: a glicose (esfera teal) percorre as etapas em loop -->
+        <div class="trilha-hero" aria-hidden="true">
+          <span class="trilha-hero__linha" style="left: 120px; top: 640px; width: 215.4px; rotate: -21.8deg"><img src="assets/fluxo/trilha-1.svg" alt="" /></span>
+          <span class="trilha-hero__linha" style="left: 320px; top: 560px; width: 206.2px; rotate: 14.04deg"><img src="assets/fluxo/trilha-2.svg" alt="" /></span>
+          <span class="trilha-hero__linha" style="left: 520px; top: 610px; width: 228.3px; rotate: -28.81deg"><img src="assets/fluxo/trilha-3.svg" alt="" /></span>
+          <span class="trilha-hero__linha" style="left: 720px; top: 500px; width: 208.8px; rotate: 16.7deg"><img src="assets/fluxo/trilha-4.svg" alt="" /></span>
+          <span class="trilha-hero__linha" style="left: 920px; top: 560px; width: 233.2px; rotate: -30.96deg"><img src="assets/fluxo/trilha-5.svg" alt="" /></span>
+          <span class="trilha-hero__linha" style="left: 1120px; top: 440px; width: 204px; rotate: 11.31deg"><img src="assets/fluxo/trilha-6.svg" alt="" /></span>
+          <span class="trilha-hero__ponto" style="left: 120px; top: 640px"><img src="assets/fluxo/ponto-violeta.svg" alt="" /></span>
+          <span class="trilha-hero__ponto" style="left: 320px; top: 560px"><img src="assets/fluxo/ponto-violeta.svg" alt="" /></span>
+          <span class="trilha-hero__ponto" style="left: 520px; top: 610px"><img src="assets/fluxo/ponto-violeta.svg" alt="" /></span>
+          <span class="trilha-hero__ponto" style="left: 920px; top: 560px"><img src="assets/fluxo/ponto-violeta.svg" alt="" /></span>
+          <span class="trilha-hero__ponto" style="left: 1120px; top: 440px"><img src="assets/fluxo/ponto-violeta.svg" alt="" /></span>
+          <span class="trilha-hero__ponto" style="left: 1320px; top: 480px"><img src="assets/fluxo/ponto-violeta.svg" alt="" /></span>
+          <span class="trilha-hero__glicose"><img src="assets/fluxo/glicose-esfera.svg" alt="" /></span>
         </div>
 
-        <div>
-          <h3>Navegação</h3>
-          <ul class="footer-list">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="inicio.html#inicio">Início</a></li>
-            <li><a href="sobre.html">O que é bioquímica</a></li>
-            <li><a href="historia.html">História</a></li>
-            <li><a href="biomoleculas.html">Biomoléculas</a></li>
-            <li><a href="biolab.html">Fluxo</a></li>
-            <li><a href="contato.html">Quem somos / Contato</a></li>
-          </ul>
+        <div class="container hero-fluxo__conteudo">
+          <span class="eyebrow"><span class="eyebrow__ponto" aria-hidden="true"><img src="assets/ui/pulse-dot.svg" alt="" /></span>Jogos · Fluxo</span>
+          <h1 class="hero-fluxo__titulo" id="titulo-fluxo">FLUXO</h1>
+          <p class="hero-fluxo__sub">ESCOLHA SEU CAMINHO</p>
+          <p class="hero-fluxo__frase">Dois jeitos de viver a bioquímica: um pela ciência, outro pelo desafio.</p>
+          <p class="hero-fluxo__texto">
+            Assuma o lugar de uma molécula de glicose recém-absorvida na corrente sanguínea. Siga o caminho real da respiração celular na Jornada
+            da Glicose, ou enfrente um mapa cheio de obstáculos até chegar à célula na Aventura no Mapa — puro desafio, sem perguntas.
+          </p>
         </div>
+      </section>
 
-        <div>
-          <h3><a href="contato.html#contato">Contato</a></h3>
-          <ul class="footer-list">
-            <li class="footer-contact-item">
-              <img src="assets/icons/icon-email.png" alt="" />
-              <a href="mailto:bioquimica22ati@gmail.com">bioquimica22ati@gmail.com</a>
-            </li>
-            <li class="footer-contact-item">
-              <img src="assets/icons/icon-phone.png" alt="" />
-              <span>+55 (11)4002-8922</span>
-            </li>
-            <li class="footer-contact-item">
-              <img src="assets/icons/icon-location.png" alt="" />
-              <span>Estrada de Itapecerica, 67 — Boca da Mata - SP</span>
-            </li>
-          </ul>
+      <!-- ================= SELEÇÃO DE MODO ================= -->
+      <section class="section modos" id="modos" aria-label="Escolha o modo de jogo">
+        <div class="container">
+          <div class="modos__grade">
+            <!-- Jornada da Glicose -->
+            <article class="card-glass modo" data-reveal>
+              <div class="modo__cena" aria-hidden="true">
+                <span class="modo__parada" style="left: 8.5%; top: 190px"><img src="assets/fluxo/modo-esfera.svg" alt="" /><span>Sangue</span></span>
+                <span class="modo__parada" style="left: 25.3%; top: 110px"><img src="assets/fluxo/modo-esfera.svg" alt="" /><span>Membrana</span></span>
+                <span class="modo__parada modo__parada--grande" style="left: 42%; top: 190px" data-zoom-origem
+                  ><img src="assets/fluxo/modo-esfera-grande.svg" alt="" /><span>Glicólise</span></span
+                >
+                <span class="modo__parada" style="left: 58.7%; top: 110px"><img src="assets/fluxo/modo-esfera.svg" alt="" /><span>Krebs</span></span>
+                <span class="modo__parada" style="left: 75.4%; top: 190px"><img src="assets/fluxo/modo-esfera.svg" alt="" /><span>Cadeia</span></span>
+                <span class="modo__parada" style="left: 92.2%; top: 110px"><img src="assets/fluxo/modo-esfera-atp.svg" alt="" /><span>ATP</span></span>
+                <span class="modo__viajante"></span>
+              </div>
+              <div class="modo__corpo">
+                <span class="selo">Modo ciência</span>
+                <h2 class="modo__titulo">Jornada da Glicose</h2>
+                <p class="modo__texto">Siga o caminho real da respiração celular. Em cada etapa, responda um desafio para liberar energia e avançar.</p>
+                <ul class="modo__chips" role="list">
+                  <li class="chip">6 etapas reais</li>
+                  <li class="chip">Perguntas com explicação</li>
+                  <li class="chip">Contador de ATP</li>
+                  <li class="chip">~10 min</li>
+                </ul>
+                <div class="modo__acoes">
+                  <a class="btn btn--primary" href="#jornada" data-abrir-jogo="jornada">Começar jornada <span class="btn__seta" aria-hidden="true">▶</span></a>
+                  <span class="modo__recorde" data-melhor-jornada>Melhor: —</span>
+                </div>
+              </div>
+            </article>
+
+            <!-- Aventura no Mapa -->
+            <article class="card-glass modo modo--violeta" data-reveal>
+              <div class="modo__cena" aria-hidden="true">
+                <span class="modo__bloqueio" style="left: 4.1%; top: 20px"></span>
+                <span class="modo__bloqueio" style="left: 57%; top: 20px"></span>
+                <span class="modo__bloqueio" style="left: 14.7%; top: 76px"></span>
+                <span class="modo__bloqueio" style="left: 67.6%; top: 76px"></span>
+                <span class="modo__bloqueio" style="left: 25.3%; top: 132px"></span>
+                <span class="modo__bloqueio" style="left: 78.2%; top: 132px"></span>
+                <span class="modo__bloqueio" style="left: 35.8%; top: 188px"></span>
+                <span class="modo__bloqueio" style="left: 88.7%; top: 188px"></span>
+                <span class="modo__bloqueio" style="left: 46.4%; top: 244px"></span>
+                <img class="modo__atp" src="assets/fluxo/modo-atp.svg" alt="" style="left: 70%; top: 34px" />
+                <img class="modo__atp" src="assets/fluxo/modo-atp.svg" alt="" style="left: 59.4%; top: 90px" />
+                <img class="modo__atp" src="assets/fluxo/modo-atp.svg" alt="" style="left: 48.8%; top: 146px" />
+                <img class="modo__atp" src="assets/fluxo/modo-atp.svg" alt="" style="left: 27.6%; top: 258px" />
+                <img class="modo__atp" src="assets/fluxo/modo-atp.svg" alt="" style="left: 91.1%; top: 258px" />
+                <img class="modo__jogador" src="assets/fluxo/modo-jogador.svg" alt="" data-zoom-origem />
+              </div>
+              <div class="modo__corpo">
+                <span class="selo selo--violeta">Modo desafio</span>
+                <h2 class="modo__titulo">Aventura no Mapa</h2>
+                <p class="modo__texto">
+                  Enfrente um mapa cheio de obstáculos até chegar à célula — puro desafio, sem perguntas. Desvie, colete ATP e bata seu recorde.
+                </p>
+                <ul class="modo__chips" role="list">
+                  <li class="chip">Setas / WASD</li>
+                  <li class="chip">Joystick no celular</li>
+                  <li class="chip">3 vidas</li>
+                  <li class="chip">Ranking local</li>
+                </ul>
+                <div class="modo__acoes">
+                  <a class="btn btn--ghost" href="#aventura" data-abrir-jogo="aventura">Jogar aventura <span class="btn__seta" aria-hidden="true">▶</span></a>
+                  <span class="modo__recorde" data-recorde-aventura>Recorde: —</span>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <!-- Banner do terceiro jogo -->
+          <article class="banner-cozinha" data-reveal>
+            <div class="banner-cozinha__arte" aria-hidden="true">
+              <img class="banner-cozinha__brilho" src="assets/fluxo/banner-glow.svg" alt="" />
+              <img class="banner-cozinha__enzima" src="assets/fluxo/banner-enzima.svg" alt="" />
+            </div>
+            <div class="banner-cozinha__texto">
+              <span class="selo selo--rosa">Novo · estilo Overcooked</span>
+              <h2 class="banner-cozinha__titulo">Cozinha Celular: Enzima em Ação!</h2>
+              <p class="banner-cozinha__descricao">
+                Corra dentro da célula cumprindo pedidos de moléculas contra o relógio: monte proteínas, gere ATP, controle temperatura e pH e
+                derrote os radicais livres.
+              </p>
+              <div class="modo__acoes">
+                <a class="btn btn--primary" href="cozinha-celular.html">Jogar <span class="btn__seta" aria-hidden="true">▶</span></a>
+                <span class="modo__recorde">4 fases · ⭐ 1 a 3 estrelas · loja · quiz</span>
+              </div>
+            </div>
+          </article>
         </div>
+      </section>
 
-        <img src="assets/img/footer-decor.png" alt="QR Code" class="footer-qr" />
+      <!-- ================= COMO JOGAR ================= -->
+      <section class="section como-jogar" aria-labelledby="titulo-como-jogar">
+        <div class="container">
+          <div class="secao-cabeca secao-cabeca--centro" data-reveal>
+            <span class="eyebrow"><span class="eyebrow__ponto" aria-hidden="true"><img src="assets/ui/pulse-dot.svg" alt="" /></span>Como funciona</span>
+            <h2 class="secao-titulo" id="titulo-como-jogar">Três passos para entrar no fluxo</h2>
+          </div>
+          <ol class="passos" role="list">
+            <li class="card-glass passo" data-reveal>
+              <span class="passo__emoji" aria-hidden="true">🧭</span>
+              <span class="passo__numero">01</span>
+              <h3 class="card-glass__titulo">Escolha o modo</h3>
+              <p class="passo__texto">Ciência para aprender o caminho real, desafio para testar reflexos.</p>
+            </li>
+            <li class="card-glass passo" data-reveal>
+              <span class="passo__emoji" aria-hidden="true">🌊</span>
+              <span class="passo__numero">02</span>
+              <h3 class="card-glass__titulo">Siga o fluxo</h3>
+              <p class="passo__texto">Avance etapa por etapa, colete ATP e evite os obstáculos.</p>
+            </li>
+            <li class="card-glass passo" data-reveal>
+              <span class="passo__emoji" aria-hidden="true">🏆</span>
+              <span class="passo__numero">03</span>
+              <h3 class="card-glass__titulo">Ganhe conquistas</h3>
+              <p class="passo__texto">Desbloqueie medalhas e compare sua pontuação.</p>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- ================= QUIZ + CONQUISTAS ================= -->
+      <section class="section extras" aria-label="Quiz e conquistas">
+        <div class="container extras__grade">
+          <article class="card-glass cartao-quiz" data-reveal>
+            <span class="eyebrow"><span class="eyebrow__ponto" aria-hidden="true"><img src="assets/ui/pulse-dot.svg" alt="" /></span>Também no laboratório</span>
+            <h2 class="cartao-quiz__titulo">Quiz de Bioquímica</h2>
+            <p class="cartao-quiz__texto">
+              Responda às perguntas e descubra o quanto você sabe sobre as biomoléculas, reações químicas e processos que mantêm os seres vivos
+              funcionando.
+            </p>
+            <a class="btn btn--primary" href="quiz.html">Começar quiz <span class="btn__seta" aria-hidden="true">→</span></a>
+          </article>
+
+          <article class="card-glass conquistas" data-sem-tilt data-reveal aria-labelledby="titulo-conquistas">
+            <div class="conquistas__topo">
+              <h2 class="conquistas__titulo" id="titulo-conquistas">Suas conquistas</h2>
+              <span class="conquistas__resumo" data-conquistas-resumo></span>
+            </div>
+            <ul class="conquistas__grade" role="list" data-conquistas></ul>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer data-footer></footer>
+
+    <!-- ================= JOGOS (tela cheia) ================= -->
+    <div class="jogo" data-jogo hidden role="dialog" aria-modal="true" aria-label="Jogo do Fluxo">
+      <img class="jogo__brilho jogo__brilho--1" src="assets/fluxo/jornada-glow-1.svg" alt="" aria-hidden="true" />
+      <img class="jogo__brilho jogo__brilho--2" src="assets/fluxo/jornada-glow-2.svg" alt="" aria-hidden="true" />
+      <div class="hemacias" aria-hidden="true">
+        <img src="assets/fluxo/hemacia.svg" alt="" style="top: 18%; width: 20px; animation-duration: 16s; animation-delay: -2s" />
+        <img src="assets/fluxo/hemacia.svg" alt="" style="top: 29%; width: 57px; animation-duration: 22s; animation-delay: -9s" />
+        <img src="assets/fluxo/hemacia.svg" alt="" style="top: 39%; width: 44px; animation-duration: 19s; animation-delay: -4s" />
+        <img src="assets/fluxo/hemacia.svg" alt="" style="top: 50%; width: 31px; animation-duration: 25s; animation-delay: -15s" />
+        <img src="assets/fluxo/hemacia.svg" alt="" style="top: 61%; width: 68px; animation-duration: 21s; animation-delay: -7s" />
+        <img src="assets/fluxo/hemacia.svg" alt="" style="top: 72%; width: 55px; animation-duration: 18s; animation-delay: -12s" />
+        <img src="assets/fluxo/hemacia.svg" alt="" style="top: 82%; width: 42px; animation-duration: 23s; animation-delay: -1s" />
+        <img src="assets/fluxo/hemacia.svg" alt="" style="top: 22%; width: 29px; animation-duration: 17s; animation-delay: -11s" />
+        <img src="assets/fluxo/hemacia.svg" alt="" style="top: 33%; width: 66px; animation-duration: 24s; animation-delay: -18s" />
+        <img src="assets/fluxo/hemacia.svg" alt="" style="top: 44%; width: 53px; animation-duration: 20s; animation-delay: -3s" />
+        <img src="assets/fluxo/hemacia.svg" alt="" style="top: 76%; width: 64px; animation-duration: 26s; animation-delay: -20s" />
+        <img src="assets/fluxo/hemacia.svg" alt="" style="top: 88%; width: 51px; animation-duration: 19s; animation-delay: -8s" />
       </div>
-
-      <div class="container footer-bottom">
-        <p>2026 Bioquímica - A química da vida. Todos os direitos reservados</p>
-      </div>
-    </footer>
-
-    <script src="js/main.js" defer></script>
-    <script src="js/motion.js" defer></script>
-    <script src="js/fluxo-mapa.js" defer></script>
-    <script src="js/biolab.js" defer></script>
+      <div class="jogo__palco" data-jogo-palco></div>
+    </div>
   </body>
 </html>

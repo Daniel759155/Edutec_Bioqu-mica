@@ -88,6 +88,10 @@ export class Jogo {
       ranking: () => this.ui.abrirModal("RANKING", this._htmlRanking()),
       configuracoes: () => this._abrirConfiguracoes(),
     });
+
+    // Links da página do jogo no site: index.html#ranking / #como-jogar abrem o modal.
+    if (location.hash === "#ranking") this.ui.abrirModal("RANKING", this._htmlRanking());
+    else if (location.hash === "#como-jogar") this.ui.abrirModal("COMO JOGAR", this._htmlComoJogar());
   }
 
   _definirQualidade(valor) {

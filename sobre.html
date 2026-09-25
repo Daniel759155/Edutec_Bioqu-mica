@@ -2,265 +2,224 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <script>
-      (function () {
-        try {
-          var stored = localStorage.getItem("theme");
-          var theme =
-            stored ||
-            (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-          document.documentElement.setAttribute("data-theme", theme);
-        } catch (e) {}
-      })();
-    </script>
-    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>O que é Bioquímica | Bioquímica</title>
+    <meta
+      name="description"
+      content="O que é a Bioquímica, por que ela é importante para a saúde, a alimentação e a pesquisa, e como essa ciência evoluiu do século XIX até hoje."
+    />
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+
+    <!-- Fontes: Space Grotesk (títulos), Inter (texto), JetBrains Mono (rótulos) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,wght@0,600;0,700;0,900;1,500;1,600&family=Space+Mono:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&family=Space+Grotesk:wght@500;700&display=swap"
       rel="stylesheet"
     />
+
     <link rel="stylesheet" href="css/tokens.css" />
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/components.css" />
-    <title>O que é Bioquímica — Bioquímica</title>
+    <link rel="stylesheet" href="css/sobre.css" />
+
+    <!-- Esconde os elementos [data-reveal] antes da primeira pintura (o JS anima a entrada). -->
+    <script>
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("js-anima");
+    </script>
+
+    <!-- Three.js e addons via CDN (módulos ES, sem Node/npm) -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
+    <!-- GSAP + ScrollTrigger e vanilla-tilt (globais: window.gsap, window.VanillaTilt) -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js" defer></script>
+    <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/sobre.js"></script>
   </head>
-  <body>
-    <header class="header">
-      <div class="container logo">
-        <img src="assets/img/logo.png" alt="Bioquímica" />
-        <div class="logo-text">
-          <p class="logo-title">BIOQUÍMICA</p>
-          <p class="logo-sub">A química da vida</p>
+  <body data-pagina="sobre">
+    <header data-navbar></header>
+
+    <main>
+      <!-- ================= HERO ================= -->
+      <section class="hero-pagina hero-sobre" aria-labelledby="titulo-sobre">
+        <div class="hero-pagina__foto" data-parallax="0.3" aria-hidden="true"><img src="assets/sobre/hero-bg.png" alt="" /></div>
+        <div class="hero-pagina__grade" aria-hidden="true"></div>
+        <div class="hero-pagina__brilho hero-pagina__brilho--1" aria-hidden="true"><img src="assets/inicio/glow-hero-1.svg" alt="" /></div>
+        <div class="hero-pagina__brilho hero-pagina__brilho--2" aria-hidden="true"><img src="assets/inicio/glow-hero-2.svg" alt="" /></div>
+        <div class="hero-sobre__glicose" data-3d="glicose" data-fallback="assets/3d/glicose.svg" data-fallback-alt="" aria-hidden="true"></div>
+
+        <div class="container">
+          <div class="hero-pagina__conteudo">
+            <nav aria-label="Você está em">
+              <ol class="breadcrumb">
+                <li><a href="index.html">Bioquímica</a></li>
+                <li><span aria-current="page">O que é Bioquímica</span></li>
+              </ol>
+            </nav>
+            <span class="eyebrow"><span class="eyebrow__ponto" aria-hidden="true"><img src="assets/ui/pulse-dot.svg" alt="" /></span>Sobre a ciência</span>
+            <h1 class="hero-pagina__titulo" id="titulo-sobre" data-embaralhar>O que é Bioquímica</h1>
+            <p class="hero-pagina__slogan">Entenda a química que existe na vida</p>
+            <p class="hero-pagina__texto">A Bioquímica é a ciência que estuda as moléculas e as reações químicas que ocorrem nos seres vivos.</p>
+          </div>
         </div>
-        <button
-          id="theme-toggle"
-          class="theme-toggle"
-          type="button"
-          aria-label="Alternar modo escuro"
-          aria-pressed="false"
-        >
-          <svg class="theme-toggle-icon icon-sun" viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="12" cy="12" r="5"></circle>
-            <path
-              d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
-            ></path>
-          </svg>
-          <svg class="theme-toggle-icon icon-moon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 1020.354 15.354z"></path>
-          </svg>
-        </button>
-        <nav style="margin-left: auto">
-          <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-links">
-            <span></span><span></span><span></span>
-          </button>
-          <ul class="nav-links" id="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="inicio.html#inicio">Início</a></li>
-            <li><a href="sobre.html" class="active">O que é Bioquímica</a></li>
-            <li><a href="historia.html">História</a></li>
-            <li><a href="biomoleculas.html">Biomoléculas</a></li>
-            <li class="nav-item-dropdown">
-              <button type="button" class="nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
-                Jogos
-                <svg class="nav-dropdown-arrow" viewBox="0 0 12 8" aria-hidden="true">
-                  <path
-                    d="M1 1l5 5 5-5"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  ></path>
-                </svg>
-              </button>
-              <ul class="nav-dropdown-menu">
-                <li><a href="cozinha-celular/index.html">Código Celular</a></li>
-              </ul>
+      </section>
+
+      <!-- ================= DEFINIÇÃO + VENN ================= -->
+      <section class="section definicao" aria-labelledby="titulo-definicao">
+        <div class="container definicao__grade">
+          <div class="definicao__texto" data-reveal>
+            <span class="eyebrow"><span class="eyebrow__ponto" aria-hidden="true"><img src="assets/ui/pulse-dot.svg" alt="" /></span>Definição</span>
+            <h2 class="secao-titulo" id="titulo-definicao">O que é Bioquímica?</h2>
+            <p>
+              A Bioquímica é o ramo da ciência que investiga a composição química dos seres vivos e as transformações que ocorrem em seu interior. Ela
+              une conhecimentos da Química e da Biologia para compreender como proteínas, carboidratos, lipídios e ácidos nucleicos participam do
+              funcionamento do organismo.
+            </p>
+            <p>
+              Além de explicar processos celulares, a Bioquímica também contribui para o desenvolvimento de medicamentos, diagnósticos laboratoriais,
+              pesquisas científicas e avanços na biotecnologia.
+            </p>
+          </div>
+
+          <div class="definicao__visual" data-venn>
+            <figure class="definicao__foto">
+              <img
+                src="assets/sobre/pesquisadora.jpg"
+                alt="Pesquisadora de jaleco, máscara e óculos de proteção observando um frasco no laboratório"
+                loading="lazy"
+                data-parallax-local="0.12"
+              />
+            </figure>
+            <div class="venn-card" role="img" aria-label="Diagrama: a Bioquímica é a interseção entre a Química e a Biologia">
+              <div class="venn" aria-hidden="true">
+                <div class="venn__circulo venn__circulo--quimica" data-venn-esq>
+                  <img src="assets/sobre/venn-quimica.svg" alt="" />
+                  <span class="venn__rotulo">Química</span>
+                </div>
+                <div class="venn__circulo venn__circulo--biologia" data-venn-dir>
+                  <img src="assets/sobre/venn-biologia.svg" alt="" />
+                  <span class="venn__rotulo">Biologia</span>
+                </div>
+                <span class="venn__centro" data-venn-centro>BIO<br />QUÍMICA</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= IMPORTÂNCIA ================= -->
+      <section class="section importancia" aria-labelledby="titulo-importancia">
+        <div class="container">
+          <div class="secao-cabeca secao-cabeca--centro" data-reveal>
+            <span class="eyebrow"><span class="eyebrow__ponto" aria-hidden="true"><img src="assets/ui/pulse-dot.svg" alt="" /></span>Importância</span>
+            <h2 class="secao-titulo" id="titulo-importancia">Por que a Bioquímica é importante?</h2>
+          </div>
+
+          <div class="importancia__grade">
+            <article class="card-glass importancia__card" data-reveal>
+              <span class="importancia__icone"><img src="assets/sobre/icon-saude.png" alt="" /></span>
+              <h3 class="card-glass__titulo">Saúde</h3>
+              <p class="card-glass__texto">Ajuda a compreender doenças, desenvolver medicamentos e melhorar tratamentos médicos.</p>
+            </article>
+            <article class="card-glass importancia__card importancia__card--amber" data-reveal>
+              <span class="importancia__icone"><img src="assets/sobre/icon-alimentacao.png" alt="" /></span>
+              <h3 class="card-glass__titulo">Alimentação</h3>
+              <p class="card-glass__texto">Explica como os nutrientes são transformados em energia e utilizados pelo corpo.</p>
+            </article>
+            <article class="card-glass importancia__card importancia__card--violeta" data-reveal>
+              <span class="importancia__icone"><img src="assets/sobre/icon-biotecnologia.png" alt="" /></span>
+              <h3 class="card-glass__titulo">Biotecnologia</h3>
+              <p class="card-glass__texto">Contribui para avanços em engenharia genética, produção de vacinas e novas tecnologias.</p>
+            </article>
+            <article class="card-glass importancia__card importancia__card--cyan" data-reveal>
+              <span class="importancia__icone"><img src="assets/sobre/icon-pesquisa.png" alt="" /></span>
+              <h3 class="card-glass__titulo">Pesquisa Científica</h3>
+              <p class="card-glass__texto">
+                Permite entender processos biológicos fundamentais e impulsiona descobertas importantes para a sociedade.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= HISTÓRIA RESUMIDA (timeline) ================= -->
+      <section class="section historia-resumida" aria-labelledby="titulo-historia">
+        <div class="container">
+          <div class="secao-cabeca" data-reveal>
+            <span class="eyebrow"><span class="eyebrow__ponto" aria-hidden="true"><img src="assets/ui/pulse-dot.svg" alt="" /></span>História da Bioquímica</span>
+            <h2 class="secao-titulo" id="titulo-historia">Uma ciência em constante evolução</h2>
+          </div>
+
+          <ol class="linha-tempo" data-linha-tempo>
+            <li class="marco">
+              <span class="marco__ponto" aria-hidden="true">
+                <img class="marco__ponto-apagado" src="assets/sobre/marco-ponto-apagado.svg" alt="" />
+                <img class="marco__ponto-aceso" src="assets/sobre/marco-ponto.svg" alt="" />
+              </span>
+              <article class="card-glass marco__card">
+                <div class="marco__topo">
+                  <span class="marco__icone"><img src="assets/sobre/marco-seculo-xix.png" alt="" /></span>
+                  <h3 class="marco__periodo">Século XIX</h3>
+                </div>
+                <p class="marco__texto">Os primeiros estudos relacionaram substâncias químicas aos processos que ocorrem nos organismos vivos.</p>
+              </article>
             </li>
-            <li><a href="contato.html">Contato</a></li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-
-    <section id="inicio" class="hero">
-      <img src="assets/img/about-hero-bg.png" alt="" class="hero-bg" />
-      <div class="hero-overlay"></div>
-      <div class="container hero-content">
-        <h1 class="hero-title">O que é Bioquímica</h1>
-        <p class="hero-subtitle">Entenda a química que existe na vida</p>
-        <img src="assets/icons/underline.svg" alt="" class="hero-underline" />
-        <p class="hero-text">
-          A Bioquímica é a ciência que estuda as moléculas e as reações
-          químicas que ocorrem nos seres vivos.
-        </p>
-      </div>
-    </section>
-
-    <nav class="breadcrumb" aria-label="Você está aqui">
-      <ol class="breadcrumb-list container">
-        <li><a href="index.html">Bioquímica</a></li>
-        <li class="breadcrumb-sep" aria-hidden="true">/</li>
-        <li aria-current="page">O que é Bioquímica</li>
-      </ol>
-    </nav>
-
-    <section id="definicao" class="definicao">
-      <div class="container">
-        <div>
-          <p class="eyebrow">DEFINIÇÃO</p>
-          <h2 class="definicao-title">O que é Bioquímica?</h2>
-          <p class="definicao-text">
-            A Bioquímica é o ramo da ciência que investiga a composição
-            química dos seres vivos e as transformações que ocorrem em seu
-            interior. Ela une conhecimentos da Química e da Biologia para
-            compreender como proteínas, carboidratos, lipídios e ácidos
-            nucleicos participam do funcionamento do organismo.
-          </p>
-          <p class="definicao-text">
-            Além de explicar processos celulares, a Bioquímica também
-            contribui para o desenvolvimento de medicamentos, diagnósticos
-            laboratoriais, pesquisas científicas e avanços na biotecnologia.
-          </p>
-        </div>
-        <img src="assets/img/about-lab.png" alt="Pesquisadora em laboratório" class="definicao-img" />
-      </div>
-    </section>
-
-    <section class="importance">
-      <div class="container">
-        <div class="importance-header">
-          <p class="eyebrow">IMPORTÂNCIA</p>
-          <h2 class="section-title">Por que a Bioquímica é importante?</h2>
-        </div>
-        <div class="importance-grid reveal">
-          <div class="importance-item">
-            <div class="icon-circle">
-              <img src="assets/icons/icon-healthcare.png" alt="" />
-            </div>
-            <h3>Saúde</h3>
-            <p>Ajuda a compreender doenças, desenvolver medicamentos e melhorar tratamentos médicos.</p>
-          </div>
-          <div class="importance-item">
-            <div class="icon-circle">
-              <img src="assets/icons/icon-healthy-food.png" alt="" />
-            </div>
-            <h3>Alimentação</h3>
-            <p>Explica como os nutrientes são transformados em energia e utilizados pelo corpo.</p>
-          </div>
-          <div class="importance-item">
-            <div class="icon-circle">
-              <img src="assets/icons/icon-dna.png" alt="" />
-            </div>
-            <h3>Biotecnologia</h3>
-            <p>Contribui para avanços em engenharia genética, produção de vacinas e novas tecnologias.</p>
-          </div>
-          <div class="importance-item">
-            <div class="icon-circle">
-              <img src="assets/icons/icon-microscope.png" alt="" />
-            </div>
-            <h3>Pesquisa Científica</h3>
-            <p>Permite entender processos biológicos fundamentais e impulsiona descobertas importantes para a sociedade.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="historia" class="historia">
-      <div class="container">
-        <div class="historia-header">
-          <p class="eyebrow">HISTÓRIA DA BIOQUÍMICA</p>
-          <h2 class="section-title">Uma ciência em constante evolução</h2>
-        </div>
-        <div class="timeline reveal">
-          <div class="timeline-item">
-            <p class="timeline-period">Século XIX</p>
-            <div class="icon-circle">
-              <img src="assets/icons/icon-flask.png" alt="" />
-            </div>
-            <p>Os primeiros estudos relacionaram substâncias químicas aos processos que ocorrem nos organismos vivos.</p>
-          </div>
-          <div class="timeline-item">
-            <p class="timeline-period">1900 – 1950</p>
-            <div class="icon-circle">
-              <img src="assets/icons/icon-atom.png" alt="" />
-            </div>
-            <p>Foram identificadas diversas enzimas, vitaminas e mecanismos metabólicos importantes.</p>
-          </div>
-          <div class="timeline-item">
-            <p class="timeline-period">1950 – 2000</p>
-            <div class="icon-circle">
-              <img src="assets/icons/icon-dna.png" alt="" />
-            </div>
-            <p>A descoberta da estrutura do DNA revolucionou a genética e ampliou o conhecimento sobre a vida.</p>
-          </div>
-          <div class="timeline-item">
-            <p class="timeline-period">2000 – Atualidade</p>
-            <div class="icon-circle">
-              <img src="assets/icons/icon-bar-chart.png" alt="" />
-            </div>
-            <p>O avanço da genômica, da proteômica e da biotecnologia continua transformando a medicina e a pesquisa científica.</p>
-          </div>
-        </div>
-        <p style="text-align: center; margin-top: 2.5rem">
-          <a href="historia.html" class="card-link" style="justify-content: center">
-            Ver a história completa da Bioquímica
-            <img src="assets/icons/arrow-teal.svg" alt="" />
-          </a>
-        </p>
-      </div>
-    </section>
-
-    <footer class="footer">
-      <div class="container footer-grid">
-        <div class="footer-brand">
-          <img src="assets/img/logo.png" alt="Bioquímica" />
-          <p class="footer-brand-title">BIOQUÍMICA</p>
-          <p class="footer-brand-sub">A química da vida</p>
-        </div>
-
-        <div>
-          <h3>Navegação</h3>
-          <ul class="footer-list">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="inicio.html#inicio">Início</a></li>
-            <li><a href="sobre.html">O que é bioquímica</a></li>
-            <li><a href="historia.html">História</a></li>
-            <li><a href="biomoleculas.html">Biomoléculas</a></li>
-            <li><a href="cozinha-celular/index.html">Código Celular</a></li>
-            <li><a href="contato.html">Quem somos / Contato</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <h3><a href="contato.html#contato">Contato</a></h3>
-          <ul class="footer-list">
-            <li class="footer-contact-item">
-              <img src="assets/icons/icon-email.png" alt="" />
-              <a href="mailto:bioquimica22ati@gmail.com">bioquimica22ati@gmail.com</a>
+            <li class="marco">
+              <span class="marco__ponto" aria-hidden="true">
+                <img class="marco__ponto-apagado" src="assets/sobre/marco-ponto-apagado.svg" alt="" />
+                <img class="marco__ponto-aceso" src="assets/sobre/marco-ponto.svg" alt="" />
+              </span>
+              <article class="card-glass marco__card">
+                <div class="marco__topo">
+                  <span class="marco__icone"><img src="assets/sobre/marco-1900.png" alt="" /></span>
+                  <h3 class="marco__periodo">1900 – 1950</h3>
+                </div>
+                <p class="marco__texto">Foram identificadas diversas enzimas, vitaminas e mecanismos metabólicos importantes.</p>
+              </article>
             </li>
-            <li class="footer-contact-item">
-              <img src="assets/icons/icon-phone.png" alt="" />
-              <span>+55 (11)4002-8922</span>
+            <li class="marco">
+              <span class="marco__ponto" aria-hidden="true">
+                <img class="marco__ponto-apagado" src="assets/sobre/marco-ponto-apagado.svg" alt="" />
+                <img class="marco__ponto-aceso" src="assets/sobre/marco-ponto.svg" alt="" />
+              </span>
+              <article class="card-glass marco__card">
+                <div class="marco__topo">
+                  <span class="marco__icone"><img src="assets/sobre/icon-biotecnologia.png" alt="" /></span>
+                  <h3 class="marco__periodo">1950 – 2000</h3>
+                </div>
+                <p class="marco__texto">A descoberta da estrutura do DNA revolucionou a genética e ampliou o conhecimento sobre a vida.</p>
+              </article>
             </li>
-            <li class="footer-contact-item">
-              <img src="assets/icons/icon-location.png" alt="" />
-              <span>Estrada de Itapecerica, 67 — Boca da Mata - SP</span>
+            <li class="marco">
+              <span class="marco__ponto" aria-hidden="true">
+                <img class="marco__ponto-apagado" src="assets/sobre/marco-ponto-apagado.svg" alt="" />
+                <img class="marco__ponto-aceso" src="assets/sobre/marco-ponto.svg" alt="" />
+              </span>
+              <article class="card-glass marco__card">
+                <div class="marco__topo">
+                  <span class="marco__icone"><img src="assets/sobre/marco-2000.png" alt="" /></span>
+                  <h3 class="marco__periodo">2000 – Atualidade</h3>
+                </div>
+                <p class="marco__texto">
+                  O avanço da genômica, da proteômica e da biotecnologia continua transformando a medicina e a pesquisa científica.
+                </p>
+              </article>
             </li>
-          </ul>
+          </ol>
+
+          <a class="btn btn--link" href="historia.html">Ver a história completa da Bioquímica <span class="btn__seta" aria-hidden="true">→</span></a>
         </div>
+      </section>
+    </main>
 
-        <img src="assets/img/footer-decor.png" alt="QR Code" class="footer-qr" />
-      </div>
-
-      <div class="container footer-bottom">
-        <p>2026 Bioquímica - A química da vida. Todos os direitos reservados</p>
-      </div>
-    </footer>
-
-    <script src="js/main.js" defer></script>
-    <script src="js/motion.js" defer></script>
+    <footer data-footer></footer>
   </body>
 </html>

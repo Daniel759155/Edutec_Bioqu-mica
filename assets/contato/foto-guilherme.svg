@@ -1,3 +1,9 @@
-<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="238" height="224" viewBox="0 0 238 224" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path id="Ellipse 26" d="M119 1.5C183.98 1.5 236.5 51.0569 236.5 112C236.5 172.943 183.98 222.5 119 222.5C54.0196 222.5 1.5 172.943 1.5 112C1.5 51.0569 54.0196 1.5 119 1.5Z" fill="#D9D9D9" stroke="#14B8A6" stroke-width="3"/>
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="142" height="142" viewBox="0 0 142 142" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle id="Foto" cx="71" cy="71" r="71" fill="url(#paint0_radial_0_8)"/>
+<defs>
+<radialGradient id="paint0_radial_0_8" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(71 71) scale(71)">
+<stop stop-color="#1E2A40"/>
+<stop offset="1" stop-color="#0B1220"/>
+</radialGradient>
+</defs>
 </svg>

@@ -42,7 +42,7 @@ export const CONFIG = {
   },
 };
 
-// Paleta do guia visual (Figma · "Guia visual · Código Celular").
+// Paleta do guia visual (Figma · "Guia visual · Cozinha Celular").
 export const CORES = {
   enzima: 0x22d3a6,
   atp: 0xffd24d,

@@ -1,0 +1,748 @@
+/* =========================================================
+   INÍCIO (inicio.html) — Figma: 02 · Início — Explore o conteúdo
+   ========================================================= */
+
+/* ---------- HERO ---------- */
+.hero-inicio .hero-pagina__brilho--1 {
+  left: -360px;
+  top: -400px;
+}
+
+.hero-inicio .hero-pagina__brilho--2 {
+  left: calc(50% + 20px);
+  top: -160px;
+}
+
+/* Átomo orbital: no celular fica atrás do texto, mais apagado */
+.hero-inicio__atomo {
+  position: absolute;
+  z-index: -1;
+  top: 90px;
+  right: -90px;
+  width: 300px;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+@media (min-width: 1100px) {
+  .hero-inicio__atomo {
+    top: 180px;
+    right: auto;
+    left: calc(50% + 240px);
+    width: 420px;
+    opacity: 1;
+  }
+}
+
+/* ---------- O QUE É A BIOQUÍMICA ---------- */
+.definicao__grade {
+  display: grid;
+  gap: 48px;
+  align-items: center;
+}
+
+.definicao__imagem {
+  position: relative;
+  aspect-ratio: 560 / 440;
+  overflow: hidden;
+  border: 1px solid var(--glass-border-soft);
+  border-radius: 36px;
+  background: var(--bg-800);
+}
+
+.definicao__imagem img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1.2s var(--ease-out);
+}
+
+.definicao__imagem:hover img {
+  transform: scale(1.04);
+}
+
+.definicao__imagem::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(142deg, rgba(6, 10, 19, 0.1) 0%, rgba(139, 92, 246, 0.35) 100%);
+  pointer-events: none;
+}
+
+.definicao__selo {
+  position: absolute;
+  left: 23px;
+  bottom: 23px;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-pill);
+  background: linear-gradient(167deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.02) 100%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-card);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.definicao__selo span {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.definicao__texto {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.definicao__texto p {
+  font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  line-height: 1.65;
+  color: var(--text-soft);
+}
+
+.definicao__texto p + p {
+  color: var(--muted);
+}
+
+.definicao__texto .btn {
+  font-weight: 600;
+}
+
+@media (min-width: 900px) {
+  .definicao__grade {
+    grid-template-columns: 1fr 1fr;
+    gap: 72px;
+  }
+}
+
+/* ---------- PRINCIPAIS BIOMOLÉCULAS ---------- */
+.biomols {
+  background: var(--bg-800);
+}
+
+.biomols__grade {
+  display: grid;
+  gap: 24px;
+  align-items: start;
+}
+
+/* Cada card tem sua cor (--cor / --cor-rgb) */
+.biomol {
+  --cor: var(--teal);
+  --cor-rgb: 46, 242, 196;
+  gap: 20px;
+  padding: 28px;
+  color: inherit;
+}
+
+.biomol--carboidratos {
+  --cor: var(--amber);
+  --cor-rgb: 255, 181, 71;
+}
+
+.biomol--lipidios {
+  --cor: var(--pink);
+  --cor-rgb: 244, 114, 182;
+}
+
+.biomol--acidos {
+  --cor: var(--violet);
+  --cor-rgb: 139, 92, 246;
+}
+
+/* A cor do card "acende" no hover */
+.biomol.card-glass:hover {
+  border-color: rgba(var(--cor-rgb), 0.6);
+  box-shadow:
+    var(--shadow-card),
+    0 0 32px rgba(var(--cor-rgb), 0.18);
+}
+
+.biomol.card-glass::before {
+  background: radial-gradient(360px circle at var(--x) var(--y), rgba(var(--cor-rgb), 0.12), transparent 60%);
+}
+
+.biomol__icone {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 150px;
+  border-radius: 20px;
+  background: radial-gradient(
+    ellipse 60% 60% at 50% 50%,
+    rgba(var(--cor-rgb), 0.3) 0%,
+    rgba(var(--cor-rgb), 0.12) 50%,
+    rgba(11, 18, 32, 0) 100%
+  );
+  perspective: 600px;
+}
+
+.biomol__icone img {
+  width: 110px;
+  height: 110px;
+  object-fit: cover;
+  transition: transform 1.2s var(--ease-out);
+}
+
+/* Hover: ícone gira em 3D (rotateY 360°, 1.2s) */
+.biomol:hover .biomol__icone img,
+.biomol:focus-visible .biomol__icone img {
+  transform: rotateY(360deg);
+}
+
+.biomol__titulo {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 24px;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  color: var(--text);
+}
+
+.biomol__texto {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.biomol__link {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--cor);
+}
+
+.biomol__link span {
+  display: inline-block;
+  transition: transform var(--dur-fast) ease;
+}
+
+.biomol:hover .biomol__link span {
+  transform: translateX(4px);
+}
+
+@media (min-width: 640px) {
+  .biomols__grade {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1100px) {
+  .biomols__grade {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ---------- APLICAÇÕES (lista interativa) ---------- */
+.aplicacoes__lista {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.aplicacao {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas:
+    "icone titulo seta"
+    "texto texto texto";
+  align-items: center;
+  gap: 16px 20px;
+  padding: 24px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  isolation: isolate;
+}
+
+/* Gradiente teal que "entra" da esquerda no hover (scaleX 0 → 1) */
+.aplicacao::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(90deg, rgba(46, 242, 196, 0.08) 0%, rgba(46, 242, 196, 0) 100%);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 500ms var(--ease-out);
+}
+
+.aplicacao:hover::before,
+.aplicacao.ativa::before {
+  transform: scaleX(1);
+}
+
+.aplicacao__numero {
+  display: none;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--faint);
+}
+
+.aplicacao__icone {
+  grid-area: icone;
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.22) 0%, rgba(139, 92, 246, 0.15) 100%);
+  transition:
+    border-color var(--dur-med) ease,
+    background var(--dur-med) ease;
+}
+
+.aplicacao__icone img {
+  width: 36px;
+  height: 36px;
+  object-fit: cover;
+}
+
+.aplicacao__titulo {
+  grid-area: titulo;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.625rem, 1.2rem + 1.5vw, 2.25rem);
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+  color: var(--text);
+  transition: color var(--dur-fast) ease;
+}
+
+.aplicacao__texto {
+  grid-area: texto;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.aplicacao__seta {
+  grid-area: seta;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  font-size: 24px;
+  line-height: 1;
+  color: var(--faint);
+  transition:
+    color var(--dur-fast) ease,
+    transform var(--dur-fast) ease;
+}
+
+.aplicacao__seta::before {
+  content: "→";
+}
+
+.aplicacao:hover .aplicacao__titulo,
+.aplicacao.ativa .aplicacao__titulo,
+.aplicacao:hover .aplicacao__seta,
+.aplicacao.ativa .aplicacao__seta {
+  color: var(--teal);
+}
+
+.aplicacao:hover .aplicacao__seta::before,
+.aplicacao.ativa .aplicacao__seta::before {
+  content: "↗";
+}
+
+.aplicacao:hover .aplicacao__icone,
+.aplicacao.ativa .aplicacao__icone {
+  border-color: rgba(46, 242, 196, 0.35);
+  background: linear-gradient(135deg, rgba(46, 242, 196, 0.22) 0%, rgba(139, 92, 246, 0.15) 100%);
+}
+
+/* Prévia flutuante do ícone que segue o mouse */
+.aplicacoes__previa {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  width: 120px;
+  height: 120px;
+  border: 1px solid rgba(46, 242, 196, 0.35);
+  border-radius: 32px;
+  background: linear-gradient(135deg, rgba(46, 242, 196, 0.22) 0%, rgba(139, 92, 246, 0.15) 100%), rgba(11, 18, 32, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-card), var(--glow-teal);
+  pointer-events: none;
+  opacity: 0;
+  scale: 0.6;
+  transition:
+    opacity 250ms ease,
+    scale 250ms var(--ease-out);
+}
+
+.aplicacoes__previa.visivel {
+  opacity: 1;
+  scale: 1;
+}
+
+.aplicacoes__previa img {
+  width: 68px;
+  height: 68px;
+}
+
+@media (min-width: 900px) {
+  .aplicacao {
+    grid-template-columns: auto 72px 300px 1fr auto;
+    grid-template-areas: "numero icone titulo texto seta";
+    gap: 32px;
+    padding: 28px 8px;
+  }
+
+  .aplicacao__numero {
+    display: block;
+    grid-area: numero;
+  }
+
+  .aplicacao__icone {
+    width: 72px;
+    height: 72px;
+    border-radius: 22px;
+  }
+
+  .aplicacao__icone img {
+    width: 42px;
+    height: 42px;
+  }
+
+  .aplicacao__texto {
+    max-width: 560px;
+  }
+}
+
+/* ---------- CURIOSIDADES (flip cards) ---------- */
+.curiosidades {
+  background: var(--bg-800);
+}
+
+.curiosidades__grade {
+  display: grid;
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.flip {
+  --cor: var(--teal);
+  min-height: 373px;
+  perspective: 1200px;
+}
+
+.flip--energia {
+  --cor: var(--amber);
+}
+
+.flip--violeta {
+  --cor: var(--violet);
+}
+
+.flip__botao {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 800ms var(--ease-out);
+}
+
+.flip.virado .flip__botao {
+  transform: rotateY(180deg);
+}
+
+.flip__face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 36px;
+  border: 1px solid var(--glass-border);
+  border-radius: 32px;
+  background: linear-gradient(136deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.02) 100%), var(--bg-800);
+  box-shadow: var(--shadow-card);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transition: border-color var(--dur-med) ease;
+}
+
+.flip__botao:hover .flip__face,
+.flip__botao:focus-visible .flip__face {
+  border-color: color-mix(in srgb, var(--cor) 55%, transparent);
+}
+
+.flip__face--verso {
+  justify-content: center;
+  transform: rotateY(180deg);
+  background:
+    radial-gradient(120% 90% at 0% 0%, color-mix(in srgb, var(--cor) 16%, transparent) 0%, transparent 60%),
+    linear-gradient(136deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.02) 100%),
+    var(--bg-800);
+}
+
+.flip__topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.flip__ilustracao {
+  width: 84px;
+  height: 84px;
+  border-radius: 20px;
+  object-fit: cover;
+}
+
+.flip__girar {
+  font-size: 22px;
+  line-height: 1;
+  color: var(--faint);
+  transition:
+    transform 600ms var(--ease-out),
+    color var(--dur-fast) ease;
+}
+
+.flip__botao:hover .flip__girar {
+  color: var(--cor);
+  transform: rotate(180deg);
+}
+
+.flip__numero {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.75rem, 2.2rem + 1.6vw, 3.5rem);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  white-space: nowrap;
+  background: linear-gradient(90deg, var(--cor) 0%, var(--text) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.flip__texto {
+  max-width: 320px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-soft);
+}
+
+.flip__rotulo {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--cor);
+}
+
+.flip__verso-texto {
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+.flip__fonte {
+  margin-top: auto;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--faint);
+}
+
+@media (min-width: 900px) {
+  .curiosidades__grade {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ---------- MINI-QUIZ (verdadeiro ou falso) ---------- */
+.mini-quiz {
+  padding-block: clamp(64px, 8vw, 100px);
+}
+
+.quiz-card {
+  position: relative;
+  display: grid;
+  gap: 32px;
+  padding: clamp(28px, 4vw, 48px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(168deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.02) 100%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-card);
+  transition:
+    border-color var(--dur-med) ease,
+    box-shadow var(--dur-med) ease;
+}
+
+.quiz-card.acertou {
+  border-color: rgba(46, 242, 196, 0.8);
+  box-shadow:
+    var(--shadow-card),
+    0 0 40px rgba(46, 242, 196, 0.25);
+}
+
+.quiz-card.errou {
+  border-color: rgba(255, 92, 122, 0.7);
+  animation: tremer 450ms ease;
+}
+
+@keyframes tremer {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-10px);
+  }
+  40% {
+    transform: translateX(9px);
+  }
+  60% {
+    transform: translateX(-6px);
+  }
+  80% {
+    transform: translateX(4px);
+  }
+}
+
+.quiz-card__texto {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  max-width: 640px;
+}
+
+.quiz-card__pergunta {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.125rem);
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+  color: var(--text);
+}
+
+.quiz-card__dica {
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+/* Explicação depois da resposta */
+.quiz-card__explicacao {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-soft);
+}
+
+.quiz-card__explicacao strong {
+  color: var(--teal);
+}
+
+.quiz-card.errou .quiz-card__explicacao strong {
+  color: var(--danger);
+}
+
+.quiz-card__acoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+}
+
+.quiz-botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 32px;
+  border: 1px solid rgba(46, 242, 196, 0.5);
+  border-radius: var(--radius-md);
+  background: rgba(46, 242, 196, 0.1);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--teal);
+  cursor: pointer;
+  transition:
+    background var(--dur-fast) ease,
+    box-shadow var(--dur-fast) ease,
+    transform var(--dur-fast) ease,
+    opacity var(--dur-fast) ease;
+}
+
+.quiz-botao:hover:not(:disabled) {
+  background: rgba(46, 242, 196, 0.18);
+  box-shadow: var(--glow-teal);
+  transform: translateY(-2px);
+}
+
+.quiz-botao--falso {
+  border-color: rgba(255, 92, 122, 0.5);
+  background: rgba(255, 92, 122, 0.1);
+  color: var(--danger);
+}
+
+.quiz-botao--falso:hover:not(:disabled) {
+  background: rgba(255, 92, 122, 0.18);
+  box-shadow: 0 0 16px rgba(255, 92, 122, 0.45);
+}
+
+.quiz-botao:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+.quiz-botao.escolhido {
+  opacity: 1;
+}
+
+/* Confete de moléculas (acerto) */
+.confete {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.confete span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 22px;
+}
+
+@media (min-width: 1000px) {
+  .quiz-card {
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 48px;
+  }
+
+  .quiz-card__acoes {
+    justify-content: flex-end;
+  }
+}

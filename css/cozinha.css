@@ -1,0 +1,687 @@
+/* =========================================================
+   COZINHA CELULAR (cozinha-celular.html)
+   Figma: 15 · Jogo — Cozinha Celular: Enzima em Ação!
+   Paleta própria do jogo: roxo profundo, verde-água, rosa e ouro.
+   ========================================================= */
+
+.pagina-cozinha {
+  --cz-fundo: #0a0620;
+  --cz-verde: #22d3a6;
+  --cz-azul: #4dc3ff;
+  --cz-rosa: #ff4fb0;
+  --cz-roxo: #9b4dff;
+  --cz-ouro: #ffd24d;
+  --cz-texto-suave: #c9c2e8;
+  --cz-texto-apoio: #b6b0d6;
+  background: var(--cz-fundo);
+}
+
+/* ---------- HERO ---------- */
+.hero-cozinha {
+  position: relative;
+  min-height: 760px;
+  margin-top: calc(var(--nav-h) * -1);
+  padding: calc(var(--nav-h) + 48px) 0 96px;
+  overflow: hidden;
+  isolation: isolate;
+  background: radial-gradient(ellipse 75% 75% at 50% 45%, #2a1260 0%, #1a0b3d 55%, var(--cz-fundo) 100%);
+}
+
+.hero-cozinha__brilho {
+  position: absolute;
+  z-index: -3;
+  max-width: none;
+  pointer-events: none;
+}
+
+.hero-cozinha__brilho--1 {
+  left: calc(50% - 1030px);
+  top: 340px;
+  width: 920px;
+  height: 920px;
+}
+
+.hero-cozinha__brilho--2 {
+  left: calc(50% + 70px);
+  top: -260px;
+  width: 920px;
+  height: 920px;
+}
+
+.hero-cozinha__brilho--3 {
+  left: calc(50% - 280px);
+  top: 140px;
+  width: 820px;
+  height: 820px;
+}
+
+/* Partículas flutuando (posições do Figma, frame de 1440px centralizado) */
+.hero-cozinha__particulas {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: -2;
+  width: 1440px;
+  height: 900px;
+  margin-left: -720px;
+  pointer-events: none;
+}
+
+.hero-cozinha__particulas img {
+  position: absolute;
+  max-width: none;
+  animation: particula-flutua var(--d, 7s) ease-in-out infinite alternate;
+}
+
+@keyframes particula-flutua {
+  to {
+    translate: 0 -16px;
+  }
+}
+
+.hero-cozinha__mitocondria {
+  position: absolute;
+  z-index: -1;
+  right: -60px;
+  bottom: 40px;
+  width: 160px;
+  height: 72px;
+  border-radius: 65px;
+  background: linear-gradient(156deg, #ff9a5c 0%, #ff5c3a 100%);
+  box-shadow: 0 0 40px rgba(255, 122, 69, 0.5);
+  rotate: 14deg;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* A enzima com visor: flutua e reage ao mouse */
+.hero-cozinha__enzima {
+  position: absolute;
+  z-index: -1;
+  top: 120px;
+  right: -110px;
+  width: 300px;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.hero-cozinha__enzima img {
+  width: 100%;
+  height: auto;
+  max-width: none;
+  animation: enzima-anda 3.6s ease-in-out infinite;
+}
+
+@keyframes enzima-anda {
+  0%,
+  100% {
+    translate: 0 0;
+    rotate: -2deg;
+  }
+  50% {
+    translate: 0 -14px;
+    rotate: 2deg;
+  }
+}
+
+.hero-cozinha__conteudo {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  max-width: 620px;
+}
+
+.hero-cozinha .breadcrumb [aria-current="page"] {
+  color: var(--cz-verde);
+}
+
+.selo-cozinha {
+  display: inline-flex;
+  padding: 6px 12px;
+  border: 1px solid rgba(255, 79, 176, 0.5);
+  border-radius: var(--radius-pill);
+  background: rgba(255, 79, 176, 0.15);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--cz-rosa);
+}
+
+.hero-cozinha__titulo {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+.hero-cozinha__nome {
+  font-family: "Montserrat", var(--font-display);
+  font-size: clamp(3.5rem, 1.8rem + 7vw, 7rem);
+  font-weight: 900;
+  line-height: 0.92;
+  background: linear-gradient(180deg, #e6fff9 0%, var(--cz-verde) 50%, var(--cz-azul) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 30px rgba(34, 211, 166, 0.5));
+}
+
+.hero-cozinha__faixa {
+  padding: 10px 18px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, var(--cz-rosa) 0%, var(--cz-roxo) 100%);
+  box-shadow: 0 0 12px rgba(255, 79, 176, 0.5);
+  font-family: "Montserrat", var(--font-display);
+  font-size: clamp(1.125rem, 0.9rem + 0.9vw, 1.5rem);
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  color: var(--text);
+}
+
+.hero-cozinha__texto {
+  max-width: 600px;
+  font-size: clamp(1rem, 0.9rem + 0.45vw, 1.1875rem);
+  line-height: 1.6;
+  color: var(--cz-texto-suave);
+}
+
+.hero-cozinha__botoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.hero-cozinha__botoes .btn {
+  font-weight: 600;
+}
+
+.recorde-cozinha {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 20px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  background: linear-gradient(161deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.02) 100%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-card);
+}
+
+.recorde-cozinha img {
+  width: 68px;
+  height: 68px;
+  max-width: none;
+  margin: -16px;
+}
+
+.recorde-cozinha small {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+.recorde-cozinha strong {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* Seletor de qualidade gráfica (vale também dentro do jogo) */
+.qualidade {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 16px var(--gutter) 0; /* no celular fica abaixo do conteúdo, alinhado ao container */
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  background: rgba(11, 16, 48, 0.6);
+}
+
+.qualidade__rotulo {
+  padding: 0 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.qualidade button {
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  transition: background var(--dur-fast) ease;
+}
+
+.qualidade button:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.qualidade button[aria-checked="true"] {
+  background: var(--cz-rosa);
+  box-shadow: 0 0 12px rgba(255, 79, 176, 0.5);
+}
+
+@media (min-width: 1100px) {
+  .hero-cozinha {
+    min-height: 900px;
+    padding: 180px 0 120px;
+  }
+
+  .hero-cozinha__enzima {
+    top: 300px;
+    right: auto;
+    left: calc(50% + 140px);
+    width: 457px;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .hero-cozinha__mitocondria {
+    right: auto;
+    bottom: auto;
+    top: 745px;
+    left: calc(50% + 395px);
+    width: 220px;
+    height: 100px;
+    opacity: 1;
+  }
+
+  .qualidade {
+    position: absolute;
+    top: 820px;
+    left: calc(50% + 314px);
+    margin: 0;
+  }
+}
+
+/* ---------- AS FASES ---------- */
+.fases-cozinha {
+  background: var(--cz-fundo);
+}
+
+.fases-cozinha__grade {
+  display: grid;
+  gap: 20px;
+  align-items: start;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fase-card {
+  --cor: var(--cz-verde);
+  --cor-rgb: 34, 211, 166;
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+}
+
+.fase-card--mitocondria {
+  --cor: var(--cz-ouro);
+  --cor-rgb: 255, 210, 77;
+}
+
+.fase-card--laboratorio {
+  --cor: var(--cz-azul);
+  --cor-rgb: 77, 195, 255;
+}
+
+.fase-card--chefao {
+  --cor: var(--cz-rosa);
+  --cor-rgb: 255, 79, 176;
+}
+
+.fase-card:hover {
+  border-color: rgba(var(--cor-rgb), 0.6);
+}
+
+.fase-card::before {
+  background: radial-gradient(300px circle at var(--x) var(--y), rgba(var(--cor-rgb), 0.14), transparent 60%);
+}
+
+.fase-card__preview {
+  position: relative;
+  width: 100%;
+  height: 170px;
+  overflow: hidden;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px) 0 0 / 24px 24px,
+    radial-gradient(ellipse 60% 60% at 50% 55%, rgba(var(--cor-rgb), 0.35) 0%, rgba(var(--cor-rgb), 0.15) 50%, #1a0b3d 100%);
+}
+
+/* Preview: as moléculas giram (mais rápido no hover) */
+.fase-card__orbita {
+  position: absolute;
+  inset: 0;
+  animation: fase-gira 18s linear infinite;
+  transform-origin: 50% 50%;
+}
+
+.fase-card:hover .fase-card__orbita {
+  animation-duration: 4s;
+}
+
+@keyframes fase-gira {
+  to {
+    rotate: 360deg;
+  }
+}
+
+.fase-card__esfera {
+  position: absolute;
+  max-width: none;
+  animation: fase-contra-gira 18s linear infinite;
+}
+
+.fase-card:hover .fase-card__esfera {
+  animation-duration: 4s;
+}
+
+@keyframes fase-contra-gira {
+  to {
+    rotate: -360deg;
+  }
+}
+
+/* Esfera central (70px + 30px de brilho em cada lado) */
+.fase-card__esfera--1 {
+  left: calc(50% - 65px);
+  top: 20px;
+  width: 130px;
+  height: 130px;
+}
+
+.fase-card__esfera--2 {
+  left: calc(50% - 82px);
+  top: 40px;
+  width: 28px;
+  height: 28px;
+}
+
+.fase-card__esfera--3 {
+  left: calc(50% + 58px);
+  top: 110px;
+  width: 22px;
+  height: 22px;
+}
+
+.fase-card__corpo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 24px;
+}
+
+.fase-card__selo {
+  padding: 5px 10px;
+  border: 1px solid rgba(var(--cor-rgb), 0.4);
+  border-radius: 6px;
+  background: rgba(var(--cor-rgb), 0.15);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--cor);
+}
+
+.fase-card__titulo {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.fase-card__texto {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--cz-texto-apoio);
+}
+
+.fase-card__tema {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--cor);
+}
+
+.fase-card__estrelas {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--cz-ouro);
+  white-space: pre;
+}
+
+@media (min-width: 640px) {
+  .fases-cozinha__grade {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1100px) {
+  .fases-cozinha__grade {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ---------- COMO FUNCIONA ---------- */
+.ciclo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 0 0 48px;
+  padding: 0;
+  list-style: none;
+}
+
+.ciclo__passo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 196px;
+  padding: 20px;
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  background: linear-gradient(152deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.02) 100%);
+  box-shadow: var(--shadow-card);
+  text-align: center;
+}
+
+.ciclo__passo span:first-child {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.ciclo__passo span:last-child {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.ciclo__seta {
+  font-size: 24px;
+  color: var(--faint);
+}
+
+.como-cozinha__grade {
+  display: grid;
+  gap: 24px;
+  align-items: start;
+}
+
+.painel-cozinha {
+  min-width: 0;
+  gap: 14px;
+  padding: 32px;
+  border-radius: var(--radius-sm);
+}
+
+.painel-cozinha__titulo {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  white-space: pre-wrap; /* mantém o espaço duplo depois do emoji, mas quebra no celular */
+}
+
+.controles-cozinha {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.controles-cozinha li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  font-size: 14px;
+  color: var(--cz-texto-apoio);
+}
+
+.tecla {
+  padding: 6px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.loja-cozinha {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.loja-cozinha li {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px;
+  border: 1px solid rgba(255, 210, 77, 0.25);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  transition:
+    border-color var(--dur-fast) ease,
+    translate var(--dur-fast) ease;
+}
+
+.loja-cozinha li:hover {
+  border-color: rgba(255, 210, 77, 0.6);
+  translate: 0 -3px;
+}
+
+.loja-cozinha b {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--cz-ouro);
+}
+
+.loja-cozinha strong {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.loja-cozinha small {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+}
+
+@media (min-width: 900px) {
+  .como-cozinha__grade {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ---------- CTA ---------- */
+.cta-cozinha {
+  padding-block: clamp(56px, 7vw, 80px);
+}
+
+.cta-cozinha__card {
+  display: grid;
+  gap: 32px;
+  align-items: center;
+  padding: clamp(28px, 4vw, 48px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  background: linear-gradient(168deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.02) 100%);
+  box-shadow: var(--shadow-card);
+}
+
+.cta-cozinha__rotulo {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--cz-ouro);
+}
+
+.cta-cozinha__fato {
+  margin: 14px 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 1rem + 0.8vw, 1.5rem);
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--text);
+}
+
+.cta-cozinha__mais {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.cta-cozinha__mais a {
+  color: var(--teal);
+}
+
+.cta-cozinha__botoes {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.cta-cozinha__botoes .btn {
+  font-weight: 600;
+}
+
+@media (min-width: 900px) {
+  .cta-cozinha__card {
+    grid-template-columns: 1fr auto;
+    gap: 40px;
+  }
+}

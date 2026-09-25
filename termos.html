@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Termos de Uso e Política de Privacidade | Bioquímica</title>
+    <meta
+      name="description"
+      content="Termos de Uso e Política de Privacidade do site Bioquímica — A química da vida."
+    />
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+
+    <!-- Fontes: Space Grotesk (títulos), Inter (texto), JetBrains Mono (rótulos) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="css/tokens.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/termos.css" />
+
+    <!-- Esconde os elementos [data-reveal] antes da primeira pintura (o JS anima a entrada). -->
+    <script>
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("js-anima");
+    </script>
+
+    <!-- Three.js e addons via CDN (módulos ES, sem Node/npm) -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
+    <!-- GSAP + ScrollTrigger e vanilla-tilt (globais: window.gsap, window.VanillaTilt) -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js" defer></script>
+    <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/termos.js"></script>
+  </head>
+  <body data-pagina="termos">
+    <div class="progresso-leitura" aria-hidden="true"><span data-progresso-leitura></span></div>
+    <header data-navbar></header>
+
+    <main>
+      <!-- ================= HERO ================= -->
+      <section class="hero-pagina hero-termos" aria-labelledby="titulo-termos">
+        <div class="hero-pagina__grade" aria-hidden="true"></div>
+        <div class="hero-pagina__brilho hero-pagina__brilho--1" aria-hidden="true"><img src="assets/termos/glow-hero-1.svg" alt="" /></div>
+        <div class="hero-pagina__brilho hero-pagina__brilho--2" aria-hidden="true"><img src="assets/termos/glow-hero-2.svg" alt="" /></div>
+
+        <div class="container">
+          <div class="hero-pagina__conteudo">
+            <span class="eyebrow"><span class="eyebrow__ponto" aria-hidden="true"><img src="assets/ui/pulse-dot.svg" alt="" /></span>Documentos · Atualizado em 2026</span>
+            <h1 class="hero-pagina__titulo" id="titulo-termos">Termos de Uso e<br />Política de Privacidade</h1>
+            <p class="hero-pagina__texto">
+              Ao utilizar o site Bioquímica - A química da vida, você concorda com os termos e condições descritos abaixo, bem como com nossa
+              Política de Privacidade.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= CONTEÚDO ================= -->
+      <div class="documentos">
+        <div class="container documentos__grade">
+          <nav class="card-glass sumario" data-sumario data-sem-tilt aria-label="Nesta página">
+            <span class="sumario__rotulo">NESTA PÁGINA</span>
+            <a class="sumario__grupo" href="#termos">Termos de Uso</a>
+            <ol class="sumario__lista" role="list">
+              <li><a href="#termos-aceitacao-dos-termos">1. Aceitação dos Termos</a></li>
+              <li><a href="#termos-uso-do-conteudo">2. Uso do Conteúdo</a></li>
+              <li><a href="#termos-uso-adequado">3. Uso Adequado</a></li>
+              <li><a href="#termos-propriedade-intelectual">4. Propriedade Intelectual</a></li>
+              <li><a href="#termos-isencao-de-responsabilidade">5. Isenção de Responsabilidade</a></li>
+              <li><a href="#termos-links-externos">6. Links Externos</a></li>
+              <li><a href="#termos-modificacoes">7. Modificações</a></li>
+              <li><a href="#termos-encerramento-de-acesso">8. Encerramento de Acesso</a></li>
+              <li><a href="#termos-lei-aplicavel">9. Lei Aplicável</a></li>
+            </ol>
+            <a class="sumario__grupo" href="#privacidade">Política de Privacidade</a>
+            <ol class="sumario__lista sumario__lista--privacidade" role="list">
+              <li><a href="#privacidade-informacoes-que-coletamos">1. Informações que Coletamos</a></li>
+              <li><a href="#privacidade-uso-das-informacoes">2. Uso das Informações</a></li>
+              <li><a href="#privacidade-compartilhamento">3. Compartilhamento</a></li>
+              <li><a href="#privacidade-cookies-e-tecnologias">4. Cookies e Tecnologias</a></li>
+              <li><a href="#privacidade-seguranca-dos-dados">5. Segurança dos Dados</a></li>
+              <li><a href="#privacidade-seus-direitos">6. Seus Direitos</a></li>
+              <li><a href="#privacidade-retencao-de-dados">7. Retenção de Dados</a></li>
+              <li><a href="#privacidade-alteracoes-na-politica">8. Alterações na Política</a></li>
+            </ol>
+          </nav>
+
+          <div class="documentos__conteudo">
+            <section class="card-glass documento" id="termos" data-sem-tilt aria-labelledby="titulo-doc-termos">
+              <h2 class="documento__rotulo" id="titulo-doc-termos">TERMOS DE USO</h2>
+              <p class="documento__intro">Leia com atenção as regras para utilização do nosso site.</p>
+              <ol class="clausulas" role="list">
+                <li class="clausula" id="termos-aceitacao-dos-termos">
+                  <span class="clausula__numero" aria-hidden="true">01</span>
+                  <div>
+                    <h3><span class="sr-only">1. </span>Aceitação dos Termos</h3>
+                    <p>Ao acessar e utilizar este site, você concorda com estes Termos de Uso e todas as leis e regulamentos aplicáveis.</p>
+                  </div>
+                </li>
+                <li class="clausula" id="termos-uso-do-conteudo">
+                  <span class="clausula__numero" aria-hidden="true">02</span>
+                  <div>
+                    <h3><span class="sr-only">2. </span>Uso do Conteúdo</h3>
+                    <p>Todo o conteúdo disponível no site é apenas para fins educativos e informativos. É proibida a cópia, distribuição ou uso comercial sem autorização prévia.</p>
+                  </div>
+                </li>
+                <li class="clausula" id="termos-uso-adequado">
+                  <span class="clausula__numero" aria-hidden="true">03</span>
+                  <div>
+                    <h3><span class="sr-only">3. </span>Uso Adequado</h3>
+                    <p>Você concorda em utilizar o site apenas para fins legais e de forma que não infrinja os direitos de terceiros ou restrinja o uso e aproveitamento do site.</p>
+                  </div>
+                </li>
+                <li class="clausula" id="termos-propriedade-intelectual">
+                  <span class="clausula__numero" aria-hidden="true">04</span>
+                  <div>
+                    <h3><span class="sr-only">4. </span>Propriedade Intelectual</h3>
+                    <p>Todo o design, textos, imagens, logotipos e outros materiais são de propriedade do Bioquímica - A química da vida ou de seus licenciadores.</p>
+                  </div>
+                </li>
+                <li class="clausula" id="termos-isencao-de-responsabilidade">
+                  <span class="clausula__numero" aria-hidden="true">05</span>
+                  <div>
+                    <h3><span class="sr-only">5. </span>Isenção de Responsabilidade</h3>
+                    <p>Não garantimos que as informações sejam sempre completas, precisas ou atualizadas. O uso do site é de sua inteira responsabilidade.</p>
+                  </div>
+                </li>
+                <li class="clausula" id="termos-links-externos">
+                  <span class="clausula__numero" aria-hidden="true">06</span>
+                  <div>
+                    <h3><span class="sr-only">6. </span>Links Externos</h3>
+                    <p>Nosso site pode conter links para sites externos. Não nos responsabilizamos pelo conteúdo ou práticas desses sites.</p>
+                  </div>
+                </li>
+                <li class="clausula" id="termos-modificacoes">
+                  <span class="clausula__numero" aria-hidden="true">07</span>
+                  <div>
+                    <h3><span class="sr-only">7. </span>Modificações</h3>
+                    <p>Podemos atualizar estes Termos de Uso a qualquer momento. As alterações serão publicadas nesta página.</p>
+                  </div>
+                </li>
+                <li class="clausula" id="termos-encerramento-de-acesso">
+                  <span class="clausula__numero" aria-hidden="true">08</span>
+                  <div>
+                    <h3><span class="sr-only">8. </span>Encerramento de Acesso</h3>
+                    <p>Reservamo-nos o direito de suspender ou encerrar seu acesso ao site, sem aviso prévio, caso haja descumprimento destes Termos.</p>
+                  </div>
+                </li>
+                <li class="clausula" id="termos-lei-aplicavel">
+                  <span class="clausula__numero" aria-hidden="true">09</span>
+                  <div>
+                    <h3><span class="sr-only">9. </span>Lei Aplicável</h3>
+                    <p>Estes Termos são regidos pelas leis brasileiras. Qualquer disputa será submetida aos tribunais competentes da comarca do usuário.</p>
+                  </div>
+                </li>
+              </ol>
+            </section>
+
+            <section class="card-glass documento documento--violeta" id="privacidade" data-sem-tilt aria-labelledby="titulo-doc-privacidade">
+              <h2 class="documento__rotulo" id="titulo-doc-privacidade">POLÍTICA DE PRIVACIDADE</h2>
+              <p class="documento__intro">Entenda como coletamos, usamos e protegemos suas informações.</p>
+              <ol class="clausulas" role="list">
+                <li class="clausula" id="privacidade-informacoes-que-coletamos">
+                  <span class="clausula__numero" aria-hidden="true">01</span>
+                  <div>
+                    <h3><span class="sr-only">1. </span>Informações que Coletamos</h3>
+                    <p>Coletamos apenas as informações necessárias para melhorar sua experiência, como nome, e-mail e dados de uso do site.</p>
+                  </div>
+                </li>
+                <li class="clausula" id="privacidade-uso-das-informacoes">
+                  <span class="clausula__numero" aria-hidden="true">02</span>
+                  <div>
+                    <h3><span class="sr-only">2. </span>Uso das Informações</h3>
+                    <p>Utilizamos suas informações para fornecer e melhorar nossos serviços, personalizar o conteúdo e enviar comunicados importantes.</p>
+                  </div>
+                </li>
+                <li class="clausula" id="privacidade-compartilhamento">
+                  <span class="clausula__numero" aria-hidden="true">03</span>
+                  <div>
+                    <h3><span class="sr-only">3. </span>Compartilhamento</h3>
+                    <p>Não vendemos ou compartilhamos suas informações pessoais com terceiros, exceto quando exigido por lei ou com seu consentimento.</p>
+                  </div>
+                </li>
+                <li class="clausula" id="privacidade-cookies-e-tecnologias">
+                  <span class="clausula__numero" aria-hidden="true">04</span>
+                  <div>
+                    <h3><span class="sr-only">4. </span>Cookies e Tecnologias</h3>
+                    <p>Utilizamos cookies para melhorar sua navegação, entender preferências e analisar o desempenho do site.</p>
+                  </div>
+                </li>
+                <li class="clausula" id="privacidade-seguranca-dos-dados">
+                  <span class="clausula__numero" aria-hidden="true">05</span>
+                  <div>
+                    <h3><span class="sr-only">5. </span>Segurança dos Dados</h3>
+                    <p>Adotamos medidas técnicas e administrativas para proteger suas informações contra acesso não autorizado, uso indevido ou perda.</p>
+                  </div>
+                </li>
+                <li class="clausula" id="privacidade-seus-direitos">
+                  <span class="clausula__numero" aria-hidden="true">06</span>
+                  <div>
+                    <h3><span class="sr-only">6. </span>Seus Direitos</h3>
+                    <p>Você tem o direito de acessar, corrigir, excluir ou solicitar a portabilidade de seus dados pessoais a qualquer momento.</p>
+                  </div>
+                </li>
+                <li class="clausula" id="privacidade-retencao-de-dados">
+                  <span class="clausula__numero" aria-hidden="true">07</span>
+                  <div>
+                    <h3><span class="sr-only">7. </span>Retenção de Dados</h3>
+                    <p>Mantemos seus dados apenas pelo tempo necessário para cumprir as finalidades descritas nesta política ou conforme exigido por lei.</p>
+                  </div>
+                </li>
+                <li class="clausula" id="privacidade-alteracoes-na-politica">
+                  <span class="clausula__numero" aria-hidden="true">08</span>
+                  <div>
+                    <h3><span class="sr-only">8. </span>Alterações na Política</h3>
+                    <p>Podemos atualizar esta Política de Privacidade periodicamente. Recomendamos que você a revise regularmente.</p>
+                  </div>
+                </li>
+              </ol>
+            </section>
+
+            <div class="aceite">
+              <span aria-hidden="true">✅</span>
+              <p>
+                Ao continuar utilizando nosso site, você concorda com estes Termos de Uso e nossa Política de Privacidade. Em caso de dúvidas,
+                <a href="contato.html#contato">entre em contato conosco</a>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer data-footer></footer>
+  </body>
+</html>

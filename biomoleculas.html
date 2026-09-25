@@ -2,306 +2,411 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <script>
-      (function () {
-        try {
-          var stored = localStorage.getItem("theme");
-          var theme =
-            stored ||
-            (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-          document.documentElement.setAttribute("data-theme", theme);
-        } catch (e) {}
-      })();
-    </script>
-    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Biomoléculas | Bioquímica</title>
+    <meta
+      name="description"
+      content="Proteínas, carboidratos, lipídios e ácidos nucleicos: o que são as biomoléculas, os elementos CHONPS, o DNA, as enzimas e a energia do ATP."
+    />
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+
+    <!-- Fontes: Space Grotesk (títulos), Inter (texto), JetBrains Mono (rótulos) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,wght@0,600;0,700;0,900;1,500;1,600&family=Space+Mono:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&family=Space+Grotesk:wght@500;700&display=swap"
       rel="stylesheet"
     />
+
     <link rel="stylesheet" href="css/tokens.css" />
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/components.css" />
-    <title>Biomoléculas — Bioquímica</title>
+    <link rel="stylesheet" href="css/biomoleculas.css" />
+
+    <!-- Esconde os elementos [data-reveal] antes da primeira pintura (o JS anima a entrada). -->
+    <script>
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("js-anima");
+    </script>
+
+    <!-- Three.js e addons via CDN (módulos ES, sem Node/npm) -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
+    <!-- GSAP + ScrollTrigger e vanilla-tilt (globais: window.gsap, window.VanillaTilt) -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js" defer></script>
+    <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/biomoleculas.js"></script>
   </head>
-  <body>
-    <header class="header">
-      <div class="container logo">
-        <img src="assets/img/logo.png" alt="Bioquímica" />
-        <div class="logo-text">
-          <p class="logo-title">BIOQUÍMICA</p>
-          <p class="logo-sub">A química da vida</p>
-        </div>
-        <button
-          id="theme-toggle"
-          class="theme-toggle"
-          type="button"
-          aria-label="Alternar modo escuro"
-          aria-pressed="false"
-        >
-          <svg class="theme-toggle-icon icon-sun" viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="12" cy="12" r="5"></circle>
-            <path
-              d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
-            ></path>
-          </svg>
-          <svg class="theme-toggle-icon icon-moon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 1020.354 15.354z"></path>
-          </svg>
-        </button>
-        <nav style="margin-left: auto">
-          <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-links">
-            <span></span><span></span><span></span>
-          </button>
-          <ul class="nav-links" id="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="inicio.html#inicio">Início</a></li>
-            <li><a href="sobre.html">O que é Bioquímica</a></li>
-            <li><a href="historia.html">História</a></li>
-            <li><a href="biomoleculas.html" class="active">Biomoléculas</a></li>
-            <li class="nav-item-dropdown">
-              <button type="button" class="nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
-                Jogos
-                <svg class="nav-dropdown-arrow" viewBox="0 0 12 8" aria-hidden="true">
-                  <path
-                    d="M1 1l5 5 5-5"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  ></path>
-                </svg>
-              </button>
-              <ul class="nav-dropdown-menu">
-                <li><a href="cozinha-celular/index.html">Código Celular</a></li>
-              </ul>
-            </li>
-            <li><a href="contato.html">Contato</a></li>
-          </ul>
-        </nav>
-      </div>
-    </header>
+  <body data-pagina="biomoleculas">
+    <header data-navbar></header>
 
-    <section id="inicio" class="hero">
-      <img src="assets/img/biomol-hero-bg.png" alt="" class="hero-bg" />
-      <div class="hero-overlay"></div>
-      <div class="container hero-content">
-        <h1 class="hero-title">Biomoléculas</h1>
-        <p class="hero-subtitle">As moléculas que formam a vida</p>
-        <img src="assets/icons/underline.svg" alt="" class="hero-underline" />
-        <p class="hero-text">
-          As biomoléculas são compostos químicos presentes em todos os seres
-          vivos e desempenham funções essenciais para a estrutura, o
-          metabolismo, o crescimento e a manutenção da vida.
-        </p>
-      </div>
-    </section>
+    <main>
+      <!-- ================= HERO ================= -->
+      <section class="hero-pagina hero-biomol" aria-labelledby="titulo-biomol" data-hero-biomol>
+        <div class="hero-pagina__foto" data-parallax="0.3" aria-hidden="true"><img src="assets/biomoleculas/hero-bg.png" alt="" /></div>
+        <div class="hero-pagina__grade" aria-hidden="true"></div>
+        <div class="hero-pagina__brilho hero-pagina__brilho--1" aria-hidden="true"><img src="assets/inicio/glow-hero-1.svg" alt="" /></div>
+        <div class="hero-pagina__brilho hero-pagina__brilho--2" aria-hidden="true"><img src="assets/inicio/glow-hero-2.svg" alt="" /></div>
+        <div
+          class="hero-biomol__molecula"
+          data-3d="glicose"
+          data-fallback="assets/3d/glicose.svg"
+          data-fallback-alt=""
+          aria-hidden="true"
+          data-molecula-hero
+        ></div>
 
-    <nav class="breadcrumb" aria-label="Você está aqui">
-      <ol class="breadcrumb-list container">
-        <li><a href="index.html">Bioquímica</a></li>
-        <li class="breadcrumb-sep" aria-hidden="true">/</li>
-        <li aria-current="page">Biomoléculas</li>
-      </ol>
-    </nav>
-
-    <section class="biomol-intro">
-      <div class="container">
-        <p class="eyebrow">O QUE SÃO BIOMOLÉCULAS?</p>
-        <h2>A base de tudo o que é vivo</h2>
-        <p>
-          As biomoléculas são substâncias produzidas pelos seres vivos e
-          constituídas principalmente por carbono, hidrogênio, oxigênio,
-          nitrogênio, fósforo e enxofre. Elas participam de praticamente
-          todos os processos biológicos, desde a obtenção de energia até o
-          armazenamento das informações genéticas.
-        </p>
-        <p>
-          Essas moléculas trabalham em conjunto para garantir o crescimento,
-          a reprodução, o metabolismo e a sobrevivência dos organismos, sendo
-          indispensáveis para a manutenção da vida.
-        </p>
-      </div>
-    </section>
-
-    <section id="biomoleculas" class="biomol-types">
-      <div class="container">
-        <h2 class="section-title">Principais tipos de biomoléculas</h2>
-
-        <div class="biomol-grid reveal">
-          <div class="biomol-card proteinas accent-proteinas">
-            <div class="biomol-card-top">
-              <img src="assets/img/card-proteina.png" alt="" class="biomol-illustration" />
-              <span class="biomol-card-badge">
-                <img src="assets/icons/badge-protein.png" alt="" />
-              </span>
-            </div>
-            <div class="biomol-card-body" data-collapsible>
-              <h3>Proteínas</h3>
-              <p>
-                As proteínas são moléculas formadas por aminoácidos e
-                desempenham funções estruturais, enzimáticas, hormonais e de
-                defesa. Elas participam da construção dos tecidos e da
-                maioria das reações químicas do organismo.
-              </p>
-              <button type="button" class="biomol-expand-btn" aria-expanded="false">Ver mais</button>
-            </div>
-          </div>
-
-          <div class="biomol-card carboidratos accent-energia">
-            <div class="biomol-card-top">
-              <img src="assets/img/card-carboidrato.png" alt="" class="biomol-illustration" />
-              <span class="biomol-card-badge">
-                <img src="assets/icons/badge-chemical.png" alt="" />
-              </span>
-            </div>
-            <div class="biomol-card-body" data-collapsible>
-              <h3>Carboidratos</h3>
-              <p>
-                Os carboidratos são a principal fonte de energia para os
-                seres vivos. Estão presentes em alimentos como arroz, pão,
-                massas, frutas e cereais, sendo fundamentais para o
-                funcionamento das células.
-              </p>
-              <button type="button" class="biomol-expand-btn" aria-expanded="false">Ver mais</button>
-            </div>
-          </div>
-
-          <div class="biomol-card lipidios accent-metabolismo">
-            <div class="biomol-card-top">
-              <img src="assets/img/card-lipidio.png" alt="" class="biomol-illustration" />
-              <span class="biomol-card-badge">
-                <img src="assets/icons/badge-drop.png" alt="" />
-              </span>
-            </div>
-            <div class="biomol-card-body" data-collapsible>
-              <h3>Lipídios</h3>
-              <p>
-                Os lipídios são moléculas insolúveis em água que atuam como
-                reserva energética e fazem parte da composição das membranas
-                celulares. Também participam da produção de hormônios e do
-                isolamento térmico.
-              </p>
-              <button type="button" class="biomol-expand-btn" aria-expanded="false">Ver mais</button>
-            </div>
-          </div>
-
-          <div class="biomol-card acidos accent-genetica">
-            <div class="biomol-card-top">
-              <img src="assets/img/card-acido-nucleico.png" alt="" class="biomol-illustration" />
-              <span class="biomol-card-badge">
-                <img src="assets/icons/badge-dna.png" alt="" />
-              </span>
-            </div>
-            <div class="biomol-card-body" data-collapsible>
-              <h3>Ácidos Nucleicos</h3>
-              <p>
-                Os ácidos nucleicos, representados pelo DNA e pelo RNA,
-                armazenam e transmitem as informações genéticas responsáveis
-                pelo desenvolvimento, funcionamento e reprodução dos seres
-                vivos.
-              </p>
-              <button type="button" class="biomol-expand-btn" aria-expanded="false">Ver mais</button>
-            </div>
+        <div class="container">
+          <div class="hero-pagina__conteudo">
+            <nav aria-label="Você está em">
+              <ol class="breadcrumb">
+                <li><a href="index.html">Bioquímica</a></li>
+                <li><span aria-current="page">Biomoléculas</span></li>
+              </ol>
+            </nav>
+            <span class="eyebrow"><span class="eyebrow__ponto" aria-hidden="true"><img src="assets/ui/pulse-dot.svg" alt="" /></span>Biomoléculas</span>
+            <h1 class="hero-pagina__titulo" id="titulo-biomol" data-letras>Biomoléculas</h1>
+            <p class="hero-pagina__slogan">As moléculas que formam a vida</p>
+            <p class="hero-pagina__texto">
+              As biomoléculas são compostos químicos presentes em todos os seres vivos e desempenham funções essenciais para a estrutura, o
+              metabolismo, o crescimento e a manutenção da vida.
+            </p>
           </div>
         </div>
+      </section>
 
-        <div class="callout reveal">
-          <span class="callout-icon">
-            <img src="assets/icons/icon-lamp.png" alt="" />
-          </span>
-          <p class="callout-title">Você sabia?</p>
-          <span class="callout-divider"></span>
-          <p>
-            Mesmo desempenhando funções diferentes, proteínas, carboidratos,
-            lipídios e ácidos nucleicos atuam de forma integrada para manter
-            o equilíbrio e o funcionamento adequado dos organismos vivos.
-          </p>
+      <!-- ================= O QUE SÃO + ELEMENTOS ================= -->
+      <section class="section o-que-sao" aria-labelledby="titulo-o-que-sao">
+        <div class="particulas" aria-hidden="true" data-particulas></div>
+        <div class="container o-que-sao__grade">
+          <div class="o-que-sao__texto" data-reveal>
+            <span class="eyebrow"><span class="eyebrow__ponto" aria-hidden="true"><img src="assets/ui/pulse-dot.svg" alt="" /></span>O que são biomoléculas?</span>
+            <h2 class="secao-titulo" id="titulo-o-que-sao">A base de tudo o que é vivo</h2>
+            <p>
+              As biomoléculas são substâncias produzidas pelos seres vivos e constituídas principalmente por carbono, hidrogênio, oxigênio,
+              nitrogênio, fósforo e enxofre. Elas participam de praticamente todos os processos biológicos, desde a obtenção de energia até o
+              armazenamento das informações genéticas.
+            </p>
+            <p>
+              Essas moléculas trabalham em conjunto para garantir o crescimento, a reprodução, o metabolismo e a sobrevivência dos organismos, sendo
+              indispensáveis para a manutenção da vida.
+            </p>
+          </div>
+
+          <div class="elementos" data-reveal>
+            <p class="elementos__rotulo" id="rotulo-elementos">OS 6 ELEMENTOS DA VIDA — CHONPS</p>
+            <ul class="elementos__grade" role="list" aria-labelledby="rotulo-elementos">
+              <li class="elemento">
+                <button class="elemento__botao" type="button" aria-pressed="false">
+                  <span class="elemento__face elemento__face--frente">
+                    <span class="elemento__numero">6</span>
+                    <span class="elemento__simbolo">C</span>
+                    <span class="elemento__nome">Carbono</span>
+                  </span>
+                  <span class="elemento__face elemento__face--verso">
+                    <strong>Esqueleto da vida</strong>
+                    <span>Forma as cadeias e os anéis de todas as biomoléculas.</span>
+                  </span>
+                </button>
+              </li>
+              <li class="elemento elemento--h">
+                <button class="elemento__botao" type="button" aria-pressed="false">
+                  <span class="elemento__face elemento__face--frente">
+                    <span class="elemento__numero">1</span>
+                    <span class="elemento__simbolo">H</span>
+                    <span class="elemento__nome">Hidrogênio</span>
+                  </span>
+                  <span class="elemento__face elemento__face--verso">
+                    <strong>Em quase tudo</strong>
+                    <span>Está na água e nas biomoléculas; suas ligações unem as fitas do DNA.</span>
+                  </span>
+                </button>
+              </li>
+              <li class="elemento elemento--o">
+                <button class="elemento__botao" type="button" aria-pressed="false">
+                  <span class="elemento__face elemento__face--frente">
+                    <span class="elemento__numero">8</span>
+                    <span class="elemento__simbolo">O</span>
+                    <span class="elemento__nome">Oxigênio</span>
+                  </span>
+                  <span class="elemento__face elemento__face--verso">
+                    <strong>Água e respiração</strong>
+                    <span>Está na água, nos açúcares e nas gorduras; é usado na respiração celular.</span>
+                  </span>
+                </button>
+              </li>
+              <li class="elemento elemento--n">
+                <button class="elemento__botao" type="button" aria-pressed="false">
+                  <span class="elemento__face elemento__face--frente">
+                    <span class="elemento__numero">7</span>
+                    <span class="elemento__simbolo">N</span>
+                    <span class="elemento__nome">Nitrogênio</span>
+                  </span>
+                  <span class="elemento__face elemento__face--verso">
+                    <strong>Aminoácidos e bases</strong>
+                    <span>No grupo amina dos aminoácidos e nas bases do DNA e do RNA.</span>
+                  </span>
+                </button>
+              </li>
+              <li class="elemento elemento--p">
+                <button class="elemento__botao" type="button" aria-pressed="false">
+                  <span class="elemento__face elemento__face--frente">
+                    <span class="elemento__numero">15</span>
+                    <span class="elemento__simbolo">P</span>
+                    <span class="elemento__nome">Fósforo</span>
+                  </span>
+                  <span class="elemento__face elemento__face--verso">
+                    <strong>DNA e ATP</strong>
+                    <span>No esqueleto do DNA e do RNA, no ATP e nas membranas.</span>
+                  </span>
+                </button>
+              </li>
+              <li class="elemento elemento--s">
+                <button class="elemento__botao" type="button" aria-pressed="false">
+                  <span class="elemento__face elemento__face--frente">
+                    <span class="elemento__numero">16</span>
+                    <span class="elemento__simbolo">S</span>
+                    <span class="elemento__nome">Enxofre</span>
+                  </span>
+                  <span class="elemento__face elemento__face--verso">
+                    <strong>Forma das proteínas</strong>
+                    <span>Nas pontes dissulfeto que dobram proteínas como a queratina.</span>
+                  </span>
+                </button>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="biomol-intro" id="energia-informacao">
-      <div class="container reveal">
-        <p class="eyebrow">DNA, ENZIMAS E ENERGIA</p>
-        <h2>Informação e energia da vida</h2>
-        <p>
-          <strong class="accent-genetica">DNA:</strong> a molécula de DNA é formada por nucleotídeos
-          que contêm o açúcar desoxirribose (no RNA, o açúcar é a ribose). A
-          informação genética é escrita por quatro bases nitrogenadas:
-          adenina, guanina, citosina e timina. No RNA, a timina é substituída
-          pela uracila.
-        </p>
-        <p>
-          <strong class="accent-enzimas">Enzimas:</strong> são proteínas que atuam como catalisadores
-          biológicos. Elas aceleram as reações químicas do organismo sem
-          serem consumidas no processo, podendo ser usadas várias vezes.
-        </p>
-        <p>
-          <strong class="accent-metabolismo">Respiração celular:</strong> é o processo pelo qual as
-          células produzem energia a partir dos nutrientes, como a glicose,
-          principalmente com a participação do oxigênio.
-        </p>
-        <p>
-          <strong class="accent-energia">ATP:</strong> sigla de adenosina trifosfato, a molécula que
-          armazena e fornece a energia liberada na respiração celular para as
-          atividades da célula, como movimento, transporte e síntese de
-          substâncias.
-        </p>
-      </div>
-    </section>
+      <!-- ================= PRINCIPAIS TIPOS ================= -->
+      <section class="section tipos" aria-labelledby="titulo-tipos">
+        <div class="container">
+          <div class="secao-cabeca secao-cabeca--centro" data-reveal>
+            <span class="eyebrow"><span class="eyebrow__ponto" aria-hidden="true"><img src="assets/ui/pulse-dot.svg" alt="" /></span>4 tipos</span>
+            <h2 class="secao-titulo" id="titulo-tipos">Principais tipos de biomoléculas</h2>
+            <p class="secao-sub">Clique em "Ver mais" para expandir exemplos e curiosidades.</p>
+          </div>
 
-    <footer class="footer">
-      <div class="container footer-grid">
-        <div class="footer-brand">
-          <img src="assets/img/logo.png" alt="Bioquímica" />
-          <p class="footer-brand-title">BIOQUÍMICA</p>
-          <p class="footer-brand-sub">A química da vida</p>
+          <div class="tipos__grade">
+            <article class="tipo aberto" id="proteinas" data-tipo data-reveal>
+              <div class="tipo__visual" aria-hidden="true">
+                <span class="esfera esfera--1"><img src="assets/biomoleculas/esfera-proteinas-1.svg" alt="" /></span>
+                <span class="esfera esfera--2"><img src="assets/biomoleculas/esfera-proteinas-2.svg" alt="" /></span>
+                <span class="esfera esfera--3"><img src="assets/biomoleculas/esfera-proteinas-3.svg" alt="" /></span>
+                <span class="esfera esfera--4"><img src="assets/biomoleculas/esfera-proteinas-4.svg" alt="" /></span>
+                <span class="esfera esfera--5"><img src="assets/biomoleculas/esfera-proteinas-5.svg" alt="" /></span>
+                <span class="tipo__numero">01</span>
+                <span class="tipo__icone"><img src="assets/biomoleculas/icon-proteinas.png" alt="" /></span>
+              </div>
+              <div class="tipo__corpo">
+                <h3 class="tipo__titulo">Proteínas</h3>
+                <p class="tipo__texto">
+                  As proteínas são moléculas formadas por aminoácidos e desempenham funções estruturais, enzimáticas, hormonais e de defesa. Elas
+                  participam da construção dos tecidos e da maioria das reações químicas do organismo.
+                </p>
+                <div class="tipo__extra" id="extra-proteinas">
+                  <div>
+                    <p class="tipo__detalhe">Unidade: aminoácido · Ex.: queratina, hemoglobina, enzimas</p>
+                    <p class="tipo__curiosidade">
+                      Com apenas 20 tipos de aminoácidos, as células montam milhares de proteínas diferentes — a ordem dos aminoácidos define a forma
+                      e a função de cada uma.
+                    </p>
+                  </div>
+                </div>
+                <button class="tipo__botao" type="button" aria-expanded="true" aria-controls="extra-proteinas">
+                  <span class="tipo__botao-texto">Ver menos</span> <span aria-hidden="true">↓</span>
+                </button>
+              </div>
+            </article>
+
+            <article class="tipo tipo--carboidratos" id="carboidratos" data-tipo data-reveal>
+              <div class="tipo__visual" aria-hidden="true">
+                <span class="esfera esfera--1"><img src="assets/biomoleculas/esfera-carboidratos-1.svg" alt="" /></span>
+                <span class="esfera esfera--2"><img src="assets/biomoleculas/esfera-carboidratos-2.svg" alt="" /></span>
+                <span class="esfera esfera--3"><img src="assets/biomoleculas/esfera-carboidratos-3.svg" alt="" /></span>
+                <span class="esfera esfera--4"><img src="assets/biomoleculas/esfera-carboidratos-4.svg" alt="" /></span>
+                <span class="esfera esfera--5"><img src="assets/biomoleculas/esfera-carboidratos-5.svg" alt="" /></span>
+                <span class="tipo__numero">02</span>
+                <span class="tipo__icone"><img src="assets/biomoleculas/icon-carboidratos.png" alt="" /></span>
+              </div>
+              <div class="tipo__corpo">
+                <h3 class="tipo__titulo">Carboidratos</h3>
+                <p class="tipo__texto">
+                  Os carboidratos são a principal fonte de energia para os seres vivos. Estão presentes em alimentos como arroz, pão, massas, frutas e
+                  cereais, sendo fundamentais para o funcionamento das células.
+                </p>
+                <div class="tipo__extra" id="extra-carboidratos">
+                  <div>
+                    <p class="tipo__detalhe">Unidade: monossacarídeo · Ex.: glicose, amido, celulose</p>
+                    <p class="tipo__curiosidade">
+                      Amido e celulose são feitos da mesma glicose, mas ligada de jeitos diferentes: por isso digerimos o amido do pão e não a celulose
+                      do papel.
+                    </p>
+                  </div>
+                </div>
+                <button class="tipo__botao" type="button" aria-expanded="false" aria-controls="extra-carboidratos">
+                  <span class="tipo__botao-texto">Ver mais</span> <span aria-hidden="true">↓</span>
+                </button>
+              </div>
+            </article>
+
+            <article class="tipo tipo--lipidios" id="lipidios" data-tipo data-reveal>
+              <div class="tipo__visual" aria-hidden="true">
+                <span class="esfera esfera--1"><img src="assets/biomoleculas/esfera-lipidios-1.svg" alt="" /></span>
+                <span class="esfera esfera--2"><img src="assets/biomoleculas/esfera-lipidios-2.svg" alt="" /></span>
+                <span class="esfera esfera--3"><img src="assets/biomoleculas/esfera-lipidios-3.svg" alt="" /></span>
+                <span class="esfera esfera--4"><img src="assets/biomoleculas/esfera-lipidios-4.svg" alt="" /></span>
+                <span class="esfera esfera--5"><img src="assets/biomoleculas/esfera-lipidios-5.svg" alt="" /></span>
+                <span class="tipo__numero">03</span>
+                <span class="tipo__icone"><img src="assets/biomoleculas/icon-lipidios.png" alt="" /></span>
+              </div>
+              <div class="tipo__corpo">
+                <h3 class="tipo__titulo">Lipídios</h3>
+                <p class="tipo__texto">
+                  Os lipídios são moléculas insolúveis em água que atuam como reserva energética e fazem parte da composição das membranas celulares.
+                  Também participam da produção de hormônios e do isolamento térmico.
+                </p>
+                <div class="tipo__extra" id="extra-lipidios">
+                  <div>
+                    <p class="tipo__detalhe">Unidade: ácidos graxos e glicerol · Ex.: triglicerídeos, fosfolipídios, colesterol</p>
+                    <p class="tipo__curiosidade">
+                      Cada grama de gordura guarda mais que o dobro da energia de um grama de carboidrato — por isso o corpo usa os lipídios como
+                      reserva de longo prazo.
+                    </p>
+                  </div>
+                </div>
+                <button class="tipo__botao" type="button" aria-expanded="false" aria-controls="extra-lipidios">
+                  <span class="tipo__botao-texto">Ver mais</span> <span aria-hidden="true">↓</span>
+                </button>
+              </div>
+            </article>
+
+            <article class="tipo tipo--acidos" id="acidos-nucleicos" data-tipo data-reveal>
+              <div class="tipo__visual" aria-hidden="true">
+                <span class="esfera esfera--1"><img src="assets/biomoleculas/esfera-acidos-1.svg" alt="" /></span>
+                <span class="esfera esfera--2"><img src="assets/biomoleculas/esfera-acidos-2.svg" alt="" /></span>
+                <span class="esfera esfera--3"><img src="assets/biomoleculas/esfera-acidos-3.svg" alt="" /></span>
+                <span class="esfera esfera--4"><img src="assets/biomoleculas/esfera-acidos-4.svg" alt="" /></span>
+                <span class="esfera esfera--5"><img src="assets/biomoleculas/esfera-acidos-5.svg" alt="" /></span>
+                <span class="tipo__numero">04</span>
+                <span class="tipo__icone"><img src="assets/biomoleculas/icon-acidos.png" alt="" /></span>
+              </div>
+              <div class="tipo__corpo">
+                <h3 class="tipo__titulo">Ácidos Nucleicos</h3>
+                <p class="tipo__texto">
+                  Os ácidos nucleicos, representados pelo DNA e pelo RNA, armazenam e transmitem as informações genéticas responsáveis pelo
+                  desenvolvimento, funcionamento e reprodução dos seres vivos.
+                </p>
+                <div class="tipo__extra" id="extra-acidos">
+                  <div>
+                    <p class="tipo__detalhe">Unidade: nucleotídeo · Ex.: DNA, RNA mensageiro, RNA transportador</p>
+                    <p class="tipo__curiosidade">
+                      O DNA guarda a receita; o RNA mensageiro leva uma cópia dela até os ribossomos, onde a proteína é montada.
+                    </p>
+                  </div>
+                </div>
+                <button class="tipo__botao" type="button" aria-expanded="false" aria-controls="extra-acidos">
+                  <span class="tipo__botao-texto">Ver mais</span> <span aria-hidden="true">↓</span>
+                </button>
+              </div>
+            </article>
+          </div>
         </div>
+      </section>
 
-        <div>
-          <h3>Navegação</h3>
-          <ul class="footer-list">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="inicio.html#inicio">Início</a></li>
-            <li><a href="sobre.html">O que é bioquímica</a></li>
-            <li><a href="historia.html">História</a></li>
-            <li><a href="biomoleculas.html">Biomoléculas</a></li>
-            <li><a href="cozinha-celular/index.html">Código Celular</a></li>
-            <li><a href="contato.html">Quem somos / Contato</a></li>
-          </ul>
+      <!-- ================= VOCÊ SABIA? ================= -->
+      <section class="voce-sabia" aria-labelledby="titulo-voce-sabia">
+        <div class="container">
+          <div class="callout" data-reveal>
+            <span class="callout__icone"><img src="assets/biomoleculas/icon-lampada.png" alt="" /></span>
+            <div>
+              <h2 class="callout__titulo" id="titulo-voce-sabia">Você sabia?</h2>
+              <p class="callout__texto">
+                Mesmo desempenhando funções diferentes, proteínas, carboidratos, lipídios e ácidos nucleicos atuam de forma integrada para manter o
+                equilíbrio e o funcionamento adequado dos organismos vivos.
+              </p>
+            </div>
+          </div>
         </div>
+      </section>
 
-        <div>
-          <h3><a href="contato.html#contato">Contato</a></h3>
-          <ul class="footer-list">
-            <li class="footer-contact-item">
-              <img src="assets/icons/icon-email.png" alt="" />
-              <a href="mailto:bioquimica22ati@gmail.com">bioquimica22ati@gmail.com</a>
-            </li>
-            <li class="footer-contact-item">
-              <img src="assets/icons/icon-phone.png" alt="" />
-              <span>+55 (11)4002-8922</span>
-            </li>
-            <li class="footer-contact-item">
-              <img src="assets/icons/icon-location.png" alt="" />
-              <span>Estrada de Itapecerica, 67 — Boca da Mata - SP</span>
-            </li>
-          </ul>
+      <!-- ================= INFORMAÇÃO E ENERGIA DA VIDA ================= -->
+      <section class="section info-energia" aria-labelledby="titulo-info">
+        <div class="container">
+          <div class="secao-cabeca" data-reveal>
+            <span class="eyebrow"><span class="eyebrow__ponto" aria-hidden="true"><img src="assets/ui/pulse-dot.svg" alt="" /></span>DNA, enzimas e energia</span>
+            <h2 class="secao-titulo" id="titulo-info">Informação e energia da vida</h2>
+          </div>
+
+          <div class="info-energia__grade">
+            <div class="info-energia__coluna">
+              <article class="card-glass bloco" data-sem-tilt data-reveal>
+                <h3 class="bloco__titulo">🧬  DNA</h3>
+                <p class="bloco__texto">
+                  A molécula de DNA é formada por nucleotídeos que contêm o açúcar desoxirribose (no RNA, o açúcar é a ribose). A informação genética
+                  é escrita por quatro bases nitrogenadas: adenina, guanina, citosina e timina. No RNA, a timina é substituída pela uracila.
+                </p>
+                <div class="bases" data-bases>
+                  <button class="par" type="button" aria-pressed="false" data-par="at" aria-label="Par adenina e timina">
+                    <span class="base--a">A</span><span class="base--t" data-base-t>T</span>
+                  </button>
+                  <button class="par" type="button" aria-pressed="false" data-par="gc" aria-label="Par guanina e citosina">
+                    <span class="base--g">G</span><span class="base--c">C</span>
+                  </button>
+                  <button class="par par--rna" type="button" aria-pressed="false" data-par="rna">RNA: T → U</button>
+                </div>
+                <p class="bases__explicacao" aria-live="polite" data-bases-explicacao>Clique em um par de bases para ver como ele se liga.</p>
+              </article>
+              <article class="card-glass bloco" data-sem-tilt data-reveal>
+                <h3 class="bloco__titulo">🧪  Enzimas</h3>
+                <p class="bloco__texto">
+                  São proteínas que atuam como catalisadores biológicos. Elas aceleram as reações químicas do organismo sem serem consumidas no
+                  processo, podendo ser usadas várias vezes.
+                </p>
+              </article>
+            </div>
+
+            <div class="info-energia__coluna">
+              <article class="card-glass bloco" data-sem-tilt data-reveal>
+                <h3 class="bloco__titulo">🫁  Respiração celular</h3>
+                <p class="bloco__texto">
+                  É o processo pelo qual as células produzem energia a partir dos nutrientes, como a glicose, principalmente com a participação do
+                  oxigênio.
+                </p>
+                <p class="equacao" data-equacao aria-label="Glicose mais oxigênio produz gás carbônico, água e ATP">
+                  <span class="equacao__termo">Glicose</span><span aria-hidden="true">+</span><span class="equacao__termo">O₂</span
+                  ><span aria-hidden="true">→</span><span class="equacao__termo">CO₂</span><span aria-hidden="true">+</span
+                  ><span class="equacao__termo">H₂O</span><span aria-hidden="true">+</span
+                  ><span class="equacao__termo equacao__termo--atp">ATP ⚡</span>
+                </p>
+              </article>
+              <article class="card-glass bloco" data-sem-tilt data-reveal>
+                <h3 class="bloco__titulo bloco__titulo--amber">⚡  ATP</h3>
+                <p class="bloco__texto">
+                  Sigla de adenosina trifosfato, a molécula que armazena e fornece a energia liberada na respiração celular para as atividades da
+                  célula, como movimento, transporte e síntese de substâncias.
+                </p>
+                <div class="energia" data-energia>
+                  <div class="energia__topo"><span>ENERGIA DA CÉLULA</span><span data-contar="78" data-sufixo="%">78%</span></div>
+                  <div class="energia__trilho" role="progressbar" aria-label="Energia da célula" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100">
+                    <div class="energia__barra"></div>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
         </div>
+      </section>
+    </main>
 
-        <img src="assets/img/footer-decor.png" alt="QR Code" class="footer-qr" />
-      </div>
-
-      <div class="container footer-bottom">
-        <p>2026 Bioquímica - A química da vida. Todos os direitos reservados</p>
-      </div>
-    </footer>
-
-    <script src="js/main.js" defer></script>
-    <script src="js/motion.js" defer></script>
+    <footer data-footer></footer>
   </body>
 </html>

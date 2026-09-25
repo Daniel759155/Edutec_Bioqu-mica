@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz de Bioquímica | Bioquímica</title>
+    <meta
+      name="description"
+      content="Quiz de Bioquímica: 10 perguntas sobre biomoléculas, enzimas, DNA e energia para testar o quanto você sabe sobre a química da vida."
+    />
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+
+    <!-- Fontes: Space Grotesk (títulos), Inter (texto), JetBrains Mono (rótulos) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="css/tokens.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/quiz.css" />
+
+    <!-- Esconde os elementos [data-reveal] antes da primeira pintura (o JS anima a entrada). -->
+    <script>
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("js-anima");
+    </script>
+
+    <!-- Three.js e addons via CDN (módulos ES, sem Node/npm) -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
+    <!-- GSAP + ScrollTrigger e vanilla-tilt (globais: window.gsap, window.VanillaTilt) -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js" defer></script>
+    <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/quiz.js"></script>
+  </head>
+  <body data-pagina="quiz">
+    <header data-navbar></header>
+
+    <main>
+      <!-- ================= HERO ================= -->
+      <section class="hero-pagina hero-quiz" aria-labelledby="titulo-quiz">
+        <div class="hero-pagina__grade" aria-hidden="true"></div>
+        <div class="hero-pagina__brilho hero-pagina__brilho--1" aria-hidden="true"><img src="assets/quiz/glow-hero-1.svg" alt="" /></div>
+        <div class="hero-pagina__brilho hero-pagina__brilho--2" aria-hidden="true"><img src="assets/quiz/glow-hero-2.svg" alt="" /></div>
+        <div class="atomo hero-quiz__atomo" data-atomo aria-hidden="true"></div>
+
+        <div class="container">
+          <div class="hero-pagina__conteudo">
+            <span class="eyebrow"><span class="eyebrow__ponto" aria-hidden="true"><img src="assets/ui/pulse-dot.svg" alt="" /></span>Quiz de Bioquímica</span>
+            <h1 class="hero-pagina__titulo" id="titulo-quiz">Teste seus conhecimentos sobre a vida!</h1>
+            <p class="hero-pagina__texto">
+              Responda às perguntas e descubra o quanto você sabe sobre as biomoléculas, reações químicas e processos que mantêm os seres vivos
+              funcionando.
+            </p>
+            <div class="hero-pagina__botoes">
+              <a class="btn btn--primary" href="#quiz" data-comecar-quiz>Começar quiz <span class="btn__seta" aria-hidden="true">▶</span></a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= QUIZ ================= -->
+      <section class="quiz" id="quiz" aria-label="Quiz">
+        <div class="container quiz__grade">
+          <article class="card-glass cartao-pergunta" data-quiz data-sem-tilt></article>
+
+          <aside class="quiz__lateral">
+            <div class="card-glass lateral-card" data-sem-tilt>
+              <span class="lateral-card__rotulo">PROGRESSO</span>
+              <div class="progresso-quiz">
+                <svg class="anel" viewBox="0 0 96 96" data-anel aria-hidden="true">
+                  <defs>
+                    <linearGradient id="grad-anel" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0" stop-color="#2ef2c4" />
+                      <stop offset="1" stop-color="#8b5cf6" />
+                    </linearGradient>
+                  </defs>
+                  <circle class="anel__trilho" cx="48" cy="48" r="38" />
+                  <circle class="anel__valor" cx="48" cy="48" r="38" />
+                </svg>
+                <div>
+                  <strong class="progresso-quiz__numero" data-contador aria-live="polite">0/10</strong>
+                  <span class="progresso-quiz__legenda">Perguntas respondidas</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-glass lateral-card" data-sem-tilt>
+              <span class="lateral-card__rotulo">COMO FUNCIONA?</span>
+              <ol class="passos-quiz" role="list">
+                <li>Leia cada pergunta com atenção e escolha a alternativa que considerar correta.</li>
+                <li>Cada questão possui apenas uma resposta correta.</li>
+                <li>Ao final, sua pontuação será calculada automaticamente.</li>
+              </ol>
+            </div>
+
+            <div class="card-glass lateral-card" data-sem-tilt>
+              <span class="lateral-card__rotulo lateral-card__rotulo--amber">FAIXA DE PONTUAÇÃO</span>
+              <ul class="faixas" role="list">
+                <li class="faixa" data-faixa="baixa">
+                  <div>
+                    <strong>0-5 acertos</strong>
+                    <p>Você está começando sua jornada na bioquímica. Continue estudando e tente novamente!</p>
+                  </div>
+                </li>
+                <li class="faixa faixa--media" data-faixa="media">
+                  <div>
+                    <strong>6-8 acertos</strong>
+                    <p>Bom trabalho! Você já domina diversos conceitos importantes da bioquímica.</p>
+                  </div>
+                </li>
+                <li class="faixa faixa--alta" data-faixa="alta">
+                  <div>
+                    <strong>9-10 acertos</strong>
+                    <p>Excelente desempenho! Seu conhecimento sobre bioquímica está acima da média.</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <footer data-footer></footer>
+  </body>
+</html>

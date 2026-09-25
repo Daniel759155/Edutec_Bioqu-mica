@@ -2,294 +2,291 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <script>
-      (function () {
-        try {
-          var stored = localStorage.getItem("theme");
-          var theme =
-            stored ||
-            (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-          document.documentElement.setAttribute("data-theme", theme);
-        } catch (e) {}
-      })();
-    </script>
-    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Início — Explore o conteúdo | Bioquímica</title>
+    <meta
+      name="description"
+      content="Um mapa rápido da Bioquímica: o que ela estuda, as quatro grandes biomoléculas, onde é aplicada, curiosidades e um teste de verdadeiro ou falso."
+    />
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+
+    <!-- Fontes: Space Grotesk (títulos), Inter (texto), JetBrains Mono (rótulos) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,wght@0,600;0,700;0,900;1,500;1,600&family=Space+Mono:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&family=Space+Grotesk:wght@500;700&display=swap"
       rel="stylesheet"
     />
+
     <link rel="stylesheet" href="css/tokens.css" />
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/components.css" />
-    <title>Início — Bioquímica</title>
+    <link rel="stylesheet" href="css/inicio.css" />
+
+    <!-- Esconde os elementos [data-reveal] antes da primeira pintura (o JS anima a entrada). -->
+    <script>
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("js-anima");
+    </script>
+
+    <!-- Three.js e addons via CDN (módulos ES, sem Node/npm) -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
+    <!-- GSAP + ScrollTrigger e vanilla-tilt (globais: window.gsap, window.VanillaTilt) -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js" defer></script>
+    <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/inicio.js"></script>
   </head>
-  <body>
-    <header class="header">
-      <div class="container logo">
-        <img src="assets/img/logo.png" alt="Bioquímica" />
-        <div class="logo-text">
-          <p class="logo-title">BIOQUÍMICA</p>
-          <p class="logo-sub">A química da vida</p>
+  <body data-pagina="inicio">
+    <header data-navbar></header>
+
+    <main>
+      <!-- ================= HERO ================= -->
+      <section class="hero-pagina hero-inicio" aria-labelledby="titulo-inicio">
+        <div class="hero-pagina__foto" data-parallax="0.3" aria-hidden="true"><img src="assets/inicio/hero-bg.png" alt="" /></div>
+        <div class="hero-pagina__grade" aria-hidden="true"></div>
+        <div class="hero-pagina__brilho hero-pagina__brilho--1" aria-hidden="true"><img src="assets/inicio/glow-hero-1.svg" alt="" /></div>
+        <div class="hero-pagina__brilho hero-pagina__brilho--2" aria-hidden="true"><img src="assets/inicio/glow-hero-2.svg" alt="" /></div>
+        <div class="atomo hero-inicio__atomo" data-atomo aria-hidden="true"></div>
+
+        <div class="container">
+          <div class="hero-pagina__conteudo">
+            <nav aria-label="Você está em">
+              <ol class="breadcrumb">
+                <li><a href="index.html">Bioquímica</a></li>
+                <li><span aria-current="page">Início</span></li>
+              </ol>
+            </nav>
+            <span class="eyebrow"><span class="eyebrow__ponto" aria-hidden="true"><img src="assets/ui/pulse-dot.svg" alt="" /></span>Explore o conteúdo</span>
+            <h1 class="hero-pagina__titulo" id="titulo-inicio" data-letras>Explore o conteúdo</h1>
+            <p class="hero-pagina__slogan">Saiba tudo sobre bioquímica</p>
+            <p class="hero-pagina__texto">
+              Um mapa rápido de tudo o que você vai encontrar: o que é a Bioquímica, as biomoléculas, onde ela é aplicada e curiosidades que
+              parecem ficção.
+            </p>
+            <div class="hero-pagina__botoes">
+              <a class="btn btn--primary" href="historia.html">História da Bioquímica <span class="btn__seta" aria-hidden="true">→</span></a>
+              <a class="btn btn--ghost" href="biomoleculas.html">Ir para Biomoléculas <span class="btn__seta" aria-hidden="true">↗</span></a>
+            </div>
+          </div>
         </div>
-        <button
-          id="theme-toggle"
-          class="theme-toggle"
-          type="button"
-          aria-label="Alternar modo escuro"
-          aria-pressed="false"
-        >
-          <svg class="theme-toggle-icon icon-sun" viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="12" cy="12" r="5"></circle>
-            <path
-              d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
-            ></path>
-          </svg>
-          <svg class="theme-toggle-icon icon-moon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 1020.354 15.354z"></path>
-          </svg>
-        </button>
-        <nav style="margin-left: auto">
-          <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-links">
-            <span></span><span></span><span></span>
-          </button>
-          <ul class="nav-links" id="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="#inicio" class="active">Início</a></li>
-            <li><a href="sobre.html">O que é Bioquímica</a></li>
-            <li><a href="historia.html">História</a></li>
-            <li><a href="biomoleculas.html">Biomoléculas</a></li>
-            <li class="nav-item-dropdown">
-              <button type="button" class="nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
-                Jogos
-                <svg class="nav-dropdown-arrow" viewBox="0 0 12 8" aria-hidden="true">
-                  <path
-                    d="M1 1l5 5 5-5"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  ></path>
-                </svg>
+      </section>
+
+      <!-- ================= O QUE É A BIOQUÍMICA? ================= -->
+      <section class="section definicao" id="sobre" aria-labelledby="titulo-definicao">
+        <div class="container definicao__grade">
+          <figure class="definicao__imagem" data-reveal>
+            <img src="assets/inicio/modelo-molecular.png" alt="Modelo molecular com átomos de vidro azul ligados entre si" loading="lazy" />
+            <figcaption class="definicao__selo"><span aria-hidden="true">⚗️</span>Química + Biologia</figcaption>
+          </figure>
+          <div class="definicao__texto" data-reveal>
+            <span class="eyebrow"><span class="eyebrow__ponto" aria-hidden="true"><img src="assets/ui/pulse-dot.svg" alt="" /></span>Definição</span>
+            <h2 class="secao-titulo" id="titulo-definicao">O que é a Bioquímica?</h2>
+            <p>
+              A Bioquímica é a ciência que estuda as bases químicas dos seres vivos, investigando as biomoléculas, suas estruturas, reações e
+              funções que mantêm a vida.
+            </p>
+            <p>Ela conecta a Química e a Biologia para explicar desde os processos celulares até as funções de tecidos e organismos inteiros.</p>
+            <a class="btn btn--primary" href="sobre.html">Saiba mais <span class="btn__seta" aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= PRINCIPAIS BIOMOLÉCULAS ================= -->
+      <section class="section biomols" id="biomoleculas" aria-labelledby="titulo-biomols">
+        <div class="container">
+          <div class="secao-cabeca secao-cabeca--centro" data-reveal>
+            <span class="eyebrow"><span class="eyebrow__ponto" aria-hidden="true"><img src="assets/ui/pulse-dot.svg" alt="" /></span>As 4 grandes</span>
+            <h2 class="secao-titulo" id="titulo-biomols">Principais Biomoléculas</h2>
+            <p class="secao-sub">Passe o mouse para ver cada uma girar em 3D.</p>
+          </div>
+
+          <div class="biomols__grade">
+            <a class="card-glass biomol" href="biomoleculas.html#proteinas" data-reveal>
+              <span class="biomol__icone"><img src="assets/inicio/bio-proteinas.png" alt="" /></span>
+              <h3 class="biomol__titulo">Proteínas</h3>
+              <p class="biomol__texto">
+                Moléculas formadas por aminoácidos que desempenham funções estruturais, enzimáticas, hormonais e de defesa nos organismos.
+              </p>
+              <span class="biomol__link">SAIBA MAIS <span aria-hidden="true">→</span></span>
+            </a>
+            <a class="card-glass biomol biomol--carboidratos" href="biomoleculas.html#carboidratos" data-reveal>
+              <span class="biomol__icone"><img src="assets/inicio/bio-carboidratos.png" alt="" /></span>
+              <h3 class="biomol__titulo">Carboidratos</h3>
+              <p class="biomol__texto">São a principal fonte de energia para as células e também participam da formação de estruturas biológicas.</p>
+              <span class="biomol__link">SAIBA MAIS <span aria-hidden="true">→</span></span>
+            </a>
+            <a class="card-glass biomol biomol--lipidios" href="biomoleculas.html#lipidios" data-reveal>
+              <span class="biomol__icone"><img src="assets/inicio/bio-lipidios.png" alt="" /></span>
+              <h3 class="biomol__titulo">Lipídios</h3>
+              <p class="biomol__texto">Atuam no armazenamento de energia, na composição das membranas celulares e na proteção de órgãos.</p>
+              <span class="biomol__link">SAIBA MAIS <span aria-hidden="true">→</span></span>
+            </a>
+            <a class="card-glass biomol biomol--acidos" href="biomoleculas.html#acidos-nucleicos" data-reveal>
+              <span class="biomol__icone"><img src="assets/inicio/bio-acidos-nucleicos.png" alt="" /></span>
+              <h3 class="biomol__titulo">Ácidos Nucleicos</h3>
+              <p class="biomol__texto">Responsáveis pelo armazenamento e transmissão das informações genéticas por meio do DNA e do RNA.</p>
+              <span class="biomol__link">SAIBA MAIS <span aria-hidden="true">→</span></span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= APLICAÇÕES (lista interativa) ================= -->
+      <section class="section aplicacoes" id="aplicacoes" aria-labelledby="titulo-aplicacoes">
+        <div class="container">
+          <div class="secao-cabeca" data-reveal>
+            <span class="eyebrow"><span class="eyebrow__ponto" aria-hidden="true"><img src="assets/ui/pulse-dot.svg" alt="" /></span>Aplicações</span>
+            <h2 class="secao-titulo" id="titulo-aplicacoes">Aplicações da Bioquímica</h2>
+            <p class="secao-sub">Da farmácia ao laboratório de genética — onde este conhecimento vira prática.</p>
+          </div>
+
+          <ul class="aplicacoes__lista" role="list" data-aplicacoes>
+            <li class="aplicacao ativa" data-reveal>
+              <span class="aplicacao__numero" aria-hidden="true">01</span>
+              <span class="aplicacao__icone"><img src="assets/inicio/app-medicina.png" alt="" /></span>
+              <h3 class="aplicacao__titulo">Medicina</h3>
+              <p class="aplicacao__texto">Ajuda a compreender doenças, desenvolver medicamentos e melhorar tratamentos médicos.</p>
+              <span class="aplicacao__seta" aria-hidden="true"></span>
+            </li>
+            <li class="aplicacao" data-reveal>
+              <span class="aplicacao__numero" aria-hidden="true">02</span>
+              <span class="aplicacao__icone"><img src="assets/inicio/app-nutricao.png" alt="" /></span>
+              <h3 class="aplicacao__titulo">Nutrição</h3>
+              <p class="aplicacao__texto">Permite entender como os nutrientes são absorvidos e utilizados pelo organismo.</p>
+              <span class="aplicacao__seta" aria-hidden="true"></span>
+            </li>
+            <li class="aplicacao" data-reveal>
+              <span class="aplicacao__numero" aria-hidden="true">03</span>
+              <span class="aplicacao__icone"><img src="assets/inicio/app-biotecnologia.png" alt="" /></span>
+              <h3 class="aplicacao__titulo">Biotecnologia</h3>
+              <p class="aplicacao__texto">Contribui para o desenvolvimento de novas tecnologias aplicadas à saúde, agricultura e indústria.</p>
+              <span class="aplicacao__seta" aria-hidden="true"></span>
+            </li>
+            <li class="aplicacao" data-reveal>
+              <span class="aplicacao__numero" aria-hidden="true">04</span>
+              <span class="aplicacao__icone"><img src="assets/inicio/app-farmacia.png" alt="" /></span>
+              <h3 class="aplicacao__titulo">Farmácia</h3>
+              <p class="aplicacao__texto">Fundamental para a criação e estudo de medicamentos e seus efeitos no corpo humano.</p>
+              <span class="aplicacao__seta" aria-hidden="true"></span>
+            </li>
+            <li class="aplicacao" data-reveal>
+              <span class="aplicacao__numero" aria-hidden="true">05</span>
+              <span class="aplicacao__icone"><img src="assets/inicio/app-genetica.png" alt="" /></span>
+              <h3 class="aplicacao__titulo">Genética</h3>
+              <p class="aplicacao__texto">Ajuda a compreender a hereditariedade e os mecanismos de transmissão das características biológicas.</p>
+              <span class="aplicacao__seta" aria-hidden="true"></span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ================= CURIOSIDADES (flip cards) ================= -->
+      <section class="section curiosidades" id="curiosidades" aria-labelledby="titulo-curiosidades">
+        <div class="container">
+          <div class="secao-cabeca secao-cabeca--centro" data-reveal>
+            <span class="eyebrow"><span class="eyebrow__ponto" aria-hidden="true"><img src="assets/ui/pulse-dot.svg" alt="" /></span>Curiosidades</span>
+            <h2 class="secao-titulo" id="titulo-curiosidades">Fatos que parecem ficção</h2>
+            <p class="secao-sub">Clique nos cards para virá-los.</p>
+          </div>
+
+          <ul class="curiosidades__grade" role="list">
+            <li class="flip" data-reveal>
+              <button class="flip__botao" type="button" aria-pressed="false" aria-label="3 bilhões — virar card">
+                <span class="flip__face">
+                  <span class="flip__topo">
+                    <img class="flip__ilustracao" src="assets/inicio/curio-dna.png" alt="" />
+                    <span class="flip__girar" aria-hidden="true">↻</span>
+                  </span>
+                  <strong class="flip__numero"><span data-contar="3">3</span> bilhões</strong>
+                  <span class="flip__texto">
+                    O DNA humano possui aproximadamente 3 bilhões de pares de bases responsáveis pelo armazenamento das informações genéticas.
+                  </span>
+                </span>
+                <span class="flip__face flip__face--verso">
+                  <span class="flip__rotulo">DNA · GENOMA HUMANO</span>
+                  <span class="flip__verso-texto">
+                    Se as letras do genoma de uma única célula fossem impressas, encheriam cerca de 200 livros de mil páginas — e quase todas as
+                    células do seu corpo guardam uma cópia completa dessa informação.
+                  </span>
+                  <span class="flip__fonte">Fonte: National Human Genome Research Institute (NHGRI).</span>
+                </span>
               </button>
-              <ul class="nav-dropdown-menu">
-                <li><a href="cozinha-celular/index.html">Código Celular</a></li>
-              </ul>
             </li>
-            <li><a href="contato.html">Contato</a></li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-
-    <section id="inicio" class="hero">
-      <img src="assets/img/hero-bg.png" alt="" class="hero-bg" />
-      <div class="hero-overlay"></div>
-      <div class="container hero-content">
-        <h1 class="hero-title">Explore o conteúdo</h1>
-        <p class="hero-subtitle">Saiba tudo sobre bioquímica</p>
-        <img src="assets/icons/underline.svg" alt="" class="hero-underline" />
-        <a href="historia.html" class="btn-primary">
-          História da Bioquímica
-          <img src="assets/icons/arrow-white.svg" alt="" />
-        </a>
-      </div>
-    </section>
-
-    <section id="sobre" class="about">
-      <div class="container reveal">
-        <img src="assets/img/molecule.png" alt="Modelo molecular" class="about-img" />
-        <div>
-          <h2 class="about-title">O que é a Bioquímica?</h2>
-          <p class="about-text">
-            A Bioquímica é a ciência que estuda as bases químicas dos seres vivos,
-            investigando as biomoléculas, suas estruturas, reações e funções que
-            mantêm a vida.
-          </p>
-          <p class="about-text">
-            Ela conecta a Química e a Biologia para explicar desde os processos
-            celulares até as funções de tecidos e organismos inteiros.
-          </p>
-          <a href="sobre.html" class="btn-outline">Saiba mais</a>
-        </div>
-      </div>
-    </section>
-
-    <section id="biomoleculas" class="biomolecules">
-      <div class="container">
-        <h2 class="section-title">Principais Biomoléculas</h2>
-        <div class="biomolecules-grid reveal">
-          <div class="card accent-proteinas">
-            <img src="assets/img/icon-proteina.png" alt="" />
-            <h3>Proteínas</h3>
-            <p>
-              Moléculas formadas por aminoácidos que desempenham funções
-              estruturais, enzimáticas, hormonais e de defesa nos organismos.
-            </p>
-            <a href="biomoleculas.html" class="card-link">
-              SAIBA MAIS
-              <img src="assets/icons/arrow-teal.svg" alt="" />
-            </a>
-          </div>
-          <div class="card accent-energia">
-            <img src="assets/img/icon-carboidrato.png" alt="" />
-            <h3>Carboídratos</h3>
-            <p>
-              São a principal fonte de energia para as células e também
-              participam da formação de estruturas biológicas.
-            </p>
-            <a href="biomoleculas.html" class="card-link">
-              SAIBA MAIS
-              <img src="assets/icons/arrow-teal.svg" alt="" />
-            </a>
-          </div>
-          <div class="card accent-metabolismo">
-            <img src="assets/img/icon-lipidio.png" alt="" />
-            <h3>Lipídios</h3>
-            <p>
-              Atuam no armazenamento de energia, na composição das membranas
-              celulares e na proteção de órgãos.
-            </p>
-            <a href="biomoleculas.html" class="card-link">
-              SAIBA MAIS
-              <img src="assets/icons/arrow-teal.svg" alt="" />
-            </a>
-          </div>
-          <div class="card accent-genetica">
-            <img src="assets/img/icon-acido-nucleico.png" alt="" />
-            <h3>Ácidos Nucleicos</h3>
-            <p>
-              Responsáveis pelo armazenamento e transmissão das informações
-              genéticas por meio do DNA e do RNA.
-            </p>
-            <a href="biomoleculas.html" class="card-link">
-              SAIBA MAIS
-              <img src="assets/icons/arrow-teal.svg" alt="" />
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="applications">
-      <div class="container">
-        <h2 class="section-title">Aplicações da Bioquímica</h2>
-        <div class="applications-grid reveal">
-          <div class="app-item">
-            <img src="assets/img/icon-medicina.png" alt="" />
-            <h3>Medicína</h3>
-            <p>
-              Moléculas formadas por aminoácidos que desempenham funções
-              estruturais, enzimáticas, hormonais e de defesa nos organismos.
-            </p>
-          </div>
-          <div class="app-item">
-            <img src="assets/img/icon-app-proteina.png" alt="" />
-            <h3>Proteínas</h3>
-            <p>Permite entender como os nutrientes são absorvidos e utilizados pelo organismo.</p>
-          </div>
-          <div class="app-item">
-            <img src="assets/img/icon-biotecnologia.png" alt="" />
-            <h3>Biotecnologia</h3>
-            <p>
-              Contribui para o desenvolvimento de novas tecnologias aplicadas à
-              saúde, agricultura e indústria.
-            </p>
-          </div>
-          <div class="app-item">
-            <img src="assets/img/icon-farmacia.png" alt="" />
-            <h3>Farmácia</h3>
-            <p>Fundamental para a criação e estudo de medicamentos e seus efeitos no corpo humano.</p>
-          </div>
-          <div class="app-item">
-            <img src="assets/img/icon-genetica.png" alt="" />
-            <h3>Genética</h3>
-            <p>
-              Ajuda a compreender a hereditariedade e os mecanismos de
-              transmissão das características biológicas.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="curiosities">
-      <div class="container">
-        <h2 class="section-title">Curiosidades</h2>
-        <div class="curiosities-grid reveal">
-          <div class="curiosity-card">
-            <img src="assets/img/curiosidade-dna.png" alt="" />
-            <p>
-              O DNA humano possui aproximadamente 3 bilhões de pares de bases
-              responsáveis pelo armazenamento das informações genéticas.
-            </p>
-          </div>
-          <div class="curiosity-card">
-            <img src="assets/img/curiosidade-enzima.png" alt="" />
-            <p>
-              As enzimas são capazes de acelerar reações químicas milhões de
-              vezes mais rapidamente do que ocorreriam naturalmente.
-            </p>
-          </div>
-          <div class="curiosity-card">
-            <img src="assets/img/curiosidade-reacoes.png" alt="" />
-            <p>Milhares de reações bioquímicas acontecem a cada segundo dentro das células do corpo humano.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <footer class="footer">
-      <div class="container footer-grid">
-        <div class="footer-brand">
-          <img src="assets/img/logo.png" alt="Bioquímica" />
-          <p class="footer-brand-title">BIOQUÍMICA</p>
-          <p class="footer-brand-sub">A química da vida</p>
-        </div>
-
-        <div>
-          <h3>Navegação</h3>
-          <ul class="footer-list">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="#inicio">Início</a></li>
-            <li><a href="sobre.html">O que é bioquímica</a></li>
-            <li><a href="historia.html">História</a></li>
-            <li><a href="biomoleculas.html">Biomoléculas</a></li>
-            <li><a href="cozinha-celular/index.html">Código Celular</a></li>
-            <li><a href="contato.html">Quem somos / Contato</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <h3><a href="contato.html#contato">Contato</a></h3>
-          <ul class="footer-list">
-            <li class="footer-contact-item">
-              <img src="assets/icons/icon-email.png" alt="" />
-              <a href="mailto:bioquimica22ati@gmail.com">bioquimica22ati@gmail.com</a>
+            <li class="flip flip--energia" data-reveal>
+              <button class="flip__botao" type="button" aria-pressed="false" aria-label="Milhões de vezes — virar card">
+                <span class="flip__face">
+                  <span class="flip__topo">
+                    <img class="flip__ilustracao" src="assets/inicio/curio-enzimas.png" alt="" />
+                    <span class="flip__girar" aria-hidden="true">↻</span>
+                  </span>
+                  <strong class="flip__numero">Milhões ×</strong>
+                  <span class="flip__texto">
+                    As enzimas são capazes de acelerar reações químicas milhões de vezes mais rapidamente do que ocorreriam naturalmente.
+                  </span>
+                </span>
+                <span class="flip__face flip__face--verso">
+                  <span class="flip__rotulo">ENZIMAS · CATALISADORES</span>
+                  <span class="flip__verso-texto">
+                    A anidrase carbônica, por exemplo, converte cerca de 1 milhão de moléculas de CO₂ por segundo. E, ao final, a enzima sai intacta,
+                    pronta para catalisar a próxima reação.
+                  </span>
+                  <span class="flip__fonte">Fonte: Nelson &amp; Cox — Princípios de Bioquímica de Lehninger.</span>
+                </span>
+              </button>
             </li>
-            <li class="footer-contact-item">
-              <img src="assets/icons/icon-phone.png" alt="" />
-              <span>+55 (11)4002-8922</span>
-            </li>
-            <li class="footer-contact-item">
-              <img src="assets/icons/icon-location.png" alt="" />
-              <span>Estrada de Itapecerica, 67 — Boca da Mata - SP</span>
+            <li class="flip flip--violeta" data-reveal>
+              <button class="flip__botao" type="button" aria-pressed="false" aria-label="Milhares por segundo — virar card">
+                <span class="flip__face">
+                  <span class="flip__topo">
+                    <img class="flip__ilustracao" src="assets/inicio/curio-reacoes.png" alt="" />
+                    <span class="flip__girar" aria-hidden="true">↻</span>
+                  </span>
+                  <strong class="flip__numero">Milhares / s</strong>
+                  <span class="flip__texto">Milhares de reações bioquímicas acontecem a cada segundo dentro das células do corpo humano.</span>
+                </span>
+                <span class="flip__face flip__face--verso">
+                  <span class="flip__rotulo">METABOLISMO · ATP</span>
+                  <span class="flip__verso-texto">
+                    Só com o ATP já é assim: todos os dias o corpo produz e gasta uma quantidade de ATP próxima do seu próprio peso — cada molécula é
+                    reciclada centenas de vezes.
+                  </span>
+                  <span class="flip__fonte">Fonte: Alberts et al. — Biologia Molecular da Célula.</span>
+                </span>
+              </button>
             </li>
           </ul>
         </div>
+      </section>
 
-        <img src="assets/img/footer-decor.png" alt="QR Code" class="footer-qr" />
-      </div>
+      <!-- ================= VERDADEIRO OU FALSO (mini-jogo) ================= -->
+      <section class="mini-quiz" aria-labelledby="titulo-quiz">
+        <div class="container">
+          <div class="quiz-card" data-mini-quiz data-reveal>
+            <div class="quiz-card__texto">
+              <span class="eyebrow"
+                ><span class="eyebrow__ponto" aria-hidden="true"><img src="assets/ui/pulse-dot.svg" alt="" /></span
+                ><span data-quiz-contador>Teste rápido · 1/5</span></span
+              >
+              <h2 class="quiz-card__pergunta" id="titulo-quiz" data-quiz-pergunta>“Enzimas são consumidas nas reações que aceleram.”</h2>
+              <p class="quiz-card__dica" data-quiz-dica aria-live="polite">Verdadeiro ou falso? Responda e veja a explicação na hora.</p>
+            </div>
+            <div class="quiz-card__acoes" data-quiz-acoes>
+              <button class="quiz-botao" type="button" data-resposta="true">Verdadeiro</button>
+              <button class="quiz-botao quiz-botao--falso" type="button" data-resposta="false">Falso</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
 
-      <div class="container footer-bottom">
-        <p>2026 Bioquímica - A química da vida. Todos os direitos reservados</p>
-      </div>
-    </footer>
-
-    <script src="js/main.js" defer></script>
-    <script src="js/motion.js" defer></script>
+    <footer data-footer></footer>
   </body>
 </html>

@@ -1,0 +1,781 @@
+/* =========================================================
+   BIOMOLÉCULAS (biomoleculas.html) — Figma: 05 · Biomoléculas
+   ========================================================= */
+
+/* ---------- HERO ---------- */
+.hero-biomol .hero-pagina__brilho--1 {
+  left: -360px;
+  top: -400px;
+}
+
+.hero-biomol .hero-pagina__brilho--2 {
+  left: calc(50% + 20px);
+  top: -160px;
+}
+
+/* Molécula 3D: no celular fica atrás do texto, mais apagada */
+.hero-biomol__molecula {
+  position: absolute;
+  z-index: -1;
+  top: 60px;
+  right: -120px;
+  width: 340px;
+  height: 340px;
+  opacity: calc(0.4 * (1 - var(--desmonte, 0) * 0.7));
+  pointer-events: none;
+}
+
+@media (min-width: 1100px) {
+  .hero-biomol__molecula {
+    top: 180px;
+    right: auto;
+    left: calc(50% + 260px);
+    width: 450px;
+    height: 450px;
+    opacity: calc(1 - var(--desmonte, 0) * 0.7);
+    pointer-events: auto;
+  }
+
+  .hero-biomol .hero-pagina__conteudo {
+    pointer-events: none;
+  }
+}
+
+/* ---------- O QUE SÃO + ELEMENTOS CHONPS ---------- */
+.o-que-sao {
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Partículas de fundo: os "átomos" que saem da molécula do hero */
+.particulas {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: var(--desmonte, 0);
+}
+
+.particulas i {
+  position: absolute;
+  width: var(--t, 6px);
+  height: var(--t, 6px);
+  border-radius: 50%;
+  background: var(--c, var(--teal));
+  box-shadow: 0 0 12px var(--c, var(--teal));
+  opacity: 0.45;
+  animation: particula-deriva var(--d, 14s) ease-in-out infinite alternate;
+}
+
+@keyframes particula-deriva {
+  to {
+    translate: var(--dx, 20px) var(--dy, -30px);
+  }
+}
+
+.o-que-sao__grade {
+  display: grid;
+  gap: 48px;
+  align-items: center;
+}
+
+.o-que-sao__texto {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 22px;
+}
+
+.o-que-sao__texto p {
+  font-size: clamp(1rem, 0.95rem + 0.2vw, 1.0625rem);
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+.o-que-sao__texto p:first-of-type {
+  color: var(--text-soft);
+}
+
+.elementos__rotulo {
+  margin-bottom: 16px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--faint);
+}
+
+.elementos__grade {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Tile do elemento: vira (flip) no hover/foco e mostra onde ele aparece */
+.elemento {
+  --cor: var(--teal);
+  --cor-rgb: 46, 242, 196;
+  height: 138px;
+  perspective: 800px;
+}
+
+.elemento--h {
+  --cor: #c9d6ea;
+  --cor-rgb: 201, 214, 234;
+}
+
+.elemento--o {
+  --cor: var(--danger);
+  --cor-rgb: 255, 92, 122;
+}
+
+.elemento--n {
+  --cor: var(--cyan);
+  --cor-rgb: 56, 189, 248;
+}
+
+.elemento--p {
+  --cor: var(--amber);
+  --cor-rgb: 255, 181, 71;
+}
+
+.elemento--s {
+  --cor: var(--pink);
+  --cor-rgb: 244, 114, 182;
+}
+
+.elemento__botao {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 600ms var(--ease-out);
+}
+
+.elemento__face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 18px 20px;
+  border: 1px solid rgba(var(--cor-rgb), 0.25);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.04);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transition:
+    border-color var(--dur-med) ease,
+    box-shadow var(--dur-med) ease,
+    background var(--dur-med) ease;
+}
+
+.elemento__numero {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.elemento__simbolo {
+  font-family: var(--font-display);
+  font-size: 52px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--cor);
+}
+
+.elemento__nome {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-soft);
+}
+
+/* Verso: onde o elemento aparece */
+.elemento__face--verso {
+  justify-content: center;
+  gap: 6px;
+  border-color: rgba(var(--cor-rgb), 0.7);
+  background: linear-gradient(139deg, rgba(var(--cor-rgb), 0.25) 0%, rgba(11, 18, 32, 0.6) 100%);
+  box-shadow: 0 0 15px rgba(var(--cor-rgb), 0.35);
+  transform: rotateY(180deg);
+}
+
+.elemento__face--verso strong {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--cor);
+}
+
+.elemento__face--verso span {
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--text-soft);
+}
+
+/* Estado "aceso" (hover no Figma) antes de virar */
+.elemento__botao:hover .elemento__face--frente,
+.elemento__botao:focus-visible .elemento__face--frente {
+  border-color: rgba(var(--cor-rgb), 0.7);
+  background: linear-gradient(139deg, rgba(var(--cor-rgb), 0.25) 0%, rgba(11, 18, 32, 0.6) 100%);
+  box-shadow: 0 0 15px rgba(var(--cor-rgb), 0.35);
+}
+
+.elemento.virado .elemento__botao {
+  transform: rotateY(180deg);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .elemento__botao:hover {
+    transform: rotateY(180deg);
+  }
+}
+
+@media (min-width: 560px) {
+  .elementos__grade {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (min-width: 1000px) {
+  .o-que-sao__grade {
+    grid-template-columns: 560fr 568fr;
+    gap: 72px;
+  }
+
+  .elementos__grade {
+    grid-template-columns: repeat(3, 176px);
+  }
+}
+
+/* ---------- PRINCIPAIS TIPOS ---------- */
+.tipos {
+  background: var(--bg-800);
+}
+
+.tipos__grade {
+  display: grid;
+  gap: 24px;
+  align-items: start;
+}
+
+.tipo {
+  --cor: var(--teal);
+  --cor-rgb: 46, 242, 196;
+  scroll-margin-top: calc(var(--nav-h) + 24px);
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+  border-radius: 32px;
+  background: linear-gradient(140deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.02) 100%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-card);
+  transition: border-color var(--dur-med) ease;
+}
+
+.tipo:hover,
+.tipo:target {
+  border-color: rgba(var(--cor-rgb), 0.45);
+}
+
+.tipo--carboidratos {
+  --cor: var(--amber);
+  --cor-rgb: 255, 181, 71;
+}
+
+.tipo--lipidios {
+  --cor: var(--pink);
+  --cor-rgb: 244, 114, 182;
+}
+
+.tipo--acidos {
+  --cor: var(--violet);
+  --cor-rgb: 139, 92, 246;
+}
+
+.tipo__visual {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+  background: radial-gradient(
+    ellipse 60% 60% at 70% 50%,
+    rgba(var(--cor-rgb), 0.3) 0%,
+    rgba(var(--cor-rgb), 0.12) 50%,
+    rgba(11, 18, 32, 0) 100%
+  );
+}
+
+.tipo__icone {
+  position: absolute;
+  top: 32px;
+  left: 32px;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  border: 1px solid rgba(var(--cor-rgb), 0.35);
+  border-radius: 22px;
+  background: linear-gradient(135deg, rgba(var(--cor-rgb), 0.22) 0%, rgba(139, 92, 246, 0.15) 100%);
+}
+
+.tipo__icone img {
+  width: 42px;
+  height: 42px;
+  object-fit: cover;
+}
+
+.tipo__numero {
+  position: absolute;
+  top: 90px;
+  left: 30px;
+  font-family: var(--font-display);
+  font-size: 120px;
+  font-weight: 700;
+  letter-spacing: -0.06em;
+  line-height: 1.2;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  user-select: none;
+}
+
+/* Esferas flutuando em órbita lenta (posições do Figma, ancoradas à direita).
+   A imagem tem 24px de margem para o brilho em cada lado. */
+.esfera {
+  position: absolute;
+  width: var(--t);
+  height: var(--t);
+  animation: esfera-orbita var(--d, 9s) linear infinite;
+  animation-delay: var(--atraso, 0s);
+}
+
+.esfera img {
+  position: absolute;
+  inset: -24px;
+  width: calc(100% + 48px);
+  height: calc(100% + 48px);
+  max-width: none;
+}
+
+.esfera--1 {
+  --t: 90px;
+  --d: 11s;
+  top: 40px;
+  right: 116px;
+}
+
+.esfera--2 {
+  --t: 56px;
+  --d: 8s;
+  --atraso: -2s;
+  top: 110px;
+  right: 60px;
+}
+
+.esfera--3 {
+  --t: 40px;
+  --d: 9.5s;
+  --atraso: -5s;
+  top: 120px;
+  right: 226px;
+}
+
+.esfera--4 {
+  --t: 34px;
+  --d: 7s;
+  --atraso: -1s;
+  top: 30px;
+  right: 32px;
+}
+
+.esfera--5 {
+  --t: 26px;
+  --d: 6s;
+  --atraso: -3.5s;
+  top: 150px;
+  right: 130px;
+}
+
+@keyframes esfera-orbita {
+  0% {
+    translate: 0 0;
+  }
+  25% {
+    translate: 8px -6px;
+  }
+  50% {
+    translate: 0 -12px;
+  }
+  75% {
+    translate: -8px -6px;
+  }
+  100% {
+    translate: 0 0;
+  }
+}
+
+.tipo__corpo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 0 32px 32px;
+}
+
+.tipo__titulo {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 1.5rem + 0.8vw, 2.125rem);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+  color: var(--text);
+}
+
+.tipo__texto {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-soft);
+}
+
+/* Área que expande (height auto com transição via grid 0fr → 1fr) */
+.tipo__extra {
+  display: grid;
+  grid-template-rows: 0fr;
+  width: 100%;
+  transition: grid-template-rows 450ms var(--ease-out);
+}
+
+.tipo__extra > div {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.tipo.aberto .tipo__extra {
+  grid-template-rows: 1fr;
+}
+
+.tipo__detalhe {
+  display: inline-block;
+  padding: 10px 14px;
+  border: 1px solid rgba(var(--cor-rgb), 0.25);
+  border-radius: 14px;
+  background: rgba(var(--cor-rgb), 0.08);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--cor);
+}
+
+.tipo__curiosidade {
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.tipo__botao {
+  padding: 4px 0;
+  border: 0;
+  background: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--cor);
+  cursor: pointer;
+}
+
+.tipo__botao span[aria-hidden] {
+  display: inline-block;
+  transition: transform 300ms var(--ease-out);
+}
+
+.tipo.aberto .tipo__botao span[aria-hidden] {
+  transform: rotate(180deg);
+}
+
+@media (min-width: 900px) {
+  .tipos__grade {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ---------- VOCÊ SABIA? ---------- */
+.voce-sabia {
+  padding-block: clamp(56px, 7vw, 80px);
+}
+
+.callout {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  padding: clamp(28px, 4vw, 40px);
+  border: 1px solid var(--glass-border);
+  border-radius: 36px;
+  background: linear-gradient(171deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.02) 100%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-card);
+}
+
+.callout__icone {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 88px;
+  height: 88px;
+  border: 1px solid rgba(255, 181, 71, 0.35);
+  border-radius: 27px;
+  background: linear-gradient(135deg, rgba(255, 181, 71, 0.22) 0%, rgba(139, 92, 246, 0.15) 100%);
+}
+
+.callout__icone img {
+  width: 51px;
+  height: 51px;
+  object-fit: cover;
+}
+
+.callout__titulo {
+  margin-bottom: 10px;
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--amber);
+}
+
+.callout__texto {
+  max-width: 900px;
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--text);
+}
+
+@media (min-width: 700px) {
+  .callout {
+    flex-direction: row;
+    align-items: center;
+    gap: 32px;
+  }
+}
+
+/* ---------- INFORMAÇÃO E ENERGIA ---------- */
+.info-energia__grade {
+  display: grid;
+  gap: 24px;
+  align-items: start;
+}
+
+.info-energia__coluna {
+  display: grid;
+  gap: 24px;
+}
+
+.bloco {
+  gap: 16px;
+  padding: 32px;
+}
+
+.bloco__titulo {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  white-space: pre-wrap;
+}
+
+.bloco__titulo--amber {
+  color: var(--amber);
+}
+
+.bloco__texto {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-soft);
+}
+
+/* Pares de bases clicáveis */
+.bases {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.par {
+  display: flex;
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  background: none;
+  cursor: pointer;
+  transition:
+    border-color var(--dur-fast) ease,
+    box-shadow var(--dur-fast) ease,
+    transform var(--dur-fast) ease;
+}
+
+.par:hover,
+.par[aria-pressed="true"] {
+  border-color: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 0 16px rgba(46, 242, 196, 0.25);
+  transform: translateY(-2px);
+}
+
+.par span {
+  padding: 10px 18px;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.2;
+  transition: background var(--dur-fast) ease;
+}
+
+.base--a {
+  background: rgba(46, 242, 196, 0.15);
+  color: var(--teal);
+}
+
+.base--t {
+  background: rgba(244, 114, 182, 0.15);
+  color: var(--pink);
+}
+
+.base--g {
+  background: rgba(255, 181, 71, 0.15);
+  color: var(--amber);
+}
+
+.base--c {
+  background: rgba(56, 189, 248, 0.15);
+  color: var(--cyan);
+}
+
+.base--u {
+  background: rgba(139, 92, 246, 0.18);
+  color: var(--violet);
+}
+
+.par--rna {
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.bases__explicacao {
+  min-height: 1.6em;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.bases__explicacao strong {
+  color: var(--text);
+}
+
+/* Equação com termos acendendo em sequência */
+.equacao {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--cyan);
+}
+
+.equacao__termo {
+  transition:
+    color 300ms ease,
+    text-shadow 300ms ease;
+}
+
+.equacao__termo.aceso {
+  color: var(--text);
+  text-shadow: 0 0 12px rgba(56, 189, 248, 0.9);
+}
+
+.equacao__termo--atp.aceso {
+  color: var(--amber);
+  text-shadow: 0 0 12px rgba(255, 181, 71, 0.9);
+}
+
+/* Barra de energia (ATP) que enche ao entrar na tela */
+.energia {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+}
+
+.energia__topo {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.energia__topo span:first-child {
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+.energia__topo span:last-child {
+  color: var(--amber);
+}
+
+.energia__trilho {
+  height: 10px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.energia__barra {
+  width: 78%;
+  height: 100%;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--amber) 0%, var(--pink) 100%);
+  box-shadow: 0 0 12px rgba(255, 181, 71, 0.8);
+  transform-origin: left;
+  transition: transform 1.6s var(--ease-out);
+}
+
+.js-anima .energia__barra {
+  transform: scaleX(0);
+}
+
+.js-anima .energia.cheia .energia__barra {
+  transform: scaleX(1);
+}
+
+@media (min-width: 900px) {
+  .info-energia__grade {
+    grid-template-columns: 1fr 1fr;
+  }
+}

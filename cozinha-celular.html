@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cozinha Celular: Enzima em Ação! | Bioquímica</title>
+    <meta
+      name="description"
+      content="Cozinha Celular: Enzima em Ação! — jogo 3D em que você controla uma enzima e cumpre pedidos de moléculas dentro da célula, contra o relógio."
+    />
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+
+    <!-- Fontes: Space Grotesk (títulos), Inter (texto), JetBrains Mono (rótulos) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&family=Montserrat:wght@900&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="css/tokens.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/cozinha.css" />
+
+    <!-- Esconde os elementos [data-reveal] antes da primeira pintura (o JS anima a entrada). -->
+    <script>
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("js-anima");
+    </script>
+
+    <!-- Three.js e addons via CDN (módulos ES, sem Node/npm) -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
+    <!-- GSAP + ScrollTrigger e vanilla-tilt (globais: window.gsap, window.VanillaTilt) -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js" defer></script>
+    <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/cozinha.js"></script>
+  </head>
+  <body data-pagina="cozinha" class="pagina-cozinha">
+    <header data-navbar></header>
+
+    <main>
+      <!-- ================= HERO ================= -->
+      <section class="hero-cozinha" aria-labelledby="titulo-cozinha">
+        <div class="hero-pagina__grade" aria-hidden="true"></div>
+        <img class="hero-cozinha__brilho hero-cozinha__brilho--1" src="assets/cozinha/glow-1.svg" alt="" aria-hidden="true" />
+        <img class="hero-cozinha__brilho hero-cozinha__brilho--2" src="assets/cozinha/glow-2.svg" alt="" aria-hidden="true" />
+        <img class="hero-cozinha__brilho hero-cozinha__brilho--3" src="assets/cozinha/glow-3.svg" alt="" aria-hidden="true" />
+        <div class="hero-cozinha__particulas" data-particulas aria-hidden="true"></div>
+        <span class="hero-cozinha__mitocondria" aria-hidden="true"></span>
+        <div class="hero-cozinha__enzima" aria-hidden="true"><img src="assets/cozinha/enzima.svg" alt="" /></div>
+
+        <div class="container">
+          <div class="hero-cozinha__conteudo">
+            <nav aria-label="Você está em">
+              <ol class="breadcrumb">
+                <li><a href="biolab.html">Jogos</a></li>
+                <li><span aria-current="page">Cozinha Celular</span></li>
+              </ol>
+            </nav>
+            <span class="selo-cozinha">NOVO JOGO · 14+</span>
+            <h1 class="hero-cozinha__titulo" id="titulo-cozinha">
+              <span class="hero-cozinha__nome">COZINHA<br />CELULAR</span>
+              <span class="hero-cozinha__faixa">ENZIMA EM AÇÃO!</span>
+            </h1>
+            <p class="hero-cozinha__texto">
+              Controle uma enzima e corra dentro da célula cumprindo pedidos de moléculas antes que o tempo acabe — no ritmo frenético dos jogos de
+              cozinha. Monte proteínas no ribossomo, gere ATP na mitocôndria, segure temperatura e pH no laboratório e derrote os radicais livres.
+            </p>
+            <div class="hero-cozinha__botoes">
+              <a class="btn btn--primary" href="cozinha-celular/index.html">Jogar agora <span class="btn__seta" aria-hidden="true">▶</span></a>
+              <a class="btn btn--ghost" href="#como-funciona">Como jogar <span class="btn__seta" aria-hidden="true">?</span></a>
+            </div>
+            <div class="recorde-cozinha">
+              <img src="assets/cozinha/esfera-recorde.svg" alt="" aria-hidden="true" />
+              <div>
+                <small>RECORDE</small>
+                <strong data-recorde>— pts</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="qualidade" role="radiogroup" aria-label="Qualidade gráfica do jogo" data-qualidade>
+          <span class="qualidade__rotulo" aria-hidden="true">GRÁFICOS</span>
+          <button type="button" role="radio" aria-checked="false" data-valor="baixa">Baixa</button>
+          <button type="button" role="radio" aria-checked="false" data-valor="media">Média</button>
+          <button type="button" role="radio" aria-checked="true" data-valor="alta">Alta</button>
+        </div>
+      </section>
+
+      <!-- ================= AS FASES ================= -->
+      <section class="section fases-cozinha" aria-labelledby="titulo-fases">
+        <div class="container">
+          <div class="secao-cabeca secao-cabeca--centro" data-reveal>
+            <span class="eyebrow"><span class="eyebrow__ponto" aria-hidden="true"><img src="assets/ui/pulse-dot.svg" alt="" /></span>4 fases + chefão</span>
+            <h2 class="secao-titulo" id="titulo-fases">Uma jornada por dentro da célula</h2>
+            <p class="secao-sub">Cada fase ensina um processo real da bioquímica.</p>
+          </div>
+
+          <ul class="fases-cozinha__grade" role="list">
+            <li class="card-glass fase-card" data-reveal>
+              <div class="fase-card__preview" aria-hidden="true">
+                <div class="fase-card__orbita">
+                  <img class="fase-card__esfera fase-card__esfera--1" src="assets/cozinha/fase-ribossomo-1.svg" alt="" />
+                  <img class="fase-card__esfera fase-card__esfera--2" src="assets/cozinha/fase-ribossomo-2.svg" alt="" />
+                  <img class="fase-card__esfera fase-card__esfera--3" src="assets/cozinha/fase-ribossomo-3.svg" alt="" />
+                </div>
+              </div>
+              <div class="fase-card__corpo">
+                <span class="fase-card__selo">FASE 1</span>
+                <h3 class="fase-card__titulo">Ribossomo</h3>
+                <p class="fase-card__texto">
+                  Leia os códons do RNAm (AUG, UUU, GGC…) e entregue os aminoácidos certos para montar as proteínas pedidas. Combos multiplicam os
+                  pontos.
+                </p>
+                <span class="fase-card__tema">📚 Síntese de proteínas</span>
+                <span class="fase-card__estrelas">⭐ ⭐ ☆   1 a 3 estrelas</span>
+              </div>
+            </li>
+            <li class="card-glass fase-card fase-card--mitocondria" data-reveal>
+              <div class="fase-card__preview" aria-hidden="true">
+                <div class="fase-card__orbita">
+                  <img class="fase-card__esfera fase-card__esfera--1" src="assets/cozinha/fase-mitocondria-1.svg" alt="" />
+                  <img class="fase-card__esfera fase-card__esfera--2" src="assets/cozinha/fase-mitocondria-2.svg" alt="" />
+                  <img class="fase-card__esfera fase-card__esfera--3" src="assets/cozinha/fase-mitocondria-3.svg" alt="" />
+                </div>
+              </div>
+              <div class="fase-card__corpo">
+                <span class="fase-card__selo">FASE 2</span>
+                <h3 class="fase-card__titulo">Mitocôndria</h3>
+                <p class="fase-card__texto">
+                  Leve o piruvato ao Ciclo de Krebs e mantenha o fluxo de energia: Glicólise → Krebs → Cadeia respiratória → ATP.
+                </p>
+                <span class="fase-card__tema">📚 Respiração celular</span>
+                <span class="fase-card__estrelas">⭐ ⭐ ☆   1 a 3 estrelas</span>
+              </div>
+            </li>
+            <li class="card-glass fase-card fase-card--laboratorio" data-reveal>
+              <div class="fase-card__preview" aria-hidden="true">
+                <div class="fase-card__orbita">
+                  <img class="fase-card__esfera fase-card__esfera--1" src="assets/cozinha/fase-laboratorio-1.svg" alt="" />
+                  <img class="fase-card__esfera fase-card__esfera--2" src="assets/cozinha/fase-laboratorio-2.svg" alt="" />
+                  <img class="fase-card__esfera fase-card__esfera--3" src="assets/cozinha/fase-laboratorio-3.svg" alt="" />
+                </div>
+              </div>
+              <div class="fase-card__corpo">
+                <span class="fase-card__selo">FASE 3</span>
+                <h3 class="fase-card__titulo">Laboratório de Enzimas</h3>
+                <p class="fase-card__texto">Controle temperatura e pH para a enzima não desnaturar. Ideal: 35–40 °C e pH perto de 7.</p>
+                <span class="fase-card__tema">📚 Enzimas</span>
+                <span class="fase-card__estrelas">⭐ ⭐ ☆   1 a 3 estrelas</span>
+              </div>
+            </li>
+            <li class="card-glass fase-card fase-card--chefao" data-reveal>
+              <div class="fase-card__preview" aria-hidden="true">
+                <div class="fase-card__orbita">
+                  <img class="fase-card__esfera fase-card__esfera--1" src="assets/cozinha/fase-chefao-1.svg" alt="" />
+                  <img class="fase-card__esfera fase-card__esfera--2" src="assets/cozinha/fase-chefao-2.svg" alt="" />
+                  <img class="fase-card__esfera fase-card__esfera--3" src="assets/cozinha/fase-chefao-3.svg" alt="" />
+                </div>
+              </div>
+              <div class="fase-card__corpo">
+                <span class="fase-card__selo">CHEFÃO</span>
+                <h3 class="fase-card__titulo">Radicais Livres</h3>
+                <p class="fase-card__texto">
+                  Enfrente o Radical Livre Supremo usando antioxidantes: Vitamina C e Vitamina E neutralizam o elétron desemparelhado.
+                </p>
+                <span class="fase-card__tema">📚 Antioxidantes</span>
+                <span class="fase-card__estrelas">⭐ ⭐ ☆   1 a 3 estrelas</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ================= COMO FUNCIONA ================= -->
+      <section class="section como-cozinha" id="como-funciona" aria-labelledby="titulo-como">
+        <div class="container">
+          <div class="secao-cabeca secao-cabeca--centro" data-reveal>
+            <span class="eyebrow"><span class="eyebrow__ponto" aria-hidden="true"><img src="assets/ui/pulse-dot.svg" alt="" /></span>Como funciona</span>
+            <h2 class="secao-titulo" id="titulo-como">Jogue, aprenda e evolua</h2>
+          </div>
+
+          <ol class="ciclo" role="list" data-reveal>
+            <li class="ciclo__passo"><span aria-hidden="true">🎮</span><span>Jogue a fase</span></li>
+            <li class="ciclo__seta" aria-hidden="true">→</li>
+            <li class="ciclo__passo"><span aria-hidden="true">💡</span><span>Fase concluída + Você sabia?</span></li>
+            <li class="ciclo__seta" aria-hidden="true">→</li>
+            <li class="ciclo__passo"><span aria-hidden="true">❓</span><span>Mini quiz (3 perguntas)</span></li>
+            <li class="ciclo__seta" aria-hidden="true">→</li>
+            <li class="ciclo__passo"><span aria-hidden="true">🛒</span><span>Loja de melhorias</span></li>
+            <li class="ciclo__seta" aria-hidden="true">→</li>
+            <li class="ciclo__passo"><span aria-hidden="true">⏭️</span><span>Próxima fase</span></li>
+          </ol>
+
+          <div class="como-cozinha__grade">
+            <article class="card-glass painel-cozinha" data-sem-tilt data-reveal>
+              <h3 class="painel-cozinha__titulo">🕹️  Controles</h3>
+              <ul class="controles-cozinha" role="list">
+                <li><kbd class="tecla">WASD</kbd> mover a enzima</li>
+                <li><kbd class="tecla">ESPAÇO</kbd> pegar / entregar moléculas</li>
+                <li><kbd class="tecla">1 · 2 · 3</kbd> usar power-ups (NAD⁺, Mg²⁺…)</li>
+                <li><kbd class="tecla">CLIQUE / J</kbd> atirar antioxidantes no chefão</li>
+                <li><kbd class="tecla">ENTER</kbd> continuar na loja</li>
+                <li><kbd class="tecla">TOQUE</kbd> joystick + botão de ação no celular</li>
+              </ul>
+            </article>
+            <article class="card-glass painel-cozinha" data-sem-tilt data-reveal>
+              <h3 class="painel-cozinha__titulo">⚡  Gaste ATP em melhorias</h3>
+              <ul class="loja-cozinha" role="list">
+                <li><b>SPD</b><strong>Turbo Catalítico</strong><small>◉ 120 ATP</small></li>
+                <li><b>+15s</b><strong>Tempo Extra</strong><small>◉ 150 ATP</small></li>
+                <li><b>x2</b><strong>Duas Mãos</strong><small>◉ 300 ATP</small></li>
+                <li><b>SHD</b><strong>Chaperona</strong><small>◉ 200 ATP</small></li>
+                <li><b>HP+</b><strong>Membrana Forte</strong><small>◉ 250 ATP</small></li>
+                <li><b>MAG</b><strong>Imã de ATP</strong><small>◉ 180 ATP</small></li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= CTA ================= -->
+      <section class="cta-cozinha" aria-labelledby="titulo-cta-cozinha">
+        <div class="container">
+          <div class="cta-cozinha__card" data-reveal>
+            <div>
+              <p class="cta-cozinha__rotulo" id="titulo-cta-cozinha">DADO CIENTÍFICO</p>
+              <p class="cta-cozinha__fato">
+                O códon AUG, além de codificar a metionina, é o sinal de início da tradução: é por ele que o ribossomo começa a montar quase todas as
+                proteínas.
+              </p>
+              <p class="cta-cozinha__mais">
+                Aprenda mais em <a href="biomoleculas.html#proteinas">Biomoléculas → Proteínas</a> e
+                <a href="biomoleculas.html#acidos-nucleicos">Ácidos Nucleicos</a>.
+              </p>
+            </div>
+            <div class="cta-cozinha__botoes">
+              <a class="btn btn--primary" href="cozinha-celular/index.html">Jogar Cozinha Celular <span class="btn__seta" aria-hidden="true">▶</span></a>
+              <a class="btn btn--ghost" href="cozinha-celular/index.html#ranking">Ver ranking <span class="btn__seta" aria-hidden="true">🏆</span></a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer data-footer></footer>
+  </body>
+</html>

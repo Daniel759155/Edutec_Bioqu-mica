@@ -217,9 +217,15 @@ export function letraPorLetra() {
   document.querySelectorAll("[data-letras]").forEach((el) => {
     const texto = el.textContent;
     el.setAttribute("aria-label", texto);
-    el.innerHTML = [...texto]
-      .map((letra) => `<span class="letra" aria-hidden="true">${letra === " " ? "&nbsp;" : letra}</span>`)
-      .join("");
+    // Cada palavra fica num bloco que não quebra, para a linha só quebrar entre palavras.
+    el.innerHTML = texto
+      .trim()
+      .split(/\s+/)
+      .map(
+        (palavra) =>
+          `<span class="palavra" aria-hidden="true">${[...palavra].map((l) => `<span class="letra">${l}</span>`).join("")}</span>`
+      )
+      .join(" ");
     if (reduzido || !gsap) return;
     gsap.from(el.querySelectorAll(".letra"), {
       opacity: 0,
@@ -230,6 +236,33 @@ export function letraPorLetra() {
       stagger: 0.03,
       delay: 0.15,
     });
+  });
+}
+
+// --- Título com letras "embaralhadas" que se resolvem ao carregar -------------
+// <h1 data-embaralhar>O que é Bioquímica</h1>
+export function embaralhar() {
+  const alvos = document.querySelectorAll("[data-embaralhar]");
+  if (!alvos.length || reduzido) return;
+  const simbolos = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&*+=";
+  alvos.forEach((el) => {
+    const final = el.textContent;
+    el.setAttribute("aria-label", final);
+    const duracao = 1100;
+    const inicio = performance.now();
+    const passo = (agora) => {
+      const t = Math.min(1, (agora - inicio) / duracao);
+      // Cada letra "trava" no valor certo um pouco depois da anterior.
+      const resolvidas = Math.floor(t * final.length);
+      el.textContent = [...final]
+        .map((letra, i) =>
+          i < resolvidas || letra === " " ? letra : simbolos[Math.floor(Math.random() * simbolos.length)]
+        )
+        .join("");
+      if (t < 1) requestAnimationFrame(passo);
+      else el.textContent = final;
+    };
+    requestAnimationFrame(passo);
   });
 }
 
@@ -286,6 +319,7 @@ export function parallax() {
 export function iniciarAnimacoes() {
   if (!reduzido) document.documentElement.classList.add("js-anima");
   letraPorLetra();
+  embaralhar();
   fadeUp();
   contadores();
   parallax();

@@ -2,403 +2,267 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <script>
-      (function () {
-        try {
-          var stored = localStorage.getItem("theme");
-          var theme =
-            stored ||
-            (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-          document.documentElement.setAttribute("data-theme", theme);
-        } catch (e) {}
-      })();
-    </script>
-    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quem Somos e Contato | Bioquímica</title>
+    <meta
+      name="description"
+      content="Conheça o time por trás do site Bioquímica — A química da vida e fale com a gente pelo formulário, e-mail ou Instagram."
+    />
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+
+    <!-- Fontes: Space Grotesk (títulos), Inter (texto), JetBrains Mono (rótulos) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:ital,wght@0,600;0,700;0,900;1,500;1,600&family=Space+Mono:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&family=Space+Grotesk:wght@500;700&display=swap"
       rel="stylesheet"
     />
+
     <link rel="stylesheet" href="css/tokens.css" />
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/components.css" />
     <link rel="stylesheet" href="css/contato.css" />
-    <title>Quem Somos e Contato — Bioquímica</title>
+
+    <!-- Esconde os elementos [data-reveal] antes da primeira pintura (o JS anima a entrada). -->
+    <script>
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("js-anima");
+    </script>
+
+    <!-- Three.js e addons via CDN (módulos ES, sem Node/npm) -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
+    <!-- GSAP + ScrollTrigger e vanilla-tilt (globais: window.gsap, window.VanillaTilt) -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js" defer></script>
+    <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/contato.js"></script>
   </head>
-  <body class="contato-page">
-    <header class="header">
-      <div class="container logo">
-        <img src="assets/img/logo.png" alt="Bioquímica" />
-        <div class="logo-text">
-          <p class="logo-title">BIOQUÍMICA</p>
-          <p class="logo-sub">A química da vida</p>
+  <body data-pagina="contato">
+    <header data-navbar></header>
+
+    <main>
+      <!-- ================= HERO ================= -->
+      <section class="hero-pagina hero-contato" aria-labelledby="titulo-contato">
+        <div class="hero-pagina__foto" data-parallax="0.3" aria-hidden="true"><img src="assets/contato/hero-bg.png" alt="" /></div>
+        <div class="hero-pagina__grade" aria-hidden="true"></div>
+        <div class="hero-pagina__brilho hero-pagina__brilho--1" aria-hidden="true"><img src="assets/inicio/glow-hero-1.svg" alt="" /></div>
+        <div class="hero-pagina__brilho hero-pagina__brilho--2" aria-hidden="true"><img src="assets/inicio/glow-hero-2.svg" alt="" /></div>
+
+        <div class="container">
+          <div class="hero-pagina__conteudo">
+            <span class="eyebrow"><span class="eyebrow__ponto" aria-hidden="true"><img src="assets/ui/pulse-dot.svg" alt="" /></span>Quem somos</span>
+            <h1 class="hero-pagina__titulo" id="titulo-contato" data-letras>Quem Somos e Contato</h1>
+            <p class="hero-pagina__texto">
+              Somos um grupo de 5 pessoas apaixonadas pela ciência da vida e pelo poder que a bioquímica tem de transformar o mundo. Criamos este
+              site para compartilhar conhecimento de forma clara, acessível e inspiradora.
+            </p>
+          </div>
         </div>
-        <button
-          id="theme-toggle"
-          class="theme-toggle"
-          type="button"
-          aria-label="Alternar modo escuro"
-          aria-pressed="false"
-        >
-          <svg class="theme-toggle-icon icon-sun" viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="12" cy="12" r="5"></circle>
-            <path
-              d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
-            ></path>
-          </svg>
-          <svg class="theme-toggle-icon icon-moon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 1020.354 15.354z"></path>
-          </svg>
-        </button>
-        <nav style="margin-left: auto">
-          <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-links">
-            <span></span><span></span><span></span>
-          </button>
-          <ul class="nav-links" id="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="inicio.html#inicio">Início</a></li>
-            <li><a href="sobre.html">O que é Bioquímica</a></li>
-            <li><a href="historia.html">História</a></li>
-            <li><a href="biomoleculas.html">Biomoléculas</a></li>
-            <li class="nav-item-dropdown">
-              <button type="button" class="nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
-                Jogos
-                <svg class="nav-dropdown-arrow" viewBox="0 0 12 8" aria-hidden="true">
-                  <path
-                    d="M1 1l5 5 5-5"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  ></path>
-                </svg>
-              </button>
-              <ul class="nav-dropdown-menu">
-                <li><a href="cozinha-celular/index.html">Código Celular</a></li>
+      </section>
+
+      <!-- ================= NOSSO TIME ================= -->
+      <section class="section time" id="time" aria-labelledby="titulo-time">
+        <div class="container">
+          <div class="secao-cabeca secao-cabeca--centro" data-reveal>
+            <span class="eyebrow"><span class="eyebrow__ponto" aria-hidden="true"><img src="assets/ui/pulse-dot.svg" alt="" /></span>Nosso time</span>
+            <h2 class="secao-titulo" id="titulo-time">Nosso Time</h2>
+            <p class="secao-sub">Conheça as pessoas que fazem este projeto acontecer.</p>
+          </div>
+
+          <ul class="time__grade" role="list">
+            <li class="card-glass membro membro--cyan" data-sem-tilt data-reveal>
+              <span class="membro__anel">
+                <img class="membro__foto" src="assets/contato/foto-guilherme.svg" alt="" />
+                <span class="membro__iniciais" aria-hidden="true">GC</span>
+              </span>
+              <h3 class="membro__nome">Guilherme C.</h3>
+              <span class="membro__funcao">Colaborador</span>
+              <p class="membro__texto">Participou das atividades de organização e acompanhamento do projeto.</p>
+              <ul class="membro__links" role="list">
+                <li><a href="mailto:bioquimica22ati@gmail.com?subject=Para%20Guilherme" aria-label="Enviar e-mail para Guilherme">✉️</a></li>
+                <li><a href="#contato" aria-label="Ir para o formulário de contato">💬</a></li>
               </ul>
             </li>
-            <li><a href="contato.html" class="active">Contato</a></li>
+            <li class="card-glass membro" data-sem-tilt data-reveal>
+              <span class="membro__anel"><img class="membro__foto" src="assets/contato/foto-daniel.png" alt="Foto de Daniel Souza" /></span>
+              <h3 class="membro__nome">Daniel Souza</h3>
+              <span class="membro__funcao">Desenvolvedor Front-end</span>
+              <p class="membro__texto">
+                Responsável pelo desenvolvimento do site, transformando o projeto visual em código e garantindo que as páginas sejam funcionais.
+              </p>
+              <ul class="membro__links" role="list">
+                <li><a href="mailto:bioquimica22ati@gmail.com?subject=Para%20Daniel" aria-label="Enviar e-mail para Daniel">✉️</a></li>
+                <li><a href="#contato" aria-label="Ir para o formulário de contato">💬</a></li>
+              </ul>
+            </li>
+            <li class="card-glass membro membro--violeta" data-sem-tilt data-reveal>
+              <span class="membro__anel"><img class="membro__foto" src="assets/contato/foto-gustavo.png" alt="Foto de Gustavo Mercês" /></span>
+              <h3 class="membro__nome">Gustavo Mercês</h3>
+              <span class="membro__funcao">Designer &amp; UI/UX</span>
+              <p class="membro__texto">
+                Responsável pelo design, identidade visual e experiência do usuário. Apaixonado por tecnologia e criatividade.
+              </p>
+              <ul class="membro__links" role="list">
+                <li><a href="mailto:bioquimica22ati@gmail.com?subject=Para%20Gustavo" aria-label="Enviar e-mail para Gustavo">✉️</a></li>
+                <li><a href="#contato" aria-label="Ir para o formulário de contato">💬</a></li>
+              </ul>
+            </li>
+            <li class="card-glass membro membro--rosa" data-sem-tilt data-reveal>
+              <span class="membro__anel"><img class="membro__foto" src="assets/contato/foto-miguel.png" alt="Foto de Miguel Anderson" /></span>
+              <h3 class="membro__nome">Miguel Anderson</h3>
+              <span class="membro__funcao">Pesquisador &amp; Revisor</span>
+              <p class="membro__texto">
+                Responsável pela curadoria científica e revisão técnica, assegurando a qualidade e precisão das informações.
+              </p>
+              <ul class="membro__links" role="list">
+                <li><a href="mailto:bioquimica22ati@gmail.com?subject=Para%20Miguel" aria-label="Enviar e-mail para Miguel">✉️</a></li>
+                <li><a href="#contato" aria-label="Ir para o formulário de contato">💬</a></li>
+              </ul>
+            </li>
+            <li class="card-glass membro membro--amber" data-sem-tilt data-reveal>
+              <span class="membro__anel"><img class="membro__foto" src="assets/contato/foto-gabriel.png" alt="Foto de Gabriel Jerônimo" /></span>
+              <h3 class="membro__nome">Gabriel Jerônimo</h3>
+              <span class="membro__funcao">Redator &amp; Conteúdo</span>
+              <p class="membro__texto">
+                Cuida da pesquisa, redação e revisão dos conteúdos, garantindo informações claras, confiáveis e atualizadas.
+              </p>
+              <ul class="membro__links" role="list">
+                <li><a href="mailto:bioquimica22ati@gmail.com?subject=Para%20Gabriel" aria-label="Enviar e-mail para Gabriel">✉️</a></li>
+                <li><a href="#contato" aria-label="Ir para o formulário de contato">💬</a></li>
+              </ul>
+            </li>
           </ul>
-        </nav>
-      </div>
-    </header>
-
-    <section id="inicio" class="hero contato-hero">
-      <img src="assets/contato/hero-bg.png" alt="" class="hero-bg" />
-      <div class="hero-overlay"></div>
-      <div class="container hero-content">
-        <h1 class="hero-title">Quem Somos<br /><span class="contato-hero-sub">e Contato</span></h1>
-        <img src="assets/icons/underline.svg" alt="" class="hero-underline" />
-        <p class="hero-text">
-          Somos um grupo de 5 pessoas apaixonadas pela ciência da vida e pelo
-          poder que a bioquímica tem de transformar o mundo. Criamos este site
-          para compartilhar conhecimento de forma clara, acessível e inspiradora.
-        </p>
-      </div>
-    </section>
-
-    <nav class="breadcrumb" aria-label="Você está aqui">
-      <ol class="breadcrumb-list container">
-        <li><a href="index.html">Bioquímica</a></li>
-        <li class="breadcrumb-sep" aria-hidden="true">/</li>
-        <li aria-current="page">Quem Somos e Contato</li>
-      </ol>
-    </nav>
-
-    <section class="contato-time" id="time">
-      <div class="container">
-        <h2 class="contato-heading">Nosso <span class="text-accent">Time</span></h2>
-        <p class="contato-lead">Conheça as pessoas que fazem este projeto acontecer.</p>
-
-        <div class="contato-time-grid reveal">
-          <article class="contato-membro">
-            <img src="assets/contato/foto-guilherme.svg" alt="" class="contato-foto" />
-            <h3>Guilherme C.</h3>
-            <p class="contato-cargo">Colaborador do projeto</p>
-            <p class="contato-membro-texto">
-              Participou das atividades de organização e acompanhamento do projeto.
-            </p>
-            <div class="contato-social">
-              <a href="#" aria-label="LinkedIn de Guilherme C."><img src="assets/contato/icon-linkedin.png" alt="" /></a>
-              <a href="#" aria-label="Instagram de Guilherme C."><img src="assets/contato/icon-instagram.png" alt="" /></a>
-              <a href="#" aria-label="E-mail de Guilherme C."><img src="assets/contato/icon-email.png" alt="" /></a>
-            </div>
-          </article>
-
-          <article class="contato-membro">
-            <img src="assets/contato/foto-daniel.png" alt="Foto de Daniel Souza" class="contato-foto" />
-            <h3>Daniel Souza</h3>
-            <p class="contato-cargo">Desenvolvedor<br />Front-end</p>
-            <p class="contato-membro-texto">
-              Responsável pelo desenvolvimento do site, transformando o projeto
-              visual em código e garantindo que as páginas sejam funcionais.
-            </p>
-            <div class="contato-social">
-              <a href="#" aria-label="LinkedIn de Daniel Souza"><img src="assets/contato/icon-linkedin.png" alt="" /></a>
-              <a href="#" aria-label="Instagram de Daniel Souza"><img src="assets/contato/icon-instagram.png" alt="" /></a>
-              <a href="#" aria-label="E-mail de Daniel Souza"><img src="assets/contato/icon-email.png" alt="" /></a>
-            </div>
-          </article>
-
-          <article class="contato-membro">
-            <img src="assets/contato/foto-gustavo.png" alt="Foto de Gustavo Mercês" class="contato-foto" />
-            <h3>Gustavo Mercês</h3>
-            <p class="contato-cargo">Designer &amp; UI/UX</p>
-            <p class="contato-membro-texto">
-              Responsável pelo design, identidade visual e experiência do
-              usuário. Apaixonado por tecnologia e criatividade.
-            </p>
-            <div class="contato-social">
-              <a href="#" aria-label="LinkedIn de Gustavo Mercês"><img src="assets/contato/icon-linkedin.png" alt="" /></a>
-              <a href="#" aria-label="Instagram de Gustavo Mercês"><img src="assets/contato/icon-instagram.png" alt="" /></a>
-              <a href="#" aria-label="E-mail de Gustavo Mercês"><img src="assets/contato/icon-email.png" alt="" /></a>
-            </div>
-          </article>
-
-          <article class="contato-membro">
-            <img src="assets/contato/foto-miguel.png" alt="Foto de Miguel Anderson" class="contato-foto" />
-            <h3>Miguel Anderson</h3>
-            <p class="contato-cargo">Pesquisador &amp; Revisor</p>
-            <p class="contato-membro-texto">
-              Responsável pela curadoria científica e revisão técnica,
-              assegurando a qualidade e precisão das informações.
-            </p>
-            <div class="contato-social">
-              <a href="#" aria-label="LinkedIn de Miguel Anderson"><img src="assets/contato/icon-linkedin.png" alt="" /></a>
-              <a href="#" aria-label="Instagram de Miguel Anderson"><img src="assets/contato/icon-instagram.png" alt="" /></a>
-              <a href="#" aria-label="E-mail de Miguel Anderson"><img src="assets/contato/icon-email.png" alt="" /></a>
-            </div>
-          </article>
-
-          <article class="contato-membro">
-            <img src="assets/contato/foto-gabriel.png" alt="Foto de Gabriel Jerônimo" class="contato-foto" />
-            <h3>Gabriel Jerônimo</h3>
-            <p class="contato-cargo">Redatora &amp; Conteúdo</p>
-            <p class="contato-membro-texto">
-              Cuida da pesquisa, redação e revisão dos conteúdos, garantindo
-              informações claras, confiáveis e atualizadas.
-            </p>
-            <div class="contato-social">
-              <a href="#" aria-label="LinkedIn de Gabriel Jerônimo"><img src="assets/contato/icon-linkedin.png" alt="" /></a>
-              <a href="#" aria-label="Instagram de Gabriel Jerônimo"><img src="assets/contato/icon-instagram.png" alt="" /></a>
-              <a href="#" aria-label="E-mail de Gabriel Jerônimo"><img src="assets/contato/icon-email.png" alt="" /></a>
-            </div>
-          </article>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="contato-fale" id="contato">
-      <div class="container">
-        <div class="contato-card contato-fale-card reveal">
-          <div class="contato-form-col">
-            <h2 class="contato-heading">Entre em <span class="text-teal">contato</span></h2>
-            <p class="contato-lead contato-lead-lg">
-              Tem dúvidas, sugestões ou quer falar com a gente?<br />
-              Será um prazer ouvir você!
-            </p>
+      <!-- ================= ENTRE EM CONTATO ================= -->
+      <section class="section contato" id="contato" aria-labelledby="titulo-form">
+        <div class="container contato__grade">
+          <form class="card-glass formulario" data-formulario data-sem-tilt novalidate data-reveal>
+            <span class="eyebrow"><span class="eyebrow__ponto" aria-hidden="true"><img src="assets/ui/pulse-dot.svg" alt="" /></span>Fale conosco</span>
+            <h2 class="formulario__titulo" id="titulo-form">Entre em contato</h2>
+            <p class="formulario__texto">Tem dúvidas, sugestões ou quer falar com a gente? Será um prazer ouvir você!</p>
 
-            <form id="contato-form" class="contato-form" novalidate>
-              <div class="contato-form-row">
-                <label class="sr-only" for="contato-nome">Nome</label>
-                <input id="contato-nome" name="nome" type="text" placeholder="Nome" autocomplete="name" required />
-                <label class="sr-only" for="contato-email">E-mail</label>
-                <input id="contato-email" name="email" type="email" placeholder="E-mail" autocomplete="email" required />
-              </div>
-              <label class="sr-only" for="contato-assunto">Assunto</label>
-              <input id="contato-assunto" name="assunto" type="text" placeholder="Assunto" required />
-              <label class="sr-only" for="contato-mensagem">Mensagem</label>
-              <textarea id="contato-mensagem" name="mensagem" placeholder="Mensagem" rows="5" required></textarea>
-              <button type="submit" class="contato-enviar">
-                ENVIAR MENSAGEM
-                <img src="assets/contato/icon-enviar.png" alt="" />
+            <div class="formulario__linha">
+              <label class="campo">
+                <span class="campo__rotulo">Nome</span>
+                <span class="campo__caixa">
+                  <span class="campo__icone" aria-hidden="true">👤</span>
+                  <input class="campo__entrada campo__entrada--icone" type="text" name="nome" placeholder="Seu nome" autocomplete="name" required />
+                </span>
+                <span class="campo__erro" aria-live="polite"></span>
+              </label>
+              <label class="campo">
+                <span class="campo__rotulo">E-mail</span>
+                <span class="campo__caixa">
+                  <span class="campo__icone" aria-hidden="true">✉️</span>
+                  <input class="campo__entrada campo__entrada--icone" type="email" name="email" placeholder="voce@email.com" autocomplete="email" required />
+                </span>
+                <span class="campo__erro" aria-live="polite"></span>
+              </label>
+            </div>
+            <label class="campo">
+              <span class="campo__rotulo">Assunto</span>
+              <input class="campo__entrada" type="text" name="assunto" placeholder="Sobre o que quer falar?" required />
+              <span class="campo__erro" aria-live="polite"></span>
+            </label>
+            <label class="campo">
+              <span class="campo__rotulo">Mensagem</span>
+              <textarea class="campo__entrada" name="mensagem" placeholder="Escreva sua mensagem..." required minlength="10"></textarea>
+              <span class="campo__erro" aria-live="polite"></span>
+            </label>
+
+            <div class="formulario__rodape">
+              <p class="formulario__aviso" data-aviso aria-live="polite">Respondemos em até 2 dias úteis.</p>
+              <button class="btn btn--primary formulario__enviar" type="submit" data-enviar>
+                Enviar mensagem <span class="btn__seta" aria-hidden="true">➤</span>
               </button>
-              <p id="contato-status" class="contato-status" role="status" aria-live="polite"></p>
-            </form>
-          </div>
+            </div>
+          </form>
 
-          <div class="contato-divider" aria-hidden="true"></div>
-
-          <div class="contato-outras">
-            <h3>Outras formas de contato</h3>
-            <ul>
+          <aside class="contatos" data-reveal aria-labelledby="titulo-contatos">
+            <h2 class="contatos__titulo" id="titulo-contatos">Outras formas de contato</h2>
+            <ul class="contatos__lista" role="list">
               <li>
-                <span class="contato-outras-icon"><img src="assets/contato/icon-email.png" alt="" /></span>
-                <div>
-                  <p class="contato-outras-titulo">E-mail</p>
-                  <a href="mailto:bioquimica22ati@gmail.com" class="contato-outras-valor">bioquimica22ati@gmail.com</a>
-                </div>
+                <button class="contato-card" type="button" data-copiar="bioquimica22ati@gmail.com" aria-label="Copiar e-mail: bioquimica22ati@gmail.com">
+                  <span class="contato-card__icone" aria-hidden="true">✉️</span>
+                  <span><span class="contato-card__rotulo">E-mail</span><span class="contato-card__valor">bioquimica22ati@gmail.com</span></span>
+                  <span class="contato-card__copiado" aria-live="polite">Copiado!</span>
+                </button>
               </li>
               <li>
-                <span class="contato-outras-icon"><img src="assets/contato/icon-instagram.png" alt="" /></span>
-                <div>
-                  <p class="contato-outras-titulo">Instagram</p>
-                  <p class="contato-outras-valor">@bioquimica_vida</p>
-                </div>
+                <button class="contato-card contato-card--rosa" type="button" data-copiar="@bioquimica_vida" aria-label="Copiar Instagram: @bioquimica_vida">
+                  <span class="contato-card__icone" aria-hidden="true">📸</span>
+                  <span><span class="contato-card__rotulo">Instagram</span><span class="contato-card__valor">@bioquimica_vida</span></span>
+                  <span class="contato-card__copiado" aria-live="polite">Copiado!</span>
+                </button>
               </li>
               <li>
-                <span class="contato-outras-icon"><img src="assets/contato/icon-local.png" alt="" /></span>
-                <div>
-                  <p class="contato-outras-titulo">Localização</p>
-                  <p class="contato-outras-valor">São Paulo, SP - Brasil</p>
-                </div>
+                <button class="contato-card contato-card--cyan" type="button" data-copiar="São Paulo, SP - Brasil" aria-label="Copiar localização: São Paulo, SP - Brasil">
+                  <span class="contato-card__icone" aria-hidden="true">📍</span>
+                  <span><span class="contato-card__rotulo">Localização</span><span class="contato-card__valor">São Paulo, SP - Brasil</span></span>
+                  <span class="contato-card__copiado" aria-live="polite">Copiado!</span>
+                </button>
               </li>
               <li>
-                <span class="contato-outras-icon"><img src="assets/contato/icon-horario.png" alt="" /></span>
-                <div>
-                  <p class="contato-outras-titulo">Horários</p>
-                  <p class="contato-outras-valor">Seg a Sex, das 9h às 18h</p>
-                </div>
+                <button class="contato-card contato-card--amber" type="button" data-copiar="Seg a Sex, das 9h às 18h" aria-label="Copiar horários: Seg a Sex, das 9h às 18h">
+                  <span class="contato-card__icone" aria-hidden="true">🕘</span>
+                  <span><span class="contato-card__rotulo">Horários</span><span class="contato-card__valor">Seg a Sex, das 9h às 18h</span></span>
+                  <span class="contato-card__copiado" aria-live="polite">Copiado!</span>
+                </button>
+              </li>
+              <li>
+                <button class="contato-card contato-card--violeta" type="button" data-copiar="+55 (11) 4002-8922" aria-label="Copiar telefone: +55 (11) 4002-8922">
+                  <span class="contato-card__icone" aria-hidden="true">📞</span>
+                  <span><span class="contato-card__rotulo">Telefone</span><span class="contato-card__valor">+55 (11) 4002-8922</span></span>
+                  <span class="contato-card__copiado" aria-live="polite">Copiado!</span>
+                </button>
               </li>
             </ul>
-          </div>
-
-          <img src="assets/contato/lab.png" alt="" class="contato-lab" />
+            <img class="contatos__foto" src="assets/contato/lab.png" alt="Vidrarias de laboratório com líquido azul, uma planta e um modelo molecular" loading="lazy" />
+          </aside>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="contato-politicas" id="politicas">
-      <div class="container">
-        <h2 class="contato-heading contato-heading-sm">Política de <span class="text-accent">Privacidade</span></h2>
-        <p class="contato-lead">Como coletamos, usamos e protegemos suas informações.</p>
-
-        <div class="contato-accordion">
-          <div class="accordion-item">
-            <h3>
-              <button type="button" class="accordion-trigger" aria-expanded="false">
-                <span class="accordion-trigger-label">
-                  <img src="assets/contato/politica-4.png" alt="" />
-                  1. Informações que Coletamos
-                </span>
-                <span class="accordion-trigger-icon" aria-hidden="true"></span>
-              </button>
-            </h3>
-            <div class="accordion-panel">
-              <div class="accordion-panel-inner">
-                <p>
-                  Coletamos apenas as informações necessárias para melhorar sua
-                  experiência, como nome, e-mail e dados de uso do site.
-                </p>
-              </div>
-            </div>
+      <!-- ================= PRIVACIDADE (resumo) ================= -->
+      <section class="section privacidade" aria-labelledby="titulo-privacidade">
+        <div class="container">
+          <div class="secao-cabeca" data-reveal>
+            <span class="eyebrow"><span class="eyebrow__ponto" aria-hidden="true"><img src="assets/ui/pulse-dot.svg" alt="" /></span>Privacidade</span>
+            <h2 class="secao-titulo" id="titulo-privacidade">Política de Privacidade</h2>
           </div>
-
-          <div class="accordion-item">
-            <h3>
-              <button type="button" class="accordion-trigger" aria-expanded="false">
-                <span class="accordion-trigger-label">
-                  <img src="assets/contato/politica-1.png" alt="" />
-                  2. Uso das Informações
-                </span>
-                <span class="accordion-trigger-icon" aria-hidden="true"></span>
-              </button>
-            </h3>
-            <div class="accordion-panel">
-              <div class="accordion-panel-inner">
-                <p>
-                  Utilizamos suas informações para fornecer e melhorar nossos
-                  serviços, personalizar o conteúdo e enviar comunicados importantes.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="accordion-item">
-            <h3>
-              <button type="button" class="accordion-trigger" aria-expanded="false">
-                <span class="accordion-trigger-label">
-                  <img src="assets/contato/politica-2.png" alt="" />
-                  3. Compartilhamento
-                </span>
-                <span class="accordion-trigger-icon" aria-hidden="true"></span>
-              </button>
-            </h3>
-            <div class="accordion-panel">
-              <div class="accordion-panel-inner">
-                <p>
-                  Não vendemos ou compartilhamos suas informações pessoais com
-                  terceiros, exceto quando exigido por lei ou com seu consentimento.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="accordion-item">
-            <h3>
-              <button type="button" class="accordion-trigger" aria-expanded="false">
-                <span class="accordion-trigger-label">
-                  <img src="assets/contato/politica-3.png" alt="" />
-                  4. Cookies e Tecnologias
-                </span>
-                <span class="accordion-trigger-icon" aria-hidden="true"></span>
-              </button>
-            </h3>
-            <div class="accordion-panel">
-              <div class="accordion-panel-inner">
-                <p>
-                  Utilizamos cookies para melhorar sua navegação, entender
-                  preferências e analisar o desempenho do site.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <footer class="footer">
-      <div class="container footer-grid">
-        <div class="footer-brand">
-          <img src="assets/img/logo.png" alt="Bioquímica" />
-          <p class="footer-brand-title">BIOQUÍMICA</p>
-          <p class="footer-brand-sub">A química da vida</p>
-        </div>
-
-        <div>
-          <h3>Navegação</h3>
-          <ul class="footer-list">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="inicio.html#inicio">Início</a></li>
-            <li><a href="sobre.html">O que é bioquímica</a></li>
-            <li><a href="historia.html">História</a></li>
-            <li><a href="biomoleculas.html">Biomoléculas</a></li>
-            <li><a href="cozinha-celular/index.html">Código Celular</a></li>
-            <li><a href="contato.html">Quem somos / Contato</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <h3><a href="contato.html#contato">Contato</a></h3>
-          <ul class="footer-list">
-            <li class="footer-contact-item">
-              <img src="assets/icons/icon-email.png" alt="" />
-              <a href="mailto:bioquimica22ati@gmail.com">bioquimica22ati@gmail.com</a>
+          <ul class="privacidade__grade" role="list">
+            <li class="card-glass privacidade__item" data-reveal>
+              <h3>1. Informações que Coletamos</h3>
+              <p>Coletamos apenas as informações necessárias para melhorar sua experiência, como nome, e-mail e dados de uso do site.</p>
             </li>
-            <li class="footer-contact-item">
-              <img src="assets/icons/icon-phone.png" alt="" />
-              <span>+55 (11)4002-8922</span>
+            <li class="card-glass privacidade__item" data-reveal>
+              <h3>2. Uso das Informações</h3>
+              <p>Utilizamos suas informações para fornecer e melhorar nossos serviços, personalizar o conteúdo e enviar comunicados importantes.</p>
             </li>
-            <li class="footer-contact-item">
-              <img src="assets/icons/icon-location.png" alt="" />
-              <span>Estrada de Itapecerica, 67 — Boca da Mata - SP</span>
+            <li class="card-glass privacidade__item" data-reveal>
+              <h3>3. Compartilhamento</h3>
+              <p>
+                Não vendemos ou compartilhamos suas informações pessoais com terceiros, exceto quando exigido por lei ou com seu consentimento.
+              </p>
+            </li>
+            <li class="card-glass privacidade__item" data-reveal>
+              <h3>4. Cookies e Tecnologias</h3>
+              <p>Utilizamos cookies para melhorar sua navegação, entender preferências e analisar o desempenho do site.</p>
             </li>
           </ul>
+          <a class="btn btn--link" href="termos.html">Ler Termos de Uso e Política de Privacidade completos <span class="btn__seta" aria-hidden="true">→</span></a>
         </div>
+      </section>
+    </main>
 
-        <img src="assets/img/footer-decor.png" alt="QR Code" class="footer-qr" />
-      </div>
-
-      <div class="container footer-bottom">
-        <p>2026 Bioquímica - A química da vida. Todos os direitos reservados</p>
-      </div>
-    </footer>
-
-    <script src="js/main.js" defer></script>
-    <script src="js/motion.js" defer></script>
-    <script src="js/contato.js" defer></script>
+    <footer data-footer></footer>
   </body>
 </html>

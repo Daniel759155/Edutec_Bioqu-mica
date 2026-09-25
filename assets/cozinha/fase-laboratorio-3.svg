@@ -1,0 +1,10 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle id="Sphere" cx="11" cy="11" r="11" fill="url(#paint0_radial_0_8)"/>
+<defs>
+<radialGradient id="paint0_radial_0_8" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(7.7 6.6) scale(16.5)">
+<stop stop-color="#E0F4FF"/>
+<stop offset="0.45" stop-color="#4DC3FF"/>
+<stop offset="1" stop-color="#0B4A6B"/>
+</radialGradient>
+</defs>
+</svg>
