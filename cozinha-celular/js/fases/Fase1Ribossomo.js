@@ -101,7 +101,8 @@ export class Fase1Ribossomo extends FaseBase {
         pos.z = this.ribossomo.posicao.z + (rz / dr) * minimo;
       }
     };
-    this.ctx.camera.enquadrar();
+    // Olha um pouco mais alto que o padrão para a fita de RNAm não ficar sob o cronômetro.
+    this.ctx.camera.enquadrar({ alturaOlhar: 1.4 });
     this._mostrarPedidoAtual();
     this.ctx.hud.powerups(this.powerups);
   }

@@ -19,7 +19,7 @@ export class FitaRNAm {
 
     const fio = new THREE.Mesh(
       new THREE.CylinderGeometry(0.05, 0.05, 26, 8),
-      new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.6 })
+      new THREE.MeshBasicMaterial({ color: 0x9fd8ff, transparent: true, opacity: 0.3 })
     );
     fio.rotation.z = Math.PI / 2;
     this.grupo.add(fio);

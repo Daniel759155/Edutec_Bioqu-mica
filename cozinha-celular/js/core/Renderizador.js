@@ -6,6 +6,8 @@ import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
+import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
+import { ShaderVinheta } from "../efeitos/ShaderVinheta.js";
 import { CONFIG } from "../utils/Config.js";
 
 export class Renderizador {
@@ -28,6 +30,9 @@ export class Renderizador {
     this.passeBloom = new UnrealBloomPass(new THREE.Vector2(1, 1), CONFIG.preset.bloomForca, CONFIG.preset.bloomRaio, 0.82);
     this.composer.addPass(this.passeBloom);
 
+    this.passeVinheta = new ShaderPass(ShaderVinheta);
+    this.composer.addPass(this.passeVinheta);
+
     this.composer.addPass(new OutputPass());
 
     this.aplicarQualidade();
@@ -44,6 +49,13 @@ export class Renderizador {
     this.renderer.shadowMap.enabled = preset.sombras;
     this.passeBloom.strength = preset.bloomForca;
     this.passeBloom.radius = preset.bloomRaio;
+    this.passeVinheta.enabled = preset.vinheta;
+    // Com pós-processamento o "antialias" do renderer não vale: o MSAA fica nos alvos do composer.
+    [this.composer.renderTarget1, this.composer.renderTarget2].forEach((alvo) => {
+      if (alvo.samples === preset.amostrasMsaa) return;
+      alvo.samples = preset.amostrasMsaa;
+      alvo.dispose(); // recriado com o novo MSAA no próximo quadro
+    });
   }
 
   redimensionar() {

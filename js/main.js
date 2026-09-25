@@ -1,84 +1,58 @@
-document.addEventListener("DOMContentLoaded", function () {
-  var toggle = document.querySelector(".nav-toggle");
-  var navLinks = document.getElementById("nav-links");
+// Ponto de entrada comum a todas as páginas do site.
+// 1) monta Navbar/Footer; 2) liga as animações globais; 3) preenche os átomos
+// SVG; 4) carrega cada cena 3D (Three.js) só quando ela chega perto da tela.
 
-  if (toggle && navLinks) {
-    toggle.addEventListener("click", function () {
-      var isOpen = navLinks.classList.toggle("open");
-      toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
-    });
+import { montarLayout } from "./nav.js";
+import { iniciarAnimacoes, loaderInicial } from "./animations.js";
+import { montarAtomos } from "./three/atomo.js";
+import { suportaWebGL, mostrarFallback } from "./three/suporte.js";
+import { montarTrilhas } from "./efeitos/trilha.js";
 
-    navLinks.querySelectorAll("a").forEach(function (link) {
-      link.addEventListener("click", function () {
-        navLinks.classList.remove("open");
-        toggle.setAttribute("aria-expanded", "false");
-      });
-    });
-  }
+// Módulo de cada cena 3D, carregado sob demanda (data-3d="nome").
+const CENAS_3D = {
+  dna: () => import("./three/dna.js"),
+  glicose: () => import("./three/glicose.js"),
+  laboratorio: () => import("./three/laboratorio.js"),
+};
 
-  document.querySelectorAll(".nav-item-dropdown").forEach(function (item) {
-    var dropdownToggle = item.querySelector(".nav-dropdown-toggle");
-    if (!dropdownToggle) return;
+loaderInicial();
+montarLayout();
+montarAtomos();
+montarTrilhas();
+iniciarAnimacoes();
+iniciarCenas3D();
 
-    dropdownToggle.addEventListener("click", function (e) {
-      e.preventDefault();
-      var isOpen = item.classList.toggle("open");
-      dropdownToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
-    });
-  });
+function iniciarCenas3D() {
+  const palcos = document.querySelectorAll("[data-3d]");
+  if (!palcos.length) return;
 
-  document.addEventListener("click", function (e) {
-    document.querySelectorAll(".nav-item-dropdown.open").forEach(function (item) {
-      if (!item.contains(e.target)) {
-        item.classList.remove("open");
-        var dropdownToggle = item.querySelector(".nav-dropdown-toggle");
-        if (dropdownToggle) dropdownToggle.setAttribute("aria-expanded", "false");
-      }
-    });
-  });
-
-  var themeToggle = document.getElementById("theme-toggle");
-  if (themeToggle) {
-    var isDark = document.documentElement.getAttribute("data-theme") === "dark";
-    themeToggle.setAttribute("aria-pressed", String(isDark));
-
-    themeToggle.addEventListener("click", function () {
-      isDark = document.documentElement.getAttribute("data-theme") === "dark";
-      var next = isDark ? "light" : "dark";
-      document.documentElement.setAttribute("data-theme", next);
-      themeToggle.setAttribute("aria-pressed", String(!isDark));
-      try {
-        localStorage.setItem("theme", next);
-      } catch (e) {}
-    });
-  }
-
-  var reduceMotion =
-    window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var PAGE_EXIT_MS = reduceMotion ? 0 : 250;
-
-  document.querySelectorAll("a[href]").forEach(function (link) {
-    var href = link.getAttribute("href");
-    if (
-      !href ||
-      href.charAt(0) === "#" ||
-      href.indexOf("mailto:") === 0 ||
-      href.indexOf("tel:") === 0 ||
-      link.target === "_blank" ||
-      link.hostname !== window.location.hostname
-    ) {
+  const montar = async (el) => {
+    const carregar = CENAS_3D[el.dataset["3d"]];
+    if (!carregar) return;
+    if (!suportaWebGL()) {
+      mostrarFallback(el);
       return;
     }
+    try {
+      const modulo = await carregar();
+      el.palco3d = modulo.montar(el);
+      el.dispatchEvent(new CustomEvent("palco3d:pronto", { detail: el.palco3d }));
+    } catch (erro) {
+      // CDN fora do ar ou GPU bloqueada: fica a imagem estática.
+      console.warn("Cena 3D indisponível:", erro);
+      el.querySelector("canvas")?.remove();
+      mostrarFallback(el);
+    }
+  };
 
-    link.addEventListener("click", function (e) {
-      if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) {
-        return;
-      }
-      e.preventDefault();
-      document.body.classList.add("page-exit");
-      setTimeout(function () {
-        window.location.href = link.href;
-      }, PAGE_EXIT_MS);
-    });
-  });
-});
+  const io = new IntersectionObserver(
+    (entradas) =>
+      entradas.forEach((e) => {
+        if (!e.isIntersecting) return;
+        io.unobserve(e.target);
+        montar(e.target);
+      }),
+    { rootMargin: "300px" }
+  );
+  palcos.forEach((el) => io.observe(el));
+}

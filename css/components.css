@@ -1,436 +1,1096 @@
-/* ==========================================================================
-   Componentes novos do redesign — usam os tokens de tokens.css.
-   Não duplica .card/.btn-primary/etc. (continuam em style.css).
-   ========================================================================== */
+/* =========================================================
+   COMPONENTES — Navbar, menu mobile, busca ⌘K, Footer, Botões,
+   Eyebrow, Card de vidro, Átomo orbital e palcos 3D.
+   (Figma: 00 · Design System)
+   ========================================================= */
 
-/* ---------- Header agora é fixo: compensa âncoras (#id) e o topo do breadcrumb ---------- */
-html {
-  scroll-padding-top: 5.5rem;
+/* =========================================================
+   NAVBAR — vidro fosco, sticky, some ao descer e volta ao subir
+   ========================================================= */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 16px var(--gutter) 0;
+  transition: transform 350ms var(--ease-out);
 }
 
-.breadcrumb {
-  scroll-margin-top: 5.5rem;
+.navbar.escondida {
+  transform: translateY(calc(-100% - 8px));
 }
 
-/* ---------- Header: vidro fosco + encolhimento ao rolar ---------- */
-.header {
-  background: var(--header-bg);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  transition: background-color 0.25s ease, box-shadow 0.25s ease, padding 0.25s ease;
+.navbar__barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  max-width: 1360px;
+  margin-inline: auto;
+  padding: 10px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: var(--radius-pill);
+  background: var(--nav-bg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: var(--shadow-card);
 }
 
-.header.is-scrolled {
-  background: var(--header-bg-scrolled);
-  box-shadow: 0 1px 0 var(--border-subtle), var(--shadow-sm);
+/* Marca: logo + BIOQUÍMICA / A química da vida */
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-inline: 1px;
+  flex-shrink: 0;
 }
 
-.header.is-scrolled .container {
-  padding-block: 0.5rem;
+.marca__logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
-.header.is-scrolled .logo-sub,
-.header.is-scrolled .theme-toggle {
-  color: var(--header-text-scrolled);
+.marca__nome {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  color: var(--text);
 }
 
-.header.is-scrolled .theme-toggle {
-  border-color: color-mix(in srgb, var(--header-text-scrolled) 30%, transparent);
-  background: color-mix(in srgb, var(--header-text-scrolled) 10%, transparent);
+.marca__sub {
+  display: none;
+  font-size: 12px;
+  line-height: 1.2;
+  color: var(--muted);
 }
 
-/* .nav-links: o painel mobile (<=768px) é sempre escuro (ver style.css),
-   então o texto claro dele só muda de cor no desktop, onde fica sobre o header. */
-@media (min-width: 769px) {
-  .header.is-scrolled .nav-links a,
-  .header.is-scrolled .nav-dropdown-toggle {
-    color: var(--header-text-scrolled);
-  }
+/* Links do desktop */
+.navbar__links {
+  display: none;
+  align-items: center;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-/* O botão hamburguer (mobile) fica na barra do header, não no painel escuro. */
-@media (max-width: 768px) {
-  .header.is-scrolled .nav-toggle span {
-    background: var(--header-text-scrolled);
-  }
+.navbar__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 9px 14px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background: none;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--text-soft);
+  white-space: nowrap;
+  transition:
+    color var(--dur-fast) ease,
+    background var(--dur-fast) ease,
+    border-color var(--dur-fast) ease;
 }
 
-/* ---------- Revelação ao rolar ---------- */
-.reveal {
+.navbar__link:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Link da página atual: pílula teal */
+.navbar__link[aria-current="page"],
+.navbar__link.ativo {
+  color: var(--teal);
+  background: var(--teal-08);
+  border-color: var(--teal-30);
+}
+
+/* Dropdown "Jogos ▾" */
+.dropdown {
+  position: relative;
+}
+
+.dropdown__seta {
+  font-size: 10px;
+  transition: transform var(--dur-fast) ease;
+}
+
+.dropdown.aberto .dropdown__seta {
+  transform: rotate(180deg);
+}
+
+.dropdown__menu {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 50%;
+  min-width: 240px;
+  margin: 0;
+  padding: 8px;
+  list-style: none;
+  border: 1px solid var(--glass-border-soft);
+  border-radius: 20px;
+  background: rgba(11, 18, 32, 0.92);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: var(--shadow-card);
   opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  visibility: hidden;
+  transform: translate(-50%, -6px);
+  transition:
+    opacity var(--dur-fast) ease,
+    transform var(--dur-fast) ease,
+    visibility var(--dur-fast);
 }
 
-.reveal.is-visible {
+.dropdown.aberto .dropdown__menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+
+.dropdown__item {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-soft);
+  transition:
+    background var(--dur-fast) ease,
+    color var(--dur-fast) ease;
+}
+
+.dropdown__item small {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--faint);
+}
+
+.dropdown__item:hover,
+.dropdown__item:focus-visible {
+  background: var(--teal-08);
+  color: var(--teal);
+}
+
+.dropdown__item[aria-current="page"] {
+  color: var(--teal);
+}
+
+/* Ações à direita: só a busca ⌘K (o projeto não tem login nem cadastro) */
+.navbar__acoes {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.botao-busca {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border: 1px solid var(--glass-border-soft);
+  border-radius: var(--radius-pill);
+  background: var(--glass-fill);
+  line-height: 1;
+  transition: border-color var(--dur-fast) ease;
+}
+
+.botao-busca:hover {
+  border-color: var(--teal-30);
+}
+
+.botao-busca__icone {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.botao-busca__atalho {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--faint);
+}
+
+/* Botão hambúrguer (mobile) */
+.botao-menu {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 20px;
+  line-height: 1;
+  color: var(--text);
+}
+
+@media (min-width: 640px) {
+  .botao-busca {
+    display: inline-flex;
+  }
+}
+
+/* Desktop: links visíveis, hambúrguer some */
+@media (min-width: 1100px) {
+  .navbar {
+    padding: 20px 40px 0;
+  }
+
+  .navbar__barra {
+    padding: 12px 14px;
+  }
+
+  .marca {
+    gap: 12px;
+    padding-inline: 6px;
+  }
+
+  .marca__logo {
+    width: 44px;
+    height: 44px;
+  }
+
+  .marca__nome {
+    font-size: 17px;
+  }
+
+  .marca__sub {
+    display: block;
+  }
+
+  .navbar__links {
+    display: flex;
+  }
+
+  .botao-menu {
+    display: none;
+  }
+}
+
+/* =========================================================
+   MENU MOBILE — tela cheia, links entram em cascata
+   ========================================================= */
+.menu-mobile {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  overflow: hidden auto;
+  background: rgba(6, 10, 19, 0.97);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 300ms ease,
+    visibility 300ms;
+}
+
+.menu-mobile.aberto {
+  opacity: 1;
+  visibility: visible;
+}
+
+.menu-mobile__brilho {
+  position: absolute;
+  left: 100px;
+  top: 500px;
+  width: 400px;
+  height: 400px;
+  pointer-events: none;
+}
+
+.menu-mobile__brilho img {
+  position: absolute;
+  inset: -35%;
+  width: 170%;
+  max-width: none;
+  height: 170%;
+}
+
+.menu-mobile__fechar {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 24px;
+  line-height: 1;
+  color: var(--text);
+}
+
+.menu-mobile__lista {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 110px var(--gutter) 48px;
+  list-style: none;
+}
+
+.menu-mobile__link {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 32px;
+  letter-spacing: -0.015em;
+  line-height: 1.3;
+  color: var(--text);
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 400ms var(--ease-out),
+    transform 400ms var(--ease-out),
+    color var(--dur-fast) ease;
+  transition-delay: calc(var(--i, 0) * 60ms);
+}
+
+.menu-mobile.aberto .menu-mobile__link {
   opacity: 1;
   transform: none;
 }
 
-.reveal-1.is-visible {
-  transition-delay: 0.06s;
-}
-.reveal-2.is-visible {
-  transition-delay: 0.12s;
-}
-.reveal-3.is-visible {
-  transition-delay: 0.18s;
-}
-.reveal-4.is-visible {
-  transition-delay: 0.24s;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .reveal {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-}
-
-/* ---------- Breadcrumb "você está aqui" ---------- */
-.breadcrumb {
-  background: var(--surface-alt);
-  border-bottom: 1px solid var(--border-subtle);
-}
-
-.breadcrumb-list {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-2);
-  margin: 0;
-  padding: var(--space-3) 0;
-  list-style: none;
-  font-family: var(--font-mono);
-  font-size: 0.8125rem; /* 13px */
-  letter-spacing: 0.01em;
-  color: var(--text-muted);
-}
-
-.breadcrumb-list a {
-  color: var(--text-muted);
-  transition: color 0.2s;
-}
-
-.breadcrumb-list a:hover {
+.menu-mobile__link[aria-current="page"],
+.menu-mobile__link:hover {
   color: var(--teal);
 }
 
-.breadcrumb-list li[aria-current="page"] {
-  color: var(--teal);
-}
-
-.breadcrumb-sep {
-  opacity: 0.5;
-}
-
-/* ---------- Cores de destaque por área ---------- */
-.accent-biologia {
-  --accent: var(--accent-biologia);
-}
-.accent-genetica {
-  --accent: var(--accent-genetica);
-}
-.accent-metabolismo {
-  --accent: var(--accent-metabolismo);
-}
-.accent-energia {
-  --accent: var(--accent-energia);
-}
-.accent-proteinas {
-  --accent: var(--accent-proteinas);
-}
-.accent-enzimas {
-  --accent: var(--accent-enzimas);
-}
-
-.card[class*="accent-"] {
-  border-top: 4px solid var(--accent, var(--teal));
-}
-
-.biomol-intro strong[class*="accent-"] {
-  color: var(--accent, var(--teal));
-}
-
-.accent-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--accent, var(--teal));
-}
-
-.accent-tag::before {
-  content: "";
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 50%;
-  background: var(--accent, var(--teal));
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent, var(--teal)) 25%, transparent);
-}
-
-/* ---------- Accordion (marcos, biomoléculas, políticas) ---------- */
-.accordion-item {
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  background: var(--surface);
+body.menu-aberto {
   overflow: hidden;
 }
 
-.accordion-item + .accordion-item {
-  margin-top: var(--space-3);
+/* =========================================================
+   BUSCA RÁPIDA ⌘K
+   ========================================================= */
+.busca {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 12vh var(--gutter) 24px;
+  background: rgba(4, 7, 14, 0.7);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--dur-fast) ease,
+    visibility var(--dur-fast);
 }
 
-.accordion-trigger {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3);
+.busca.aberta {
+  opacity: 1;
+  visibility: visible;
+}
+
+.busca__painel {
   width: 100%;
-  padding: var(--space-4) var(--space-5);
-  border: none;
-  background: none;
-  font-family: inherit;
-  font-size: 1.0625rem;
-  font-weight: 600;
-  text-align: left;
-  color: var(--text-color);
-  cursor: pointer;
+  max-width: 560px;
+  overflow: hidden;
+  border: 1px solid var(--glass-border-soft);
+  border-radius: 24px;
+  background: rgba(11, 18, 32, 0.95);
+  box-shadow: var(--shadow-card), 0 0 0 1px rgba(46, 242, 196, 0.08);
+  transform: translateY(-8px) scale(0.98);
+  transition: transform var(--dur-fast) var(--ease-out);
 }
 
-.accordion-trigger-label {
+.busca.aberta .busca__painel {
+  transform: none;
+}
+
+.busca__campo {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: 12px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--line);
 }
 
-.accordion-trigger-label img {
-  width: 1.75rem;
-  height: 1.75rem;
-  object-fit: contain;
-  flex-shrink: 0;
+.busca__campo span {
+  font-size: 20px;
+  color: var(--teal);
 }
 
-.accordion-trigger-icon {
+.busca__campo input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: none;
+  font-size: 17px;
+  color: var(--text);
+}
+
+.busca__campo input::placeholder {
+  color: var(--faint);
+}
+
+.busca__campo kbd {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--faint);
+  padding: 4px 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.busca__resultados {
+  max-height: 50vh;
+  margin: 0;
+  padding: 8px;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.busca__resultado {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 14px;
+  border-radius: 14px;
+  color: var(--text);
+}
+
+.busca__resultado small {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.busca__resultado:hover,
+.busca__resultado.selecionado {
+  background: var(--teal-08);
+}
+
+.busca__resultado.selecionado strong {
+  color: var(--teal);
+}
+
+.busca__vazio {
+  padding: 20px 14px;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+.footer {
+  position: relative;
+  overflow: hidden;
+  padding: 64px 0 32px;
+  background: var(--bg-950);
+}
+
+/* Linha de brilho no topo (teal → violeta) */
+.footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(46, 242, 196, 0) 0%, var(--teal) 30%, var(--violet) 70%, rgba(139, 92, 246, 0) 100%);
+}
+
+.footer__colunas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px 24px;
+}
+
+.footer__sobre {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 340px;
+}
+
+.footer .marca__logo {
+  width: 52px;
+  height: 52px;
+}
+
+.footer .marca {
+  gap: 12px;
+}
+
+.footer .marca__nome {
+  font-size: 20px;
+}
+
+.footer .marca__sub {
+  display: block;
+  font-size: 13px;
+}
+
+.footer__texto {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.footer__sociais {
+  display: flex;
+  gap: 10px;
+}
+
+.footer__social {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--glass-border-soft);
+  border-radius: 50%;
+  background: var(--glass-fill);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-soft);
+  transition:
+    border-color var(--dur-fast) ease,
+    color var(--dur-fast) ease,
+    transform var(--dur-fast) ease;
+}
+
+.footer__social:hover {
+  border-color: var(--teal-30);
+  color: var(--teal);
+  transform: translateY(-2px);
+}
+
+.footer__coluna {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 14px;
+  color: var(--text-soft);
+}
+
+.footer__titulo {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--teal);
+}
+
+.footer__coluna a {
+  transition: color var(--dur-fast) ease;
+}
+
+.footer__coluna a:hover {
+  color: var(--teal);
+}
+
+.footer__qr {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  justify-self: start;
+}
+
+.footer__qr img {
+  width: 120px;
+  height: 120px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+}
+
+.footer__qr span {
+  font-size: 12px;
+  color: var(--faint);
+}
+
+.footer__barra {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 48px;
+  padding-block: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 13px;
+  color: var(--faint);
+}
+
+.footer__barra nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  color: var(--muted);
+}
+
+.footer__barra nav a:hover {
+  color: var(--teal);
+}
+
+/* Palavra gigante "BIOQUÍMICA" com parallax leve */
+.footer__palavra {
+  margin-top: 16px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(64px, 15vw, 214px);
+  letter-spacing: -0.06em;
+  line-height: 1;
+  white-space: nowrap;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  user-select: none;
+  will-change: transform;
+}
+
+@media (min-width: 768px) {
+  .footer__colunas {
+    grid-template-columns: repeat(3, auto);
+  }
+
+  .footer__barra {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+@media (min-width: 1100px) {
+  .footer {
+    padding: 80px 0 40px;
+  }
+
+  .footer__colunas {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .footer__sobre {
+    width: 340px;
+  }
+
+  .footer__barra {
+    margin-top: 56px;
+  }
+}
+
+/* =========================================================
+   BOTÕES — Primary (gradiente + glow + magnético), Ghost (vidro), Link
+   ========================================================= */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 28px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.3;
+  white-space: nowrap;
+  transition:
+    box-shadow var(--dur-med) ease,
+    background var(--dur-fast) ease,
+    border-color var(--dur-fast) ease,
+    transform 250ms var(--ease-out);
+}
+
+.btn__seta {
+  font-size: 18px;
+  line-height: 1;
+  transition: transform var(--dur-fast) ease;
+}
+
+.btn--primary {
+  background: var(--grad-botao);
+  color: var(--on-teal);
+  box-shadow: var(--glow-teal);
+}
+
+.btn--primary:hover {
+  box-shadow: var(--glow-teal-forte);
+}
+
+.btn--ghost {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.btn--ghost .btn__seta {
+  font-size: 16px;
+  color: var(--teal);
+}
+
+.btn--ghost:hover {
+  border-color: var(--teal-30);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.btn--link {
+  padding: 16px 0;
+  font-size: 15px;
+  color: var(--teal);
+}
+
+.btn--link .btn__seta {
+  font-size: 16px;
+}
+
+/* Link: seta desliza 4px no hover */
+.btn--link:hover .btn__seta {
+  transform: translateX(4px);
+}
+
+.btn--bloco {
+  width: 100%;
+}
+
+/* =========================================================
+   EYEBROW — rótulo de seção com ponto pulsante
+   ========================================================= */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid var(--teal-30);
+  border-radius: var(--radius-pill);
+  background: var(--teal-08);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: var(--teal);
+}
+
+.eyebrow__ponto {
+  position: relative;
   flex-shrink: 0;
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 8px;
+  height: 8px;
+}
+
+.eyebrow__ponto img {
+  position: absolute;
+  inset: -125%;
+  width: 350%;
+  max-width: none;
+  height: 350%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.7);
+  }
+}
+
+/* =========================================================
+   CARD / GLASS — vidro + tilt 3D + brilho que segue o mouse
+   ========================================================= */
+.card-glass {
+  --x: 50%;
+  --y: 50%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: var(--radius-card);
+  background: linear-gradient(149deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.02) 100%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-card);
+  transform-style: preserve-3d;
+  transition: border-color var(--dur-med) ease;
+}
+
+/* Brilho radial na posição do mouse (--x/--y definidos pelo JS) */
+.card-glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(360px circle at var(--x) var(--y), rgba(46, 242, 196, 0.12), transparent 60%);
+  opacity: 0;
+  transition: opacity var(--dur-med) ease;
+}
+
+.card-glass:hover {
+  border-color: rgba(46, 242, 196, 0.55);
+}
+
+.card-glass:hover::before {
+  opacity: 1;
+}
+
+.card-glass > * {
   position: relative;
 }
 
-.accordion-trigger-icon::before,
-.accordion-trigger-icon::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  background: currentColor;
-  transform: translate(-50%, -50%);
-  transition: transform 0.2s ease, opacity 0.2s ease;
-}
-
-.accordion-trigger-icon::before {
-  width: 100%;
-  height: 2px;
-}
-
-.accordion-trigger-icon::after {
-  width: 2px;
-  height: 100%;
-}
-
-.accordion-item.is-open .accordion-trigger-icon::after {
-  transform: translate(-50%, -50%) rotate(90deg);
-  opacity: 0;
-}
-
-.accordion-panel {
+.card-glass__icone {
   display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 0.25s ease;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border: 1px solid rgba(46, 242, 196, 0.35);
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(46, 242, 196, 0.25) 0%, rgba(139, 92, 246, 0.25) 100%);
+  font-size: 26px;
+  line-height: 1;
+  color: var(--text);
+  transition: transform var(--dur-fast) ease;
 }
 
-.accordion-item.is-open .accordion-panel {
-  grid-template-rows: 1fr;
+.card-glass__titulo {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 24px;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  color: var(--text);
 }
 
-.accordion-panel-inner {
-  overflow: hidden;
-  padding: 0 var(--space-5);
+.card-glass__texto {
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--muted);
 }
 
-.accordion-item.is-open .accordion-panel-inner {
-  padding: 0 var(--space-5) var(--space-5);
+/* =========================================================
+   ÁTOMO ORBITAL — SVG leve (elétrons em órbita, núcleo pulsa em amber)
+   ========================================================= */
+.atomo {
+  display: block;
+  width: 280px;
+  max-width: 100%;
+  aspect-ratio: 1;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .accordion-panel,
-  .accordion-trigger-icon::before,
-  .accordion-trigger-icon::after {
-    transition: none;
-  }
-}
-
-/* Cards curtos que também podem expandir (biomoléculas) */
-.biomol-card-body[data-collapsible] p {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.biomol-card.is-expanded .biomol-card-body[data-collapsible] p {
-  -webkit-line-clamp: unset;
+.atomo svg {
+  width: 100%;
+  height: 100%;
   overflow: visible;
 }
 
-.biomol-expand-btn {
-  margin-top: var(--space-3);
-  border: none;
-  background: none;
-  padding: 0;
-  font-family: inherit;
-  font-size: 0.9375rem;
+.atomo__nucleo {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: nucleo-pulsa 2.4s ease-in-out infinite;
+}
+
+.atomo__orbitas {
+  transform-origin: 50% 50%;
+  animation: atomo-gira 24s linear infinite;
+}
+
+@keyframes nucleo-pulsa {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.12);
+  }
+}
+
+@keyframes atomo-gira {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================================
+   PALCOS 3D (Three.js) + fallback + tooltip
+   ========================================================= */
+.palco-3d {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.palco-3d canvas {
+  width: 100% !important;
+  height: 100% !important;
+  outline: none;
+}
+
+.palco-3d--arrastavel canvas {
+  cursor: grab;
+}
+
+.palco-3d--arrastavel canvas:active {
+  cursor: grabbing;
+}
+
+/* Imagem mostrada quando o WebGL não está disponível */
+.palco-3d__fallback {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Tooltip do átomo: caixa de vidro com "C · Carbono" + papel do átomo */
+.tooltip-3d {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 14px;
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  background: linear-gradient(163deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.03) 100%), rgba(11, 18, 32, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-card);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(16px, calc(-100% - 8px));
+  transition: opacity 150ms ease;
+}
+
+.tooltip-3d.visivel {
+  opacity: 1;
+}
+
+.tooltip-3d strong {
+  font-size: 14px;
   font-weight: 600;
   color: var(--teal);
-  cursor: pointer;
 }
 
-/* ---------- Selo editorial do hero (substitui o antigo hero animado) ---------- */
-.hero-eyebrow {
-  position: relative;
-  z-index: 1;
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-3);
-  margin-bottom: var(--space-4);
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.75);
+.tooltip-3d span {
+  font-size: 12px;
+  color: var(--muted);
 }
 
-.hero-eyebrow::before {
-  content: "";
-  width: 2.25rem;
-  height: 1px;
-  background: currentColor;
-  opacity: 0.6;
-}
-
-/* ---------- CTA secundário (hero) ---------- */
-.hero-cta-row {
+/* =========================================================
+   CABEÇALHO DE SEÇÃO — eyebrow + título 52 + subtítulo
+   ========================================================= */
+.secao-cabeca {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-4);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  max-width: 760px;
+  margin-bottom: 56px;
 }
 
-.hero-cta-row .btn-primary,
-.hero-cta-row .btn-ghost {
-  margin-top: var(--space-6);
+.secao-cabeca--centro {
+  align-items: center;
+  margin-inline: auto;
+  max-width: 900px;
+  text-align: center;
 }
 
-.btn-ghost {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-3);
-  border-radius: var(--radius-full);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  background: rgba(255, 255, 255, 0.06);
-  padding: 0.9375rem 1.875rem;
-  font-family: var(--font-accent);
+.secao-titulo {
+  font-family: var(--font-display);
   font-weight: 700;
-  font-size: 1.125rem;
-  color: #fff;
-  transition: background 0.2s, transform 0.2s, border-color 0.2s;
+  font-size: clamp(2.125rem, 1.2rem + 2.9vw, 3.25rem);
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  color: var(--text);
 }
 
-.btn-ghost:hover {
-  background: rgba(255, 255, 255, 0.14);
-  border-color: rgba(255, 255, 255, 0.7);
-  transform: scale(1.03);
+.secao-sub {
+  max-width: 640px;
+  font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  line-height: 1.6;
+  color: var(--muted);
 }
 
-/* ---------- Marcos da história: destaque interativo ---------- */
-.marco {
-  cursor: pointer;
-  border-radius: var(--radius-lg);
-  padding: var(--space-3);
+.secao-cabeca--centro .secao-sub {
+  max-width: 720px;
 }
 
-.marco .icon-circle {
-  transition: background 0.2s ease, transform 0.2s ease;
+/* Chip neutro (etapas, características) */
+.chip {
+  display: inline-flex;
+  padding: 7px 12px;
+  border: 1px solid var(--glass-border-soft);
+  border-radius: var(--radius-pill);
+  background: var(--glass-fill);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--text-soft);
 }
 
-.marco.is-active {
-  background: var(--surface);
-  box-shadow: var(--shadow-glow-teal);
+/* Selo colorido em mono ("MODO CIÊNCIA") */
+.selo {
+  display: inline-flex;
+  padding: 6px 12px;
+  border: 1px solid rgba(46, 242, 196, 0.35);
+  border-radius: var(--radius-pill);
+  background: rgba(46, 242, 196, 0.12);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  line-height: 1.3;
+  text-transform: uppercase;
+  color: var(--teal);
 }
 
-.marco.is-active .icon-circle {
-  background: var(--teal);
-  transform: scale(1.08);
+.selo--violeta {
+  border-color: rgba(139, 92, 246, 0.35);
+  background: rgba(139, 92, 246, 0.12);
+  color: var(--violet);
 }
 
-.marco.is-active .icon-circle img {
-  filter: brightness(0) invert(1);
+/* Carrossel horizontal com scroll-snap (usado no celular) */
+.carrossel {
+  display: flex;
+  gap: 14px;
+  margin-inline: calc(var(--gutter) * -1);
+  padding: 4px var(--gutter) 24px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--gutter);
+  scrollbar-width: none;
 }
 
-/* ---------- Microinterações de elevação (cards) ---------- */
-.card,
-.biomol-card,
-.personagem-card,
-.curiosity-card,
-.timeline-item,
-.marco {
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+.carrossel::-webkit-scrollbar {
+  display: none;
 }
 
-.card:hover,
-.biomol-card:hover,
-.personagem-card:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-lg);
-}
-
-@media (hover: none) {
-  .card:hover,
-  .biomol-card:hover,
-  .personagem-card:hover {
-    transform: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .card,
-  .biomol-card,
-  .personagem-card,
-  .curiosity-card,
-  .timeline-item,
-  .marco {
-    transition: none;
-  }
-
-  .card:hover,
-  .biomol-card:hover,
-  .personagem-card:hover {
-    transform: none;
-  }
-}
-
-/* ---------- Foco visível consistente ---------- */
-a:focus-visible,
-button:focus-visible,
-input:focus-visible,
-textarea:focus-visible,
-.accordion-trigger:focus-visible {
-  outline: 2px solid var(--teal);
-  outline-offset: 3px;
-  border-radius: var(--radius-sm);
+.carrossel > * {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
 }

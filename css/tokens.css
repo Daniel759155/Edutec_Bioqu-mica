@@ -1,106 +1,88 @@
-/* ==========================================================================
-   Design tokens — identidade visual "caderno de laboratório editorial"
-   --------------------------------------------------------------------------
-   Fonte única de verdade para cores (claro/escuro), espaçamento, raios,
-   sombras, tipografia fluida e cores de destaque por área da bioquímica.
-   Carregado ANTES de style.css — style.css e as páginas apenas consomem
-   estas variáveis, não redefinem cores.
-   ========================================================================== */
+/* =========================================================
+   TOKENS — Design System "Laboratório Noturno" (Figma: 00 · Design System)
+   Todas as cores, fontes, raios e espaçamentos do site vêm daqui.
+   ========================================================= */
 
 :root {
-  /* ---------- Escala de espaçamento ---------- */
-  --space-1: 0.25rem; /* 4px */
-  --space-2: 0.5rem; /* 8px */
-  --space-3: 0.75rem; /* 12px */
-  --space-4: 1rem; /* 16px */
-  --space-5: 1.5rem; /* 24px */
-  --space-6: 2rem; /* 32px */
-  --space-7: 3rem; /* 48px */
-  --space-8: 5rem; /* 80px */
+  /* ---------- Cores de fundo e texto ---------- */
+  --bg-900: #060a13; /* fundo principal */
+  --bg-800: #0b1220; /* fundo alternativo / seções */
+  --bg-950: #04070e; /* rodapé */
+  --surface: #101a2c; /* superfícies sólidas */
+  --line: #1e2a40; /* linhas e divisórias */
+  --text: #eaf2ff; /* texto principal */
+  --text-soft: #b6c4da; /* texto de apoio (links, parágrafos longos) */
+  --muted: #8da2c0; /* texto secundário */
+  --faint: #56657e; /* legendas e rótulos apagados */
 
-  /* ---------- Escala de raios ---------- */
-  --radius-sm: 0.5rem;
-  --radius-md: 1rem;
-  --radius-lg: 1.25rem;
-  --radius-xl: 1.875rem;
-  --radius-2xl: 2.5rem;
-  --radius-full: 999px;
+  /* ---------- Cores de destaque ---------- */
+  --teal: #2ef2c4; /* primária */
+  --cyan: #38bdf8;
+  --violet: #8b5cf6;
+  --pink: #f472b6;
+  --amber: #ffb547; /* energia / ATP */
+  --danger: #ff5c7a;
+  --on-teal: #03130f; /* texto sobre o botão primário */
 
-  /* ---------- Sombras (tons quentes, mais suaves que preto puro) ---------- */
-  --shadow-sm: 0 2px 8px rgba(40, 32, 20, 0.08);
-  --shadow-md: 0 10px 25px rgba(40, 32, 20, 0.12);
-  --shadow-lg: 0 22px 50px rgba(40, 32, 20, 0.18);
-  --shadow-glow-teal: 0 0 0 1px rgba(47, 125, 82, 0.25), 0 12px 32px rgba(47, 125, 82, 0.18);
+  /* Versões translúcidas usadas em bordas, fundos e brilhos */
+  --teal-08: rgba(46, 242, 196, 0.08);
+  --teal-30: rgba(46, 242, 196, 0.3);
+  --teal-45: rgba(46, 242, 196, 0.45);
+  --glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.02) 100%);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-border-soft: rgba(255, 255, 255, 0.1);
+  --glass-fill: rgba(255, 255, 255, 0.05);
+  --nav-bg: rgba(11, 18, 32, 0.72);
+
+  /* ---------- Gradientes ---------- */
+  --grad-bio: linear-gradient(164deg, var(--teal) 0%, var(--cyan) 50%, var(--violet) 100%);
+  --grad-energia: linear-gradient(164deg, var(--amber) 0%, var(--pink) 100%);
+  --grad-aurora: linear-gradient(164deg, var(--violet) 0%, var(--pink) 50%, var(--teal) 100%);
+  --grad-botao: linear-gradient(90deg, var(--teal) 0%, var(--cyan) 100%);
 
   /* ---------- Tipografia ---------- */
-  --font-body: "Inter", system-ui, sans-serif;
-  --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
-  --font-accent: "Inter", sans-serif;
-  --font-mono: "Space Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  --font-display: "Space Grotesk", system-ui, sans-serif; /* títulos */
+  --font-body: "Inter", system-ui, sans-serif; /* texto */
+  --font-mono: "JetBrains Mono", ui-monospace, monospace; /* rótulos */
 
-  /* Escala fluida — cresce em telas grandes sem precisar de mais breakpoints */
-  --fs-hero: clamp(2.75rem, 2rem + 3.2vw, 6.5rem);
-  --fs-section: clamp(1.875rem, 1.5rem + 1.4vw, 2.75rem);
-  --fs-h2: clamp(1.75rem, 1.4rem + 1.2vw, 2.5rem);
+  /* Escala do Figma (Display 96 / H1 64 / H2 44 / H3 24 / Body 18 / Eyebrow 13),
+     com clamp() para encolher no celular (mobile-first). */
+  --fs-display: clamp(3.25rem, 2rem + 5.4vw, 6rem);
+  --fs-h1: clamp(2.5rem, 1.6rem + 3.6vw, 4rem);
+  --fs-h2: clamp(2rem, 1.5rem + 2vw, 2.75rem);
+  --fs-h3: 1.5rem;
+  --fs-body: 1.125rem;
+  --fs-small: 0.9375rem;
+  --fs-eyebrow: 0.8125rem;
 
-  /* ---------- Marca (independente de tema) ---------- */
-  --teal: #2f7d52; /* verde floresta — cor primária da marca */
-  --coral: #c1592c; /* terracota — acento secundário/contraste */
-  --ink: #211d16; /* quase-preto quente, usado em fundos escuros fixos */
-  --bg-light: #f4efe3;
+  --ls-display: -0.04em;
+  --ls-h1: -0.03em;
+  --ls-h2: -0.02em;
+  --ls-h3: -0.01em;
+  --ls-eyebrow: 0.12em;
 
-  /* ---------- Cores de destaque por área ---------- */
-  --accent-biologia: #4c8f5b;
-  --accent-genetica: #4a6fa5;
-  --accent-metabolismo: #c4652e;
-  --accent-energia: #c99a2e;
-  --accent-proteinas: #8b5fa3;
-  --accent-enzimas: #3e8e8a;
+  /* ---------- Raios ---------- */
+  --radius-sm: 16px;
+  --radius-md: 20px;
+  --radius-card: 28px;
+  --radius-lg: 40px;
+  --radius-pill: 999px;
 
-  /* ---------- Tema claro (padrão) ---------- */
-  --page-bg: #f6f1e7;
-  --surface: #fffdf8;
-  --surface-alt: #efe7d8;
-  --surface-glass: rgba(255, 253, 248, 0.78);
-  --text-color: #211d16;
-  --text-muted: rgba(33, 29, 22, 0.72);
-  --text-navy: #3a3226;
-  --heading-navy: #1c1712;
-  --border-subtle: rgba(33, 29, 22, 0.12);
-  --divider-subtle: rgba(33, 29, 22, 0.16);
-  --timeline-line: rgba(33, 29, 22, 0.18);
-  --icon-circle-bg: #e7dcc6;
-  --progress-track: #e4dcc9;
-  --option-hover-bg: #ece3d1;
-  --option-radio-border: #b9ad95;
-  --callout-bg: #e8f0e2;
-  --personagem-name: #2f6b47;
-  --header-bg: rgba(23, 20, 15, 0.55);
-  --header-bg-scrolled: rgba(246, 241, 231, 0.92);
-  --header-text: #ffffff;
-  --header-text-scrolled: #1c1712;
-}
+  /* ---------- Sombras e brilhos ---------- */
+  --shadow-card: 0 24px 30px rgba(0, 0, 0, 0.45);
+  --glow-teal: 0 0 16px rgba(46, 242, 196, 0.45);
+  --glow-teal-forte: 0 0 32px rgba(46, 242, 196, 0.7);
 
-:root[data-theme="dark"] {
-  --page-bg: #15130e;
-  --surface: #1d1a14;
-  --surface-alt: #221f18;
-  --surface-glass: rgba(29, 26, 20, 0.65);
-  --text-color: #f3efe6;
-  --text-muted: rgba(243, 239, 230, 0.75);
-  --text-navy: #d8d0bd;
-  --heading-navy: #fbf8f2;
-  --border-subtle: rgba(255, 255, 255, 0.1);
-  --divider-subtle: rgba(255, 255, 255, 0.15);
-  --timeline-line: rgba(255, 255, 255, 0.15);
-  --icon-circle-bg: #2a261d;
-  --progress-track: #2e2a21;
-  --option-hover-bg: #29251d;
-  --option-radio-border: #55503f;
-  --callout-bg: #1e2a20;
-  --personagem-name: #74cf98;
-  --header-bg: rgba(10, 9, 6, 0.6);
-  --header-bg-scrolled: rgba(21, 19, 14, 0.92);
-  --header-text: #ffffff;
-  --header-text-scrolled: #f3efe6;
+  /* ---------- Layout ---------- */
+  --container: 1200px;
+  --gutter: 24px; /* padding lateral no celular */
+  --section-y: clamp(72px, 10vw, 120px);
+  --nav-h: 94px; /* altura da navbar (barra + margem) */
+
+  /* ---------- Movimento ---------- */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 200ms;
+  --dur-med: 400ms;
+
+  color-scheme: dark;
 }

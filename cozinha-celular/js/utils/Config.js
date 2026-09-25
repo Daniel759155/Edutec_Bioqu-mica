@@ -4,6 +4,8 @@
 
 export const PRESETS_QUALIDADE = {
   baixa: {
+    amostrasMsaa: 0,
+    vinheta: false,
     sombras: false,
     limitePixelRatio: 1,
     bloomForca: 0.35,
@@ -12,6 +14,8 @@ export const PRESETS_QUALIDADE = {
     segmentosEsfera: 12,
   },
   media: {
+    amostrasMsaa: 2,
+    vinheta: true,
     sombras: true,
     limitePixelRatio: 1.5,
     bloomForca: 0.55,
@@ -20,6 +24,8 @@ export const PRESETS_QUALIDADE = {
     segmentosEsfera: 20,
   },
   alta: {
+    amostrasMsaa: 4,
+    vinheta: true,
     sombras: true,
     limitePixelRatio: 2,
     bloomForca: 0.8,

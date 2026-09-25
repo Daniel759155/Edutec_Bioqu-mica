@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Design System — Bioquímica</title>
+    <meta name="description" content="Vitrine dos tokens, componentes e objetos 3D do site Bioquímica — A química da vida." />
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+
+    <!-- Fontes: Space Grotesk (títulos), Inter (texto), JetBrains Mono (rótulos) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="css/tokens.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/components.css" />
+
+    <!-- Esconde os elementos [data-reveal] antes da primeira pintura (o JS anima a entrada). -->
+    <script>
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("js-anima");
+    </script>
+
+    <!-- Three.js e addons via CDN (módulos ES, sem Node/npm) -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
+    <!-- GSAP + ScrollTrigger e vanilla-tilt (globais: window.gsap, window.VanillaTilt) -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js" defer></script>
+    <script type="module" src="js/main.js"></script>
+
+    <style>
+      /* Estilos só desta vitrine (não fazem parte do site). */
+      .ds-secao {
+        padding-block: 56px;
+        border-top: 1px solid var(--line);
+      }
+      .ds-titulo {
+        margin-bottom: 32px;
+      }
+      .ds-cores {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 20px;
+      }
+      .ds-cor span {
+        display: block;
+        height: 96px;
+        margin-bottom: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: var(--radius-md);
+      }
+      .ds-cor strong {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .ds-cor code {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .ds-grads {
+        display: grid;
+        gap: 20px;
+      }
+      .ds-grads span {
+        display: block;
+        height: 96px;
+        border-radius: var(--radius-md);
+      }
+      .ds-tipos > * + * {
+        margin-top: 18px;
+      }
+      .ds-linha {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 24px;
+      }
+      .ds-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 24px;
+      }
+      .ds-3d {
+        display: grid;
+        gap: 32px;
+        align-items: center;
+        padding: 40px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 32px;
+        background: radial-gradient(ellipse at center, #12203a 0%, #0c1527 50%, #060a13 100%);
+      }
+      .ds-3d figure {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+      }
+      .ds-3d figcaption {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--muted);
+        text-align: center;
+      }
+      .ds-dna {
+        width: 100%;
+        max-width: 360px;
+        height: 560px;
+      }
+      .ds-glicose {
+        width: 100%;
+        max-width: 360px;
+        height: 360px;
+      }
+      @media (min-width: 900px) {
+        .ds-grads {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .ds-3d {
+          grid-template-columns: 1fr 1fr 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body data-pagina="design-system">
+    <header data-navbar></header>
+
+    <main>
+      <section class="section">
+        <div class="bg-grid" aria-hidden="true"></div>
+        <div class="container">
+          <p class="t-mono t-muted" data-reveal>EDUTEC · BIOQUÍMICA — DESIGN SYSTEM 2026</p>
+          <h1 class="t-display" style="margin-top: 24px" data-reveal>Laboratório Noturno</h1>
+          <p class="t-body" style="max-width: 900px; margin-top: 24px" data-reveal>
+            Estética escura com brilho bioluminescente: moléculas em 3D, vidro fosco (glassmorphism), gradientes teal → violeta e
+            micro-interações em tudo. Pensado para HTML/CSS/JS puro + Three.js + GSAP.
+          </p>
+          <p class="t-muted" style="margin-top: 16px; font-size: 14px" data-reveal>
+            Página de teste da etapa 1 (tokens, componentes e objetos 3D). Não faz parte do mapa do site.
+          </p>
+        </div>
+      </section>
+
+      <section class="ds-secao">
+        <div class="container">
+          <h2 class="t-h2 ds-titulo" data-reveal>Cores</h2>
+          <div class="ds-cores" data-reveal>
+            <div class="ds-cor"><span style="background: var(--bg-900)"></span><strong>bg / 900</strong><code>#060A13</code></div>
+            <div class="ds-cor"><span style="background: var(--bg-800)"></span><strong>bg / 800</strong><code>#0B1220</code></div>
+            <div class="ds-cor"><span style="background: var(--surface)"></span><strong>surface</strong><code>#101A2C</code></div>
+            <div class="ds-cor"><span style="background: var(--line)"></span><strong>line</strong><code>#1E2A40</code></div>
+            <div class="ds-cor"><span style="background: var(--text)"></span><strong>text</strong><code>#EAF2FF</code></div>
+            <div class="ds-cor"><span style="background: var(--muted)"></span><strong>muted</strong><code>#8DA2C0</code></div>
+            <div class="ds-cor"><span style="background: var(--teal)"></span><strong>teal (primária)</strong><code>#2EF2C4</code></div>
+            <div class="ds-cor"><span style="background: var(--cyan)"></span><strong>cyan</strong><code>#38BDF8</code></div>
+            <div class="ds-cor"><span style="background: var(--violet)"></span><strong>violet</strong><code>#8B5CF6</code></div>
+            <div class="ds-cor"><span style="background: var(--pink)"></span><strong>pink</strong><code>#F472B6</code></div>
+            <div class="ds-cor"><span style="background: var(--amber)"></span><strong>amber (energia/ATP)</strong><code>#FFB547</code></div>
+            <div class="ds-cor"><span style="background: var(--danger)"></span><strong>danger</strong><code>#FF5C7A</code></div>
+          </div>
+          <div class="ds-grads" style="margin-top: 32px" data-reveal>
+            <div class="ds-cor"><span style="background: var(--grad-bio)"></span><code>grad / bio</code></div>
+            <div class="ds-cor"><span style="background: var(--grad-energia)"></span><code>grad / energia</code></div>
+            <div class="ds-cor"><span style="background: var(--grad-aurora)"></span><code>grad / aurora</code></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="ds-secao">
+        <div class="container ds-tipos">
+          <h2 class="t-h2 ds-titulo" data-reveal>Tipografia</h2>
+          <p class="t-display" data-reveal>A química da vida</p>
+          <p class="t-h1" data-reveal>A química da vida</p>
+          <p class="t-h2" data-reveal>A química da vida</p>
+          <p class="t-h3" data-reveal>A química da vida</p>
+          <p class="t-body" style="color: var(--text)" data-reveal>A química da vida</p>
+          <p class="t-mono" style="color: var(--teal)" data-reveal>A química da vida</p>
+        </div>
+      </section>
+
+      <section class="ds-secao">
+        <div class="container">
+          <h2 class="t-h2 ds-titulo" data-reveal>Componentes</h2>
+          <div class="ds-linha" data-reveal>
+            <a class="btn btn--primary" href="index.html">Explorar conteúdo <span class="btn__seta" aria-hidden="true">→</span></a>
+            <a class="btn btn--ghost" href="biolab.html">Entrar no Laboratório <span class="btn__seta" aria-hidden="true">↗</span></a>
+            <a class="btn btn--link" href="sobre.html">Saiba mais <span class="btn__seta" aria-hidden="true">→</span></a>
+            <span class="eyebrow"><span class="eyebrow__ponto" aria-hidden="true"><img src="assets/ui/pulse-dot.svg" alt="" /></span>Caderno de bioquímica</span>
+          </div>
+
+          <div class="ds-cards" style="margin-top: 48px">
+            <article class="card-glass" data-reveal>
+              <span class="card-glass__icone" aria-hidden="true">⚗</span>
+              <h3 class="card-glass__titulo">Título do card</h3>
+              <p class="card-glass__texto">Texto de apoio do card em duas linhas no máximo.</p>
+            </article>
+            <article class="card-glass" data-reveal>
+              <span class="card-glass__icone" aria-hidden="true">🧬</span>
+              <h3 class="card-glass__titulo">Tilt 3D</h3>
+              <p class="card-glass__texto">Passe o mouse: inclina até 8° e o brilho acompanha o cursor.</p>
+            </article>
+            <article class="card-glass" data-reveal>
+              <span class="card-glass__icone" aria-hidden="true">⚡</span>
+              <h3 class="card-glass__titulo">Borda teal</h3>
+              <p class="card-glass__texto">No hover, a borda acende em teal.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="ds-secao">
+        <div class="container">
+          <h2 class="t-h2 ds-titulo" data-reveal>Objetos 3D</h2>
+          <div class="ds-3d">
+            <figure>
+              <div class="ds-dna" data-3d="dna" data-fallback="assets/3d/dna-helix.svg" data-fallback-alt="Dupla hélice de DNA"></div>
+              <figcaption>3D / DNA Helix — gira, acelera no scroll, inclina com o mouse</figcaption>
+            </figure>
+            <figure>
+              <div class="ds-glicose" data-3d="glicose" data-fallback="assets/3d/glicose.svg" data-fallback-alt="Molécula de glicose"></div>
+              <figcaption>3D / Glicose C₆H₁₂O₆ — arraste para girar; passe o mouse nos átomos</figcaption>
+            </figure>
+            <figure>
+              <div class="atomo" data-atomo></div>
+              <figcaption>3D / Átomo orbital — SVG leve</figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer data-footer></footer>
+  </body>
+</html>

@@ -1512,27 +1512,9 @@ img {
   }
 }
 
-/* ---------- Página: Fluxo ---------- */
+/* ---------- Utilitário: texto teal ---------- */
 .text-teal {
   color: var(--teal);
-}
-
-.game-tagline {
-  margin-top: 1rem; /* 16px */
-  font-size: 1.75rem; /* 28px */
-  font-weight: 600;
-  color: #fff;
-}
-
-@media (max-width: 768px) {
-  .game-tagline {
-    font-size: 1.375rem; /* 22px */
-  }
-}
-
-.game-app {
-  background: var(--page-bg);
-  padding: 5rem 0; /* 80px */
 }
 
 /* ---------- Página: História ---------- */

@@ -2,240 +2,363 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <script>
-      (function () {
-        try {
-          var stored = localStorage.getItem("theme");
-          var theme =
-            stored ||
-            (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-          document.documentElement.setAttribute("data-theme", theme);
-        } catch (e) {}
-      })();
-    </script>
-    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bioquímica — A química da vida</title>
+    <meta
+      name="description"
+      content="Entenda como as reações químicas sustentam todos os organismos vivos. Conteúdos de Bioquímica, moléculas em 3D e jogos educativos."
+    />
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+
+    <!-- Fontes: Space Grotesk (títulos), Inter (texto), JetBrains Mono (rótulos) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,wght@0,600;0,700;0,900;1,500;1,600&family=Space+Mono:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&family=Space+Grotesk:wght@500;700&display=swap"
       rel="stylesheet"
     />
+
     <link rel="stylesheet" href="css/tokens.css" />
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/components.css" />
-    <title>Bioquímica — A química da vida</title>
+    <link rel="stylesheet" href="css/home.css" />
+
+    <!-- Esconde os elementos [data-reveal] antes da primeira pintura (o JS anima a entrada). -->
+    <script>
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("js-anima");
+    </script>
+
+    <!-- Three.js e addons via CDN (módulos ES, sem Node/npm) -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
+    <!-- GSAP + ScrollTrigger e vanilla-tilt (globais: window.gsap, window.VanillaTilt) -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js" defer></script>
+    <script type="module" src="js/main.js"></script>
   </head>
-  <body>
-    <header class="header">
-      <div class="container logo">
-        <img src="assets/img/logo.png" alt="Bioquímica" />
-        <div class="logo-text">
-          <p class="logo-title">BIOQUÍMICA</p>
-          <p class="logo-sub">A química da vida</p>
-        </div>
-        <button
-          id="theme-toggle"
-          class="theme-toggle"
-          type="button"
-          aria-label="Alternar modo escuro"
-          aria-pressed="false"
+  <body data-pagina="home">
+    <header data-navbar></header>
+
+    <main>
+      <!-- ================= HERO 3D ================= -->
+      <section class="hero-home" aria-labelledby="titulo-home">
+        <div class="hero-home__grid" data-parallax="0.15" aria-hidden="true"></div>
+        <div class="hero-home__brilho hero-home__brilho--1" aria-hidden="true"><img src="assets/home/glow-hero-1.svg" alt="" /></div>
+        <div class="hero-home__brilho hero-home__brilho--2" aria-hidden="true"><img src="assets/home/glow-hero-2.svg" alt="" /></div>
+        <div class="hero-home__brilho hero-home__brilho--3" aria-hidden="true"><img src="assets/home/glow-hero-3.svg" alt="" /></div>
+
+        <!-- Dupla hélice de DNA (Three.js) + glicose flutuante -->
+        <div
+          class="hero-home__dna"
+          data-3d="dna"
+          data-fallback="assets/3d/dna-helix.svg"
+          data-fallback-alt=""
+          aria-hidden="true"
+        ></div>
+        <div
+          class="hero-home__glicose"
+          data-3d="glicose"
+          data-arrastavel="false"
+          data-fallback="assets/3d/glicose.svg"
+          aria-hidden="true"
+        ></div>
+
+        <!-- Tags de vidro flutuando -->
+        <span class="hero-home__tag hero-home__tag--dna" aria-hidden="true"
+          ><span class="eyebrow__ponto"><img src="assets/ui/pulse-dot.svg" alt="" /></span>🧬  DNA · dupla hélice</span
         >
-          <svg class="theme-toggle-icon icon-sun" viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="12" cy="12" r="5"></circle>
-            <path
-              d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
-            ></path>
-          </svg>
-          <svg class="theme-toggle-icon icon-moon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 1020.354 15.354z"></path>
-          </svg>
-        </button>
-        <nav style="margin-left: auto">
-          <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-links">
-            <span></span><span></span><span></span>
-          </button>
-          <ul class="nav-links" id="nav-links">
-            <li><a href="index.html" class="active">Home</a></li>
-            <li><a href="inicio.html#inicio">Início</a></li>
-            <li><a href="sobre.html">O que é Bioquímica</a></li>
-            <li><a href="historia.html">História</a></li>
-            <li><a href="biomoleculas.html">Biomoléculas</a></li>
-            <li class="nav-item-dropdown">
-              <button type="button" class="nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
-                Jogos
-                <svg class="nav-dropdown-arrow" viewBox="0 0 12 8" aria-hidden="true">
-                  <path
-                    d="M1 1l5 5 5-5"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  ></path>
-                </svg>
-              </button>
-              <ul class="nav-dropdown-menu">
-                <li><a href="biolab.html">Fluxo</a></li>
-              </ul>
-            </li>
-            <li><a href="contato.html">Contato</a></li>
-          </ul>
-        </nav>
-      </div>
-    </header>
+        <span class="hero-home__tag hero-home__tag--atp" aria-hidden="true"
+          ><span class="eyebrow__ponto"><img src="assets/ui/dot-amber.svg" alt="" /></span>⚡  ATP · energia da célula</span
+        >
+        <span class="hero-home__tag hero-home__tag--enzimas" aria-hidden="true"
+          ><span class="eyebrow__ponto"><img src="assets/ui/dot-violet.svg" alt="" /></span>🧪  Enzimas · catalisadores</span
+        >
 
-    <section id="inicio" class="hero home-hero">
-      <img src="assets/img/hero-bg.png" alt="" class="hero-bg" />
-      <div class="hero-overlay"></div>
-      <div class="container hero-content">
-        <p class="hero-eyebrow">Caderno de Bioquímica</p>
-        <h1 class="hero-title">Bioquímica</h1>
-        <p class="hero-subtitle">A química da vida</p>
-        <img src="assets/icons/underline.svg" alt="" class="hero-underline" />
-        <p class="hero-text">
-          Entenda como as reações químicas sustentam todos os organismos vivos
-          e promovem a vida em sua forma mais completa.
-        </p>
-        <p class="hero-text">Explore e descubra mais sobre essa área da ciência.</p>
-        <div class="hero-cta-row">
-          <a href="inicio.html#inicio" class="btn-primary">
-            Explorar conteúdo
-            <img src="assets/icons/arrow-white.svg" alt="" />
-          </a>
-          <a href="biolab.html" class="btn-ghost">Entrar no Laboratório</a>
-        </div>
-      </div>
-      <img src="assets/icons/hero-wave.svg" alt="" class="hero-wave" />
-    </section>
-
-    <section class="home-features">
-      <div class="container">
-        <div class="home-features-card reveal">
-          <div class="home-feature">
-            <img src="assets/icons/icon-aprenda.png" alt="" />
-            <h3>Aprenda</h3>
-            <p>Conteúdos completos</p>
-            <p>Conheça a Bioquímica de forma clara e organizada.</p>
-          </div>
-          <div class="home-feature">
-            <img src="assets/icons/icon-explore.png" alt="" />
-            <h3>Explore</h3>
-            <p>Descubra biomoléculas</p>
-            <p>Entenda como elas participam da vida.</p>
-          </div>
-          <div class="home-feature">
-            <img src="assets/icons/icon-teste.png" alt="" />
-            <h3>Teste</h3>
-            <p>Desafie seus conhecimentos</p>
-            <p>Desafie-se com o jogo Fluxo.</p>
-          </div>
-          <div class="home-feature">
-            <img src="assets/icons/icon-atualize.png" alt="" />
-            <h3>Atualize-se</h3>
-            <p>Acompanhe as novidades</p>
-            <p>Fique por dentro das principais notícias da área.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="home-areas">
-      <div class="container">
-        <p class="home-areas-label reveal">ÁREAS DE ATUAÇÃO</p>
-        <div class="home-areas-grid reveal reveal-1">
-          <div class="home-area">
-            <img src="assets/img/area-medicina.png" alt="Medicina" />
-            <h3>Medicina</h3>
-          </div>
-          <div class="home-area">
-            <img src="assets/img/area-biotecnologia.png" alt="Biotecnologia" />
-            <h3>Biotecnologia</h3>
-          </div>
-          <div class="home-area">
-            <img src="assets/img/area-nutricao.png" alt="Nutrição" />
-            <h3>Nutrição</h3>
-          </div>
-          <div class="home-area">
-            <img src="assets/img/area-farmacologia.png" alt="Farmacologia" />
-            <h3>Farmacologia</h3>
-          </div>
-          <div class="home-area">
-            <img src="assets/img/area-pesquisa.png" alt="Pesquisa" />
-            <h3>Pesquisa</h3>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="home-cta">
-      <div class="container">
-        <div class="home-cta-panel reveal">
-          <img src="assets/img/cta-lab.png" alt="" class="home-cta-bg" />
-          <div class="home-cta-overlay"></div>
-          <div class="home-cta-content">
-            <h2>A ciência que estuda a vida em nível molecular</h2>
-            <p>
-              Da menor molécula às grandes descobertas, a Bioquímica conecta
-              ciência, saúde e inovação para um futuro melhor.
+        <div class="container">
+          <div class="hero-home__conteudo">
+            <span class="eyebrow"><span class="eyebrow__ponto" aria-hidden="true"><img src="assets/ui/pulse-dot.svg" alt="" /></span>Caderno de bioquímica</span>
+            <h1 class="hero-home__titulo" id="titulo-home">
+              <span class="hero-home__nome" data-letras>Bioquímica</span>
+              <span class="hero-home__slogan">A química da vida</span>
+            </h1>
+            <p class="hero-home__texto">
+              Entenda como as reações químicas sustentam todos os organismos vivos e promovem a vida em sua forma mais completa.
+              Explore e descubra mais sobre essa área da ciência.
             </p>
-            <a href="inicio.html#inicio" class="btn-primary">
-              Explorar conteúdo
-              <img src="assets/icons/arrow-white.svg" alt="" />
-            </a>
+            <div class="hero-home__botoes">
+              <a class="btn btn--primary" href="inicio.html">Explorar conteúdo <span class="btn__seta" aria-hidden="true">→</span></a>
+              <a class="btn btn--ghost" href="biolab.html">Entrar no Laboratório <span class="btn__seta" aria-hidden="true">↗</span></a>
+            </div>
+            <div class="estatisticas">
+              <div class="estatistica"><strong data-contar="4">4</strong><span>biomoléculas</span></div>
+              <i class="estatistica-divisor" aria-hidden="true"></i>
+              <div class="estatistica"><strong data-contar="5">5</strong><span>marcos históricos</span></div>
+              <i class="estatistica-divisor" aria-hidden="true"></i>
+              <div class="estatistica"><strong data-contar="2">2</strong><span>modos de jogo</span></div>
+              <i class="estatistica-divisor" aria-hidden="true"></i>
+              <div class="estatistica"><strong data-contar="3" data-sufixo=" bi">3 bi</strong><span>pares de bases no DNA</span></div>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
 
-    <footer class="footer">
-      <div class="container footer-grid">
-        <div class="footer-brand">
-          <img src="assets/img/logo.png" alt="Bioquímica" />
-          <p class="footer-brand-title">BIOQUÍMICA</p>
-          <p class="footer-brand-sub">A química da vida</p>
-        </div>
+        <a class="rolar" href="#por-onde-comecar" aria-label="Rolar para explorar">
+          <span class="rolar__mouse" aria-hidden="true"><i></i></span>
+          ROLE PARA EXPLORAR
+        </a>
+      </section>
 
-        <div>
-          <h3>Navegação</h3>
-          <ul class="footer-list">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="inicio.html#inicio">Início</a></li>
-            <li><a href="sobre.html">O que é bioquímica</a></li>
-            <li><a href="historia.html">História</a></li>
-            <li><a href="biomoleculas.html">Biomoléculas</a></li>
-            <li><a href="biolab.html">Fluxo</a></li>
-            <li><a href="contato.html">Quem somos / Contato</a></li>
+      <!-- ================= MARQUEE ================= -->
+      <div class="marquee" aria-label="Temas da bioquímica">
+        <div class="marquee__faixa">
+          <!-- O grupo aparece duas vezes para o loop ficar contínuo -->
+          <ul class="marquee__grupo" role="list">
+            <li class="marquee__item">PROTEÍNAS</li><li class="marquee__estrela" aria-hidden="true">✦</li>
+            <li class="marquee__item">CARBOIDRATOS</li><li class="marquee__estrela" aria-hidden="true">✦</li>
+            <li class="marquee__item">LIPÍDIOS</li><li class="marquee__estrela" aria-hidden="true">✦</li>
+            <li class="marquee__item">ÁCIDOS NUCLEICOS</li><li class="marquee__estrela" aria-hidden="true">✦</li>
+            <li class="marquee__item">ENZIMAS</li><li class="marquee__estrela" aria-hidden="true">✦</li>
+            <li class="marquee__item">ATP</li><li class="marquee__estrela" aria-hidden="true">✦</li>
+            <li class="marquee__item">DNA</li><li class="marquee__estrela" aria-hidden="true">✦</li>
+            <li class="marquee__item">METABOLISMO</li><li class="marquee__estrela" aria-hidden="true">✦</li>
+          </ul>
+          <ul class="marquee__grupo" role="list" aria-hidden="true">
+            <li class="marquee__item">PROTEÍNAS</li><li class="marquee__estrela">✦</li>
+            <li class="marquee__item">CARBOIDRATOS</li><li class="marquee__estrela">✦</li>
+            <li class="marquee__item">LIPÍDIOS</li><li class="marquee__estrela">✦</li>
+            <li class="marquee__item">ÁCIDOS NUCLEICOS</li><li class="marquee__estrela">✦</li>
+            <li class="marquee__item">ENZIMAS</li><li class="marquee__estrela">✦</li>
+            <li class="marquee__item">ATP</li><li class="marquee__estrela">✦</li>
+            <li class="marquee__item">DNA</li><li class="marquee__estrela">✦</li>
+            <li class="marquee__item">METABOLISMO</li><li class="marquee__estrela">✦</li>
           </ul>
         </div>
+      </div>
 
-        <div>
-          <h3><a href="contato.html#contato">Contato</a></h3>
-          <ul class="footer-list">
-            <li class="footer-contact-item">
-              <img src="assets/icons/icon-email.png" alt="" />
-              <a href="mailto:bioquimica22ati@gmail.com">bioquimica22ati@gmail.com</a>
+      <!-- ================= POR ONDE COMEÇAR ================= -->
+      <section class="section recursos" id="por-onde-comecar" aria-labelledby="titulo-recursos">
+        <div class="container">
+          <div class="secao-cabeca" data-reveal>
+            <span class="eyebrow"><span class="eyebrow__ponto" aria-hidden="true"><img src="assets/ui/pulse-dot.svg" alt="" /></span>Por onde começar</span>
+            <h2 class="secao-titulo" id="titulo-recursos">Tudo o que você precisa para entender a vida em nível molecular</h2>
+            <p class="secao-sub">Conteúdos organizados, moléculas interativas e um jogo para testar o que aprendeu.</p>
+          </div>
+
+          <div class="recursos__cards carrossel">
+            <article class="card-glass recurso" data-reveal>
+              <div class="recurso__topo">
+                <span class="recurso__icone"><img src="assets/icons/icon-aprenda.png" alt="" /></span>
+                <span class="recurso__numero">01</span>
+              </div>
+              <h3 class="recurso__titulo">Aprenda</h3>
+              <p class="recurso__sub">Conteúdos completos</p>
+              <p class="recurso__texto">Conheça a Bioquímica de forma clara e organizada.</p>
+              <a class="recurso__link" href="inicio.html">Acessar <span aria-hidden="true">→</span></a>
+            </article>
+            <article class="card-glass recurso recurso--cyan" data-reveal>
+              <div class="recurso__topo">
+                <span class="recurso__icone"><img src="assets/icons/icon-explore.png" alt="" /></span>
+                <span class="recurso__numero">02</span>
+              </div>
+              <h3 class="recurso__titulo">Explore</h3>
+              <p class="recurso__sub">Descubra biomoléculas</p>
+              <p class="recurso__texto">Entenda como elas participam da vida.</p>
+              <a class="recurso__link" href="biomoleculas.html">Acessar <span aria-hidden="true">→</span></a>
+            </article>
+            <article class="card-glass recurso recurso--violeta" data-reveal>
+              <div class="recurso__topo">
+                <span class="recurso__icone"><img src="assets/icons/icon-teste.png" alt="" /></span>
+                <span class="recurso__numero">03</span>
+              </div>
+              <h3 class="recurso__titulo">Teste</h3>
+              <p class="recurso__sub">Desafie seus conhecimentos</p>
+              <p class="recurso__texto">Desafie-se com o jogo Fluxo.</p>
+              <a class="recurso__link" href="biolab.html">Acessar <span aria-hidden="true">→</span></a>
+            </article>
+            <article class="card-glass recurso recurso--amber" data-reveal>
+              <div class="recurso__topo">
+                <span class="recurso__icone"><img src="assets/icons/icon-atualize.png" alt="" /></span>
+                <span class="recurso__numero">04</span>
+              </div>
+              <h3 class="recurso__titulo">Atualize-se</h3>
+              <p class="recurso__sub">Acompanhe as novidades</p>
+              <p class="recurso__texto">Fique por dentro das principais notícias da área.</p>
+              <a class="recurso__link" href="inicio.html#curiosidades">Acessar <span aria-hidden="true">→</span></a>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= LABORATÓRIO 3D INTERATIVO ================= -->
+      <section class="section laboratorio" aria-labelledby="titulo-lab" data-laboratorio>
+        <div class="container laboratorio__grade">
+          <div class="laboratorio__texto" data-reveal>
+            <span class="eyebrow"><span class="eyebrow__ponto" aria-hidden="true"><img src="assets/ui/pulse-dot.svg" alt="" /></span>Novo · Laboratório 3D</span>
+            <h2 class="laboratorio__titulo" id="titulo-lab">Gire, aproxime e explore uma molécula de verdade</h2>
+            <p class="laboratorio__sub">
+              Escolha uma biomolécula e veja sua estrutura em 3D. Passe o mouse sobre os átomos para descobrir quem é quem.
+            </p>
+            <div class="lab-abas" role="tablist" aria-label="Molécula exibida" aria-orientation="vertical">
+              <button class="lab-aba ativa" type="button" role="tab" aria-selected="true" aria-controls="lab-viewer" data-lab-aba="glicose">
+                <i aria-hidden="true"></i><span><strong>Glicose</strong><small>C₆H₁₂O₆ · fonte de energia</small></span>
+              </button>
+              <button class="lab-aba" type="button" role="tab" aria-selected="false" tabindex="-1" aria-controls="lab-viewer" data-lab-aba="atp">
+                <i aria-hidden="true"></i><span><strong>ATP</strong><small>Adenosina trifosfato · moeda energética</small></span>
+              </button>
+              <button class="lab-aba" type="button" role="tab" aria-selected="false" tabindex="-1" aria-controls="lab-viewer" data-lab-aba="dna">
+                <i aria-hidden="true"></i><span><strong>DNA</strong><small>Dupla hélice · informação genética</small></span>
+              </button>
+              <button class="lab-aba" type="button" role="tab" aria-selected="false" tabindex="-1" aria-controls="lab-viewer" data-lab-aba="aminoacido">
+                <i aria-hidden="true"></i><span><strong>Aminoácido</strong><small>Unidade das proteínas</small></span>
+              </button>
+            </div>
+          </div>
+
+          <div class="lab-viewer" id="lab-viewer" role="tabpanel" aria-label="Visualizador 3D da molécula" data-reveal>
+            <img class="lab-viewer__brilho" src="assets/home/glow-lab.svg" alt="" aria-hidden="true" />
+            <div class="lab-viewer__canvas" data-3d="laboratorio" data-fallback="assets/3d/glicose.svg" data-fallback-alt="Molécula de glicose"></div>
+            <div class="lab-legenda" data-lab-legenda aria-hidden="true"></div>
+            <div class="lab-controles">
+              <span class="lab-controles__dica">⟲  Arraste para girar</span>
+              <span class="lab-controles__zoom">
+                <button type="button" data-lab-zoom="1.2" aria-label="Aproximar">＋</button>
+                <span aria-hidden="true">／</span>
+                <button type="button" data-lab-zoom="0.83" aria-label="Afastar">－</button>
+              </span>
+              <button type="button" data-lab-auto aria-pressed="true">● Auto-rotação</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= ÁREAS DE ATUAÇÃO ================= -->
+      <section class="section areas" aria-labelledby="titulo-areas">
+        <div class="container">
+          <div class="secao-cabeca" data-reveal>
+            <span class="eyebrow"><span class="eyebrow__ponto" aria-hidden="true"><img src="assets/ui/pulse-dot.svg" alt="" /></span>Áreas de atuação</span>
+            <h2 class="secao-titulo" id="titulo-areas">Onde a bioquímica muda o mundo</h2>
+          </div>
+
+          <ul class="areas__cards carrossel" role="list">
+            <li class="area" data-reveal>
+              <img class="area__foto" src="assets/img/area-medicina.png" alt="" loading="lazy" />
+              <div class="area__texto">
+                <span class="area__numero">01</span>
+                <h3 class="area__titulo">Medicina</h3>
+                <p class="area__descricao">Ajuda a compreender doenças e desenvolver tratamentos.</p>
+              </div>
             </li>
-            <li class="footer-contact-item">
-              <img src="assets/icons/icon-phone.png" alt="" />
-              <span>+55 (11)4002-8922</span>
+            <li class="area" data-reveal>
+              <img class="area__foto" src="assets/img/area-biotecnologia.png" alt="" loading="lazy" />
+              <div class="area__texto">
+                <span class="area__numero">02</span>
+                <h3 class="area__titulo">Biotecnologia</h3>
+                <p class="area__descricao">Novas tecnologias para saúde, agricultura e indústria.</p>
+              </div>
             </li>
-            <li class="footer-contact-item">
-              <img src="assets/icons/icon-location.png" alt="" />
-              <span>Estrada de Itapecerica, 67 — Boca da Mata - SP</span>
+            <li class="area" data-reveal>
+              <img class="area__foto" src="assets/img/area-nutricao.png" alt="" loading="lazy" />
+              <div class="area__texto">
+                <span class="area__numero">03</span>
+                <h3 class="area__titulo">Nutrição</h3>
+                <p class="area__descricao">Como os nutrientes viram energia no corpo.</p>
+              </div>
+            </li>
+            <li class="area" data-reveal>
+              <img class="area__foto" src="assets/img/area-farmacologia.png" alt="" loading="lazy" />
+              <div class="area__texto">
+                <span class="area__numero">04</span>
+                <h3 class="area__titulo">Farmacologia</h3>
+                <p class="area__descricao">Criação e estudo de medicamentos.</p>
+              </div>
+            </li>
+            <li class="area" data-reveal>
+              <img class="area__foto" src="assets/img/area-pesquisa.png" alt="" loading="lazy" />
+              <div class="area__texto">
+                <span class="area__numero">05</span>
+                <h3 class="area__titulo">Pesquisa</h3>
+                <p class="area__descricao">Descobertas sobre os processos da vida.</p>
+              </div>
             </li>
           </ul>
         </div>
+      </section>
 
-        <img src="assets/img/footer-decor.png" alt="QR Code" class="footer-qr" />
-      </div>
+      <!-- ================= JOGO FLUXO — PROMO ================= -->
+      <section class="section promo-fluxo" aria-labelledby="titulo-fluxo">
+        <div class="container">
+          <div class="secao-cabeca secao-cabeca--centro" data-reveal>
+            <span class="eyebrow"><span class="eyebrow__ponto" aria-hidden="true"><img src="assets/ui/pulse-dot.svg" alt="" /></span>Jogo · Fluxo</span>
+            <h2 class="secao-titulo" id="titulo-fluxo">Escolha seu caminho</h2>
+            <p class="secao-sub">
+              Assuma o lugar de uma molécula de glicose recém-absorvida na corrente sanguínea. Dois jeitos de viver a bioquímica: um pela
+              ciência, outro pelo desafio.
+            </p>
+          </div>
 
-      <div class="container footer-bottom">
-        <p>2026 Bioquímica - A química da vida. Todos os direitos reservados</p>
-      </div>
-    </footer>
+          <div class="promo-fluxo__cards">
+            <article class="card-glass card-jogo" data-reveal>
+              <div class="card-jogo__preview"><canvas data-trilha="teal" aria-hidden="true"></canvas></div>
+              <span class="selo">Modo ciência</span>
+              <h3 class="card-jogo__titulo">Jornada da Glicose</h3>
+              <p class="card-jogo__texto">
+                Siga o caminho real da respiração celular: da corrente sanguínea até a mitocôndria, respondendo desafios em cada etapa.
+              </p>
+              <ul class="card-jogo__chips" role="list">
+                <li class="chip">Corrente sanguínea</li>
+                <li class="chip">Glicólise</li>
+                <li class="chip">Ciclo de Krebs</li>
+                <li class="chip">Cadeia respiratória</li>
+                <li class="chip">ATP ⚡</li>
+              </ul>
+              <a class="btn btn--primary" href="biolab.html#jornada">Começar jornada <span class="btn__seta" aria-hidden="true">→</span></a>
+            </article>
 
-    <script src="js/main.js" defer></script>
-    <script src="js/motion.js" defer></script>
+            <article class="card-glass card-jogo card-jogo--violeta" data-reveal>
+              <div class="card-jogo__preview"><canvas data-trilha="violeta" aria-hidden="true"></canvas></div>
+              <span class="selo selo--violeta">Modo desafio</span>
+              <h3 class="card-jogo__titulo">Aventura no Mapa</h3>
+              <p class="card-jogo__texto">
+                Enfrente um mapa cheio de obstáculos até chegar à célula — puro desafio, sem perguntas. Desvie, colete energia e chegue ao
+                destino.
+              </p>
+              <ul class="card-jogo__chips" role="list">
+                <li class="chip">Obstáculos</li>
+                <li class="chip">Power-ups de ATP</li>
+                <li class="chip">3 vidas</li>
+                <li class="chip">Ranking</li>
+              </ul>
+              <a class="btn btn--ghost" href="biolab.html#aventura">Jogar aventura <span class="btn__seta" aria-hidden="true">↗</span></a>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= CTA FINAL ================= -->
+      <section class="cta-final" aria-labelledby="titulo-cta">
+        <div class="container">
+          <div class="cta-card" data-reveal>
+            <img class="cta-card__foto" src="assets/img/cta-lab.png" alt="" loading="lazy" />
+            <img class="cta-card__brilho" src="assets/home/glow-cta.svg" alt="" aria-hidden="true" />
+            <div class="cta-card__texto">
+              <h2 class="cta-card__titulo" id="titulo-cta">A ciência que estuda a vida em nível molecular</h2>
+              <p class="cta-card__sub">
+                Da menor molécula às grandes descobertas, a Bioquímica conecta ciência, saúde e inovação para um futuro melhor.
+              </p>
+              <a class="btn btn--primary" href="inicio.html">Explorar conteúdo <span class="btn__seta" aria-hidden="true">→</span></a>
+            </div>
+            <div class="atomo" data-atomo></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer data-footer></footer>
   </body>
 </html>
