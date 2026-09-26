@@ -28,7 +28,7 @@ export class EstacaoAminoacido {
     // Sombra/halo no chão.
     const sombra = new THREE.Mesh(
       new THREE.CircleGeometry(0.95, 32),
-      new THREE.MeshBasicMaterial({ color: cor, transparent: true, opacity: 0.18, depthWrite: false })
+      new THREE.MeshBasicMaterial({ color: cor, transparent: true, opacity: 0.1, depthWrite: false })
     );
     sombra.rotation.x = -Math.PI / 2;
     sombra.position.y = 0.02;

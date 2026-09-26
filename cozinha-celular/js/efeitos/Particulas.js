@@ -11,21 +11,15 @@ function criarTexturaBolha() {
   canvas.height = tamanho;
   const ctx = canvas.getContext("2d");
 
-  const gradiente = ctx.createRadialGradient(
-    tamanho * 0.38,
-    tamanho * 0.35,
-    2,
-    tamanho * 0.5,
-    tamanho * 0.5,
-    tamanho * 0.5
-  );
-  gradiente.addColorStop(0, "rgba(255,255,255,0.9)");
-  gradiente.addColorStop(0.4, "rgba(180,230,255,0.35)");
-  gradiente.addColorStop(1, "rgba(180,230,255,0)");
-  ctx.fillStyle = gradiente;
+  // Bolha do Figma: miolo quase transparente e contorno ciano fino.
+  const raio = tamanho / 2 - 3;
   ctx.beginPath();
-  ctx.arc(tamanho / 2, tamanho / 2, tamanho / 2, 0, Math.PI * 2);
+  ctx.arc(tamanho / 2, tamanho / 2, raio, 0, Math.PI * 2);
+  ctx.fillStyle = "rgba(255,255,255,0.05)";
   ctx.fill();
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = "rgba(191,243,255,0.3)";
+  ctx.stroke();
 
   const textura = new THREE.CanvasTexture(canvas);
   return textura;
@@ -52,11 +46,10 @@ export class BolhasCitoplasma {
     geometria.setAttribute("position", new THREE.BufferAttribute(posicoes, 3));
 
     const material = new THREE.PointsMaterial({
-      size: 0.35,
+      size: 0.42,
       map: criarTexturaBolha(),
       transparent: true,
       depthWrite: false,
-      blending: THREE.AdditiveBlending,
       sizeAttenuation: true,
     });
 

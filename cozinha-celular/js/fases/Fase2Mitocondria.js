@@ -1,14 +1,17 @@
 // Fase 2 — Mitocôndria: o jogador percorre a respiração celular em ordem.
-// 1) Glicólise (no citoplasma): glicose → piruvato
-// 2) Ciclo de Krebs (na matriz): piruvato → NADH
-// 3) Cadeia respiratória (complexos I, III, IV): NADH bombeia prótons
+// 1) Entrada do combustível, sorteada a cada ciclo: glicólise (citoplasma),
+//    β-oxidação de ácido graxo ou desaminação de aminoácido (matriz)
+// 2) Ciclo de Krebs (na matriz): gera NADH ou FADH₂
+// 3) Cadeia respiratória: NADH no complexo I, FADH₂ no complexo II
 // 4) ATP sintase: o fluxo de prótons gira o rotor e produz ATP
+// Radicais livres e jatos de prótons atrapalham o caminho.
 // A arena é a própria mitocôndria, com as cristas funcionando como paredes.
 
 import * as THREE from "three";
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 import { FaseBase } from "./FaseBase.js";
 import { criarRotulo } from "../utils/RotuloTexto.js";
+import { RadicalLivre } from "../entidades/RadicalLivre.js";
 
 const L = 8; // metade do trecho reto da cápsula
 const R = 6.2; // raio das pontas arredondadas
@@ -27,12 +30,50 @@ const CRISTAS = [
 ];
 const CRISTA = { espessura: 0.7, comprimento: 3.9 };
 
-const PASSOS = [
-  { texto: "← Pegue GLICOSE no citoplasma", estacao: "glicolise" },
-  { texto: "Leve o PIRUVATO ao Ciclo de Krebs →", estacao: "krebs" },
-  { texto: "Entregue o NADH na cadeia respiratória ↑", estacao: "cadeia" },
-  { texto: "Gire a ATP SINTASE! →", estacao: "sintase" },
+// Cada ciclo sorteia por onde o "combustível" entra (glicose, gordura ou
+// aminoácido) e qual transportador sai do Krebs (NADH → complexo I ou
+// FADH₂ → complexo II). Assim a ordem das estações muda a cada rodada.
+const ENTRADAS = {
+  glicolise: {
+    etapa: "Glicólise",
+    texto: "← Pegue GLICOSE no citoplasma",
+    produto: { nome: "Piruvato", cor: 0xff9a3d, forma: "cone" },
+    atp: 2,
+  },
+  betaoxidacao: {
+    etapa: "β-oxidação",
+    texto: "Quebre o ÁCIDO GRAXO na β-oxidação",
+    produto: { nome: "Acetil-CoA", cor: 0xffe14d, forma: "capsula" },
+    atp: 0,
+  },
+  aminoacido: {
+    etapa: "Aminoácido",
+    texto: "Desamine o AMINOÁCIDO",
+    produto: { nome: "α-cetoglutarato", cor: 0x8fdcff, forma: "cone" },
+    atp: 0,
+  },
+};
+const TRANSPORTADORES = [
+  { nome: "NADH", cor: 0xff6fd8, complexo: "complexoI", etapa: "Complexo I", texto: "Entregue o NADH no COMPLEXO I ↑" },
+  { nome: "FADH₂", cor: 0xc9a7ff, complexo: "complexoII", etapa: "Complexo II", texto: "Entregue o FADH₂ no COMPLEXO II ↑" },
 ];
+
+// Obstáculos: radicais livres vagando pela matriz e jatos de prótons que
+// avisam (anel laranja) antes de disparar.
+const JATOS = [
+  { x: -5.9, z: 0, atraso: 0 },
+  { x: 6.6, z: 0, atraso: 1.6 },
+  { x: 1.2, z: -2.2, atraso: 3.1 },
+];
+const JATO = { raio: 1.05, espera: 2.6, aviso: 1.0, disparo: 0.7 };
+const PROXIMO_ESTADO_JATO = { espera: "aviso", aviso: "disparo", disparo: "espera" };
+const EIXO_Y = new THREE.Vector3(0, 1, 0);
+const PENALIDADE_TEMPO = 3;
+
+function sortear(lista, evitar) {
+  const opcoes = lista.length > 1 ? lista.filter((item) => item !== evitar) : lista;
+  return opcoes[Math.floor(Math.random() * opcoes.length)];
+}
 
 function formaCapsula(meioComprimento, raio) {
   const forma = new THREE.Shape();
@@ -101,6 +142,9 @@ export class Fase2Mitocondria extends FaseBase {
     this._construirKrebs();
     this._construirCadeia();
     this._construirSintase();
+    this._construirEstacoesMatriz();
+    this._construirJatos();
+    this.radicais = [];
 
     this.indicador = new THREE.Group();
     this.indicador.position.set(0.6, 0.85, 0);
@@ -109,6 +153,9 @@ export class Fase2Mitocondria extends FaseBase {
 
   desmontar() {
     this.ctx.jogador.grupo.remove(this.indicador);
+    this.ctx.jogador.grupo.scale.setScalar(1);
+    this.ctx.jogador.grupo.visible = true;
+    this.radicais = [];
     super.desmontar();
   }
 
@@ -140,7 +187,7 @@ export class Fase2Mitocondria extends FaseBase {
     this.grupo.add(membranaExterna);
 
     const rotuloMatriz = criarRotulo(["MATRIZ MITOCONDRIAL"], "#ffd6a0", { largura: 4, fonte: 30 });
-    rotuloMatriz.position.set(-9.5, 0.3, 3.8);
+    rotuloMatriz.position.set(-10.2, 0.3, -3.6);
     rotuloMatriz.material.opacity = 0.7;
     this.grupo.add(rotuloMatriz);
   }
@@ -165,23 +212,60 @@ export class Fase2Mitocondria extends FaseBase {
   }
 
   _construirCitoplasma() {
-    const materialCito = materialOrganico(0x1c1040, 0x2a1466, 0.4);
-    const pad = new THREE.Mesh(new THREE.CircleGeometry(RAIO_CITOPLASMA + 0.5, 48), materialCito);
-    pad.rotation.x = -Math.PI / 2;
-    pad.position.copy(CENTRO_CITOPLASMA).setY(0.01);
-    this.grupo.add(pad);
+    // Piso do citoplasma + corredor como uma única forma (círculo com um
+    // "canal" que entra pela porta da mitocôndria), com borda luminosa.
+    const raio = RAIO_CITOPLASMA + 0.5;
+    const meia = CORREDOR.meiaLargura;
+    const xFim = CORREDOR.x1 + 0.3 - CENTRO_CITOPLASMA.x;
+    const angulo = Math.asin(meia / raio);
+    const xJuncao = Math.cos(angulo) * raio;
+    const formaPiso = new THREE.Shape();
+    formaPiso.moveTo(xJuncao, meia);
+    formaPiso.lineTo(xFim, meia);
+    formaPiso.lineTo(xFim, -meia);
+    formaPiso.lineTo(xJuncao, -meia);
+    formaPiso.absarc(0, 0, raio, -angulo, angulo - Math.PI * 2, true);
 
-    const corredor = new THREE.Mesh(new THREE.PlaneGeometry(CORREDOR.x1 - CORREDOR.x0 + 0.6, CORREDOR.meiaLargura * 2), materialCito);
-    corredor.rotation.x = -Math.PI / 2;
-    corredor.position.set((CORREDOR.x0 + CORREDOR.x1) / 2, 0.02, 0);
-    this.grupo.add(corredor);
+    const piso = new THREE.Mesh(
+      new THREE.ShapeGeometry(formaPiso, 48),
+      new THREE.MeshStandardMaterial({ color: 0x5a3a8a, emissive: 0x8a4cc8, emissiveIntensity: 0.18, roughness: 0.75 })
+    );
+    piso.rotation.x = -Math.PI / 2;
+    piso.position.copy(CENTRO_CITOPLASMA).setY(0.015);
+    piso.receiveShadow = true;
+    this.grupo.add(piso);
 
-    // Estação de glicólise: cápsula de vidro com borda verde e um hexágono (anel da glicose).
+    // Borda: do fim do corredor (em cima), contornando o círculo, até o fim do corredor (embaixo).
+    const pontosBorda = [new THREE.Vector3(xFim, 0.06, -meia), new THREE.Vector3(xJuncao, 0.06, -meia)];
+    const passosArco = 64;
+    for (let i = 1; i < passosArco; i++) {
+      const a = -angulo - ((Math.PI * 2 - 2 * angulo) * i) / passosArco;
+      pontosBorda.push(new THREE.Vector3(Math.cos(a) * raio, 0.06, -Math.sin(a) * raio));
+    }
+    pontosBorda.push(new THREE.Vector3(xJuncao, 0.06, meia), new THREE.Vector3(xFim, 0.06, meia));
+    const bordaPiso = new THREE.Mesh(
+      new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pontosBorda, false, "centripetal"), 160, 0.07, 6, false),
+      new THREE.MeshBasicMaterial({ color: 0x8cff6b, transparent: true, opacity: 0.75 })
+    );
+    bordaPiso.position.copy(CENTRO_CITOPLASMA);
+    this.grupo.add(bordaPiso);
+
+    // Estação de glicólise, com um hexágono (anel da glicose).
+    this.hexagono = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.42, 0.42, 0.22, 6),
+      new THREE.MeshPhysicalMaterial({ color: 0x8cff6b, emissive: 0x4dff5a, emissiveIntensity: 0.6, roughness: 0.2, clearcoat: 1 })
+    );
+    this.hexagono.rotation.x = Math.PI / 2;
+    this.estacaoGlicolise = this._criarEstacao(CENTRO_CITOPLASMA, 0x8cff6b, ["Glicose → Piruvato", "CITOPLASMA"], this.hexagono);
+  }
+
+  // Cápsula de vidro com borda colorida, um ícone girando dentro e rótulo.
+  _criarEstacao(posicao, cor, linhas, icone) {
     const estacao = new THREE.Group();
-    estacao.position.copy(CENTRO_CITOPLASMA);
+    estacao.position.copy(posicao);
     const borda = new THREE.Mesh(
       new RoundedBoxGeometry(1.5, 1.2, 1.5, 4, 0.35),
-      new THREE.MeshBasicMaterial({ color: 0x8cff6b, transparent: true, opacity: 0.6, side: THREE.BackSide })
+      new THREE.MeshBasicMaterial({ color: cor, transparent: true, opacity: 0.6, side: THREE.BackSide })
     );
     borda.position.y = 0.7;
     estacao.add(borda);
@@ -191,21 +275,76 @@ export class Fase2Mitocondria extends FaseBase {
     );
     vidro.position.y = 0.7;
     estacao.add(vidro);
-    this.hexagono = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.42, 0.42, 0.22, 6),
-      new THREE.MeshPhysicalMaterial({ color: 0x8cff6b, emissive: 0x4dff5a, emissiveIntensity: 0.6, roughness: 0.2, clearcoat: 1 })
-    );
-    this.hexagono.rotation.x = Math.PI / 2;
-    this.hexagono.position.y = 0.8;
-    estacao.add(this.hexagono);
-    const rotulo = criarRotulo(["Glicose → Piruvato", "CITOPLASMA"], "#ffffff", { largura: 2.8, fonte: 40, brilho: false });
+    icone.position.y = 0.8;
+    estacao.add(icone);
+    const rotulo = criarRotulo(linhas, "#ffffff", { largura: 2.8, fonte: 40, brilho: false });
     rotulo.position.y = 1.9;
     estacao.add(rotulo);
-    const luz = new THREE.PointLight(0x8cff6b, 3, 5, 2);
+    const luz = new THREE.PointLight(cor, 3, 5, 2);
     luz.position.y = 1;
     estacao.add(luz);
     this.grupo.add(estacao);
-    this.estacaoGlicolise = estacao;
+    return estacao;
+  }
+
+  // Estações extras na matriz: β-oxidação (ácido graxo em zigue-zague) e
+  // desaminação (aminoácido com o grupo amino em verde).
+  _construirEstacoesMatriz() {
+    const materialGordura = new THREE.MeshPhysicalMaterial({ color: 0xffe14d, emissive: 0xffb02e, emissiveIntensity: 0.6, roughness: 0.2, clearcoat: 1 });
+    this.iconeGordura = new THREE.Group();
+    const pontos = [];
+    for (let i = 0; i < 6; i++) pontos.push(new THREE.Vector3(-0.5 + i * 0.2, i % 2 ? 0.12 : -0.12, 0));
+    pontos.forEach((ponto, i) => {
+      const atomo = new THREE.Mesh(new THREE.SphereGeometry(0.09, 12, 8), materialGordura);
+      atomo.position.copy(ponto);
+      this.iconeGordura.add(atomo);
+      if (i === 0) return;
+      const anterior = pontos[i - 1];
+      const ligacao = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.035, anterior.distanceTo(ponto), 6), materialGordura);
+      ligacao.position.copy(anterior).lerp(ponto, 0.5);
+      ligacao.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), ponto.clone().sub(anterior).normalize());
+      this.iconeGordura.add(ligacao);
+    });
+    this.estacaoBetaOx = this._criarEstacao(new THREE.Vector3(-9.8, 0, 2.4), 0xffe14d, ["Ácido graxo → Acetil-CoA", "β-OXIDAÇÃO"], this.iconeGordura);
+
+    const materialAmino = new THREE.MeshPhysicalMaterial({ color: 0x8fdcff, emissive: 0x4dc3ff, emissiveIntensity: 0.6, roughness: 0.2, clearcoat: 1 });
+    this.iconeAmino = new THREE.Group();
+    this.iconeAmino.add(new THREE.Mesh(new THREE.SphereGeometry(0.26, 18, 12), materialAmino));
+    [0, 2.1, 4.2].forEach((angulo, i) => {
+      const grupo = new THREE.Mesh(new THREE.SphereGeometry(0.12, 12, 8), i === 0 ? new THREE.MeshBasicMaterial({ color: 0x8cff6b }) : materialAmino);
+      grupo.position.set(Math.cos(angulo) * 0.36, Math.sin(angulo) * 0.36, 0);
+      this.iconeAmino.add(grupo);
+    });
+    this.estacaoAmino = this._criarEstacao(new THREE.Vector3(4.8, 0, 3.9), 0x8fdcff, ["Aminoácido → α-cetoglutarato", "DESAMINAÇÃO"], this.iconeAmino);
+  }
+
+  // Jatos de prótons: anel no chão que pisca em laranja (aviso) e depois
+  // solta uma coluna de prótons que empurra a enzima.
+  _construirJatos() {
+    this.jatos = JATOS.map(({ x, z, atraso }) => {
+      const grupo = new THREE.Group();
+      grupo.position.set(x, 0, z);
+      const base = new THREE.Mesh(
+        new THREE.RingGeometry(JATO.raio * 0.55, JATO.raio, 40),
+        new THREE.MeshBasicMaterial({ color: 0xff9a3d, transparent: true, opacity: 0.2, side: THREE.DoubleSide, depthWrite: false })
+      );
+      base.rotation.x = -Math.PI / 2;
+      base.position.y = 0.03;
+      grupo.add(base);
+      const coluna = new THREE.Mesh(
+        new THREE.CylinderGeometry(JATO.raio * 0.8, JATO.raio, 3.2, 28, 1, true),
+        new THREE.MeshBasicMaterial({ color: 0xffd24d, transparent: true, opacity: 0.45, side: THREE.DoubleSide, depthWrite: false, blending: THREE.AdditiveBlending })
+      );
+      coluna.position.y = 1.6;
+      coluna.visible = false;
+      grupo.add(coluna);
+      const rotulo = criarRotulo(["H⁺"], "#ffd24d", { largura: 0.8, fonte: 56, titulo: true });
+      rotulo.position.y = 0.5;
+      rotulo.material.opacity = 0.6;
+      grupo.add(rotulo);
+      this.grupo.add(grupo);
+      return { grupo, base, coluna, atraso, relogio: 0, estado: "espera" };
+    });
   }
 
   _construirKrebs() {
@@ -230,9 +369,11 @@ export class Fase2Mitocondria extends FaseBase {
     }
     krebs.add(this.pontosKrebs);
 
-    const rotulo = criarRotulo(["CICLO DE", "KREBS"], "#fff3b0", { largura: 2.6, fonte: 56, titulo: true });
-    rotulo.position.y = 1.3;
-    krebs.add(rotulo);
+    ["CICLO DE", "KREBS"].forEach((linha, i) => {
+      const rotulo = criarRotulo([linha], "#fff3b0", { largura: 3.4, fonte: 56, titulo: true });
+      rotulo.position.set(0, 1.3, -0.35 + i * 0.75);
+      krebs.add(rotulo);
+    });
 
     const luz = new THREE.PointLight(0xffd24d, 4, 6, 2);
     luz.position.y = 1;
@@ -244,9 +385,10 @@ export class Fase2Mitocondria extends FaseBase {
 
   _construirCadeia() {
     const dados = [
-      { nome: "I", cor: 0xff6fd8, x: -0.6 },
-      { nome: "III", cor: 0xc9a7ff, x: 1.6 },
-      { nome: "IV", cor: 0x4dc3ff, x: 3.8 },
+      { nome: "I", cor: 0xff6fd8, x: -1.2 },
+      { nome: "II", cor: 0xc9a7ff, x: 0.4 },
+      { nome: "III", cor: 0x9b8cff, x: 2.0 },
+      { nome: "IV", cor: 0x4dc3ff, x: 3.6 },
     ];
     this.complexos = dados.map(({ nome, cor, x }) => {
       const grupo = new THREE.Group();
@@ -259,13 +401,13 @@ export class Fase2Mitocondria extends FaseBase {
       corpo.castShadow = true;
       grupo.add(corpo);
       const rotulo = criarRotulo([nome], "#ffffff", { largura: 1.2, fonte: 70, titulo: true, brilho: false });
-      rotulo.position.set(0, 1.05, 0.52);
+      rotulo.position.set(0, 2.2, 0);
       grupo.add(rotulo);
       this.grupo.add(grupo);
       return grupo;
     });
 
-    // Elétrons viajando pela cadeia (I → III → IV) quando o NADH é entregue.
+    // Elétrons viajando pela cadeia (I ou II → III → IV) após a entrega.
     this.eletrons = [];
     const material = new THREE.MeshBasicMaterial({ color: 0x7fe7ff });
     for (let i = 0; i < 10; i++) {
@@ -275,9 +417,10 @@ export class Fase2Mitocondria extends FaseBase {
       this.eletrons.push(eletron);
     }
     this._fluxoEletrons = 0;
+    this._inicioEletrons = 0;
 
     const rotulo = criarRotulo(["CADEIA RESPIRATÓRIA"], "#ffd0f0", { largura: 3.6, fonte: 30 });
-    rotulo.position.set(1.6, 2.4, -4.7);
+    rotulo.position.set(1.2, 2.4, -4.7);
     this.grupo.add(rotulo);
   }
 
@@ -327,13 +470,67 @@ export class Fase2Mitocondria extends FaseBase {
     this.carregando = null;
     this._velocidadeRotor = 0.4;
     this._fluxoEletrons = 0;
+    this._invulneravel = 0;
+    this._tonta = 0;
+    this.rota = null;
+    this._sortearRota();
     this._atualizarIndicador();
+    this._prepararObstaculos();
 
     const jogador = this.ctx.jogador;
     jogador.teleportar(-11, 0);
     jogador.limitar = (pos, raio) => this._limitar(pos, raio);
-    this.ctx.camera.enquadrar({ deslocamento: new THREE.Vector3(0, 7, 8.4) });
+    // Câmera fixa, quase de cima, mostrando a mitocôndria inteira e o citoplasma à esquerda (Figma).
+    this.ctx.camera.enquadrar({ deslocamento: new THREE.Vector3(0, 27.4, 12.7), alvoFixo: new THREE.Vector3(-2.6, 0, -0.6), alturaOlhar: 0, fov: 40 });
+    // Vista de longe: a enzima fica maior para manter a proporção do Figma.
+    jogador.grupo.scale.setScalar(1.4);
     this._atualizarObjetivo();
+  }
+
+  // Monta a sequência do próximo ciclo, sem repetir a entrada anterior.
+  _sortearRota() {
+    const entrada = sortear(Object.keys(ENTRADAS), this.rota && this.rota.entrada);
+    const transportador = sortear(TRANSPORTADORES);
+    const dados = ENTRADAS[entrada];
+    this.rota = {
+      entrada,
+      transportador,
+      passos: [
+        { estacao: entrada, texto: dados.texto, etapa: dados.etapa },
+        { estacao: "krebs", texto: `Leve o ${dados.produto.nome.toUpperCase()} ao Ciclo de Krebs`, etapa: "Krebs" },
+        { estacao: transportador.complexo, texto: transportador.texto, etapa: transportador.etapa },
+        { estacao: "sintase", texto: "Gire a ATP SINTASE! →", etapa: "ATP" },
+      ],
+    };
+    this.ctx.hud.fluxoEtapas(this.rota.passos.map((p) => p.etapa));
+  }
+
+  _prepararObstaculos() {
+    if (this.radicais) this.radicais.forEach((r) => this.grupo.remove(r.grupo));
+    this.radicais = [];
+    this._adicionarRadical(new THREE.Vector3(-3.5, 0, 3.8));
+    this._adicionarRadical(new THREE.Vector3(4.5, 0, -1.8));
+    this.jatos.forEach((jato) => {
+      jato.estado = "espera";
+      jato.relogio = -jato.atraso;
+      jato.coluna.visible = false;
+    });
+  }
+
+  _adicionarRadical(posicao) {
+    const radical = new RadicalLivre({ raio: 0.36, espinhos: 12 });
+    radical.grupo.position.copy(posicao).setY(0.8);
+    const angulo = Math.random() * Math.PI * 2;
+    radical.direcao = new THREE.Vector3(Math.cos(angulo), 0, Math.sin(angulo));
+    this.grupo.add(radical.grupo);
+    this.radicais.push(radical);
+  }
+
+  // Ponto livre para um radical: dentro da matriz e fora das cristas.
+  _pontoLivre(x, z, margem) {
+    const dx = x - THREE.MathUtils.clamp(x, -L, L);
+    if (Math.hypot(dx, z) > R - margem) return false;
+    return !this.colisores.some((c) => x > c.x0 - margem && x < c.x1 + margem && z > c.z0 - margem && z < c.z1 + margem);
   }
 
   // Mantém a enzima dentro da mitocôndria, do corredor ou do citoplasma, e fora das cristas.
@@ -416,10 +613,21 @@ export class Fase2Mitocondria extends FaseBase {
     const p = this.ctx.jogador.posicao;
     const perto = (alvo, raio) => Math.hypot(p.x - alvo.x, p.z - alvo.z) < raio;
     if (perto(CENTRO_CITOPLASMA, 2.2)) return "glicolise";
+    if (perto(this.estacaoBetaOx.position, 1.9)) return "betaoxidacao";
+    if (perto(this.estacaoAmino.position, 1.9)) return "aminoacido";
     if (perto(this.krebs.position, 2.6)) return "krebs";
-    if (this.complexos.some((c) => perto(c.position, 1.7))) return "cadeia";
     if (perto(this.sintase.position, 2.1)) return "sintase";
-    return null;
+    // Complexo mais próximo: só o I e o II recebem transportadores.
+    let indice = -1;
+    let menor = 1.6;
+    this.complexos.forEach((c, i) => {
+      const d = Math.hypot(p.x - c.position.x, p.z - c.position.z);
+      if (d < menor) {
+        menor = d;
+        indice = i;
+      }
+    });
+    return ["complexoI", "complexoII", "cadeia", "cadeia"][indice] || null;
   }
 
   acao() {
@@ -427,30 +635,40 @@ export class Fase2Mitocondria extends FaseBase {
     const estacao = this._estacaoProxima();
     if (!estacao) return false;
 
-    const esperado = PASSOS[this.passo].estacao;
+    const esperado = this.rota.passos[this.passo].estacao;
     const posicaoPopup = this.ctx.jogador.posicao.clone().add(new THREE.Vector3(0, 2, 0));
     if (estacao !== esperado) {
       this.quebrarCombo();
       this.ctx.som.tocar("erro");
-      this.ctx.hud.popup("Fora de ordem!", "popup-erro", posicaoPopup);
+      const naCadeia = this.passo === 2 && estacao.startsWith("c");
+      this.ctx.hud.popup(naCadeia ? `Use o ${this.rota.passos[2].etapa}!` : "Fora de ordem!", "popup-erro", posicaoPopup);
       return true;
     }
 
     switch (estacao) {
       case "glicolise":
-        this.carregando = { nome: "Piruvato", cor: 0xff9a3d, forma: "cone" };
-        this.ganharAtp(2, posicaoPopup.clone().add(new THREE.Vector3(0, 0.6, 0)));
-        this.ctx.faiscas.explodir(CENTRO_CITOPLASMA.clone().setY(1), 0x8cff6b, 14, 3);
+      case "betaoxidacao":
+      case "aminoacido": {
+        const dados = ENTRADAS[estacao];
+        const origem = { glicolise: this.estacaoGlicolise, betaoxidacao: this.estacaoBetaOx, aminoacido: this.estacaoAmino }[estacao];
+        this.carregando = dados.produto;
+        if (dados.atp) this.ganharAtp(dados.atp, posicaoPopup.clone().add(new THREE.Vector3(0, 0.6, 0)));
+        this.ctx.faiscas.explodir(origem.position.clone().setY(1), dados.produto.cor, 14, 3);
         break;
-      case "krebs":
-        this.carregando = { nome: "NADH", cor: 0xff6fd8, forma: "capsula" };
+      }
+      case "krebs": {
+        const { nome, cor } = this.rota.transportador;
+        this.carregando = { nome, cor, forma: "capsula" };
         this.ganharAtp(2, posicaoPopup.clone().add(new THREE.Vector3(0, 0.6, 0)));
         this.ctx.faiscas.explodir(new THREE.Vector3(0, 0.6, 0), 0xffd24d, 18, 4);
         break;
-      case "cadeia":
+      }
+      case "complexoI":
+      case "complexoII":
         this.carregando = null;
         this._fluxoEletrons = 2.2;
-        this.ctx.faiscas.explodir(this.complexos[0].position.clone().setY(1.6), 0xff6fd8, 14, 3);
+        this._inicioEletrons = estacao === "complexoI" ? 0 : 1;
+        this.ctx.faiscas.explodir(this.complexos[this._inicioEletrons].position.clone().setY(1.6), this.rota.transportador.cor, 14, 3);
         break;
       case "sintase":
         this._velocidadeRotor = 14;
@@ -463,14 +681,21 @@ export class Fase2Mitocondria extends FaseBase {
 
     this.pontuar(estacao === "sintase" ? 300 : 100, posicaoPopup, { comCombo: true });
     this.ctx.som.tocar(estacao === "sintase" ? "proteina" : "entregar");
-    this.passo = (this.passo + 1) % PASSOS.length;
+    this.passo += 1;
+    if (this.passo >= this.rota.passos.length) {
+      this.passo = 0;
+      this._sortearRota();
+      this.ctx.hud.popup("NOVA ROTA!", "popup-combo", this.ctx.jogador.posicao.clone().setY(3), 70);
+      // Mais um radical livre depois do 2º e do 4º ciclo.
+      if (this.ciclos === 2 || this.ciclos === 4) this._adicionarRadical(new THREE.Vector3(0, 0, 3.5));
+    }
     this._atualizarIndicador();
     this._atualizarObjetivo();
     return true;
   }
 
   _atualizarObjetivo() {
-    this.ctx.hud.objetivo(PASSOS[this.passo].texto);
+    this.ctx.hud.objetivo(this.rota.passos[this.passo].texto);
     this.ctx.hud.fluxo(this.passo);
   }
 
@@ -495,6 +720,8 @@ export class Fase2Mitocondria extends FaseBase {
   atualizar(delta) {
     const t = performance.now() / 1000;
     this.hexagono.rotation.z += delta * 0.8;
+    this.iconeGordura.rotation.y += delta * 0.9;
+    this.iconeAmino.rotation.y += delta * 0.9;
     this.anelKrebs.rotation.z += delta * 0.6;
     this.pontosKrebs.rotation.y -= delta * 0.6;
     this.indicador.rotation.y += delta * 2;
@@ -507,8 +734,8 @@ export class Fase2Mitocondria extends FaseBase {
 
     // Elétrons percorrendo I → III → IV.
     if (this._fluxoEletrons > 0) this._fluxoEletrons -= delta;
-    const inicio = this.complexos[0].position;
-    const fim = this.complexos[2].position;
+    const inicio = this.complexos[this._inicioEletrons].position;
+    const fim = this.complexos[3].position;
     this.eletrons.forEach((eletron, i) => {
       eletron.visible = this._fluxoEletrons > 0;
       if (!eletron.visible) return;
@@ -516,7 +743,97 @@ export class Fase2Mitocondria extends FaseBase {
       eletron.position.set(THREE.MathUtils.lerp(inicio.x, fim.x, progresso), 1.9 + Math.sin(progresso * Math.PI * 3) * 0.15, inicio.z + 0.7);
     });
 
+    this._atualizarRadicais(delta);
+    this._atualizarJatos(delta);
+
     super.atualizar(delta);
+
+    // Atingida: pisca e fica mais lenta por um instante. Vem depois do
+    // FaseBase porque ele redefine a velocidade a cada quadro.
+    if (this.ativa) {
+      this._invulneravel = Math.max(0, this._invulneravel - delta);
+      this._tonta = Math.max(0, this._tonta - delta);
+      if (this._tonta > 0) this.ctx.jogador.multiplicadorVelocidade *= 0.4;
+      this.ctx.jogador.grupo.visible = this._invulneravel <= 0 || Math.floor(this._invulneravel * 12) % 2 === 0;
+    }
+  }
+
+  _atualizarRadicais(delta) {
+    const jogador = this.ctx.jogador.posicao;
+    const velocidade = 1.7 + Math.min(this.ciclos, 5) * 0.25;
+    this.radicais.forEach((radical) => {
+      radical.atualizar(delta);
+      if (!this.ativa) return;
+      const pos = radical.grupo.position;
+      // Vaga pela matriz; ao bater numa parede ou crista, muda de direção.
+      radical.direcao.applyAxisAngle(EIXO_Y, (Math.random() - 0.5) * delta * 2);
+      const x = pos.x + radical.direcao.x * velocidade * delta;
+      const z = pos.z + radical.direcao.z * velocidade * delta;
+      if (this._pontoLivre(x, z, 0.7)) {
+        pos.x = x;
+        pos.z = z;
+      } else if (this._pontoLivre(pos.x, pos.z, 0.7)) {
+        const angulo = Math.random() * Math.PI * 2;
+        radical.direcao.set(Math.cos(angulo), 0, Math.sin(angulo));
+      } else {
+        radical.direcao.set(-pos.x, 0, -pos.z).normalize();
+        pos.addScaledVector(radical.direcao, velocidade * delta);
+      }
+      pos.y = 0.8 + Math.sin(performance.now() / 200 + pos.x) * 0.1;
+      radical.olharPara(jogador);
+      if (Math.hypot(jogador.x - pos.x, jogador.z - pos.z) < 1.0) this._atingir(pos, "Radical livre!");
+    });
+  }
+
+  _atualizarJatos(delta) {
+    if (!this.ativa) return;
+    const jogador = this.ctx.jogador.posicao;
+    this.jatos.forEach((jato) => {
+      jato.relogio += delta;
+      if (jato.relogio >= JATO[jato.estado]) {
+        jato.relogio = 0;
+        jato.estado = PROXIMO_ESTADO_JATO[jato.estado];
+        jato.coluna.visible = jato.estado === "disparo";
+      }
+      const material = jato.base.material;
+      if (jato.estado === "aviso") {
+        material.color.setHex(0xff5c3d);
+        material.opacity = 0.35 + 0.4 * Math.abs(Math.sin(jato.relogio * 14));
+      } else if (jato.estado === "disparo") {
+        material.color.setHex(0xffd24d);
+        material.opacity = 0.9;
+        jato.coluna.scale.y = Math.min(1, jato.relogio / 0.12);
+        jato.coluna.rotation.y += delta * 6;
+        const d = Math.hypot(jogador.x - jato.grupo.position.x, jogador.z - jato.grupo.position.z);
+        if (d < JATO.raio + 0.35) this._atingir(jato.grupo.position, "Jato de prótons!");
+      } else {
+        material.color.setHex(0xff9a3d);
+        material.opacity = 0.2;
+      }
+    });
+  }
+
+  // Obstáculo acertou a enzima: empurrão, tontura, combo zerado e perde tempo.
+  _atingir(origem, motivo) {
+    if (this._invulneravel > 0 || !this.ativa) return;
+    const jogador = this.ctx.jogador;
+    this._invulneravel = 1.5;
+    this._tonta = 1.0;
+    jogador.ficarTonta();
+    this.ctx.camera.tremer(0.25, 0.3);
+    this.ctx.som.tocar("dano");
+    this.ctx.hud.flashDano();
+    this.quebrarCombo();
+
+    const empurrao = new THREE.Vector3(jogador.posicao.x - origem.x, 0, jogador.posicao.z - origem.z);
+    if (empurrao.lengthSq() < 0.0001) empurrao.set(1, 0, 0);
+    jogador.posicao.addScaledVector(empurrao.normalize(), 1.6);
+    this._limitar(jogador.posicao, jogador.raio);
+
+    this.tempoRestante -= PENALIDADE_TEMPO;
+    const posicao = jogador.posicao.clone().setY(2.2);
+    this.ctx.hud.popup(motivo, "popup-erro", posicao);
+    this.ctx.hud.popup(`−${PENALIDADE_TEMPO} s`, "popup-erro", posicao, -34);
   }
 
   metrica() {

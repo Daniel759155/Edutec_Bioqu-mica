@@ -33,7 +33,17 @@ export function criarRotulo(linhas, corDestaque = "#ffffff", opcoes = {}) {
   const temSegunda = Boolean(linhas[1]);
   const yPrincipal = temSegunda ? canvas.height * 0.38 : canvas.height * 0.5;
 
-  ctx.font = `${peso} ${fonte * 2}px ${familia}`;
+  // Reduz a fonte quando o texto não cabe no canvas (evita rótulos cortados).
+  const larguraUtil = canvas.width - 24;
+  const ajustarFonte = (texto, pesoFonte, tamanho, familiaFonte) => {
+    ctx.font = `${pesoFonte} ${tamanho}px ${familiaFonte}`;
+    const medida = ctx.measureText(texto).width;
+    if (medida > larguraUtil) {
+      ctx.font = `${pesoFonte} ${Math.floor((tamanho * larguraUtil) / medida)}px ${familiaFonte}`;
+    }
+  };
+
+  ajustarFonte(linhas[0], peso, fonte * 2, familia);
   if (fundo) {
     const larguraTexto = ctx.measureText(linhas[0]).width;
     const alturaPilula = fonte * 2 * 1.35;
@@ -51,7 +61,7 @@ export function criarRotulo(linhas, corDestaque = "#ffffff", opcoes = {}) {
   ctx.fillText(linhas[0], canvas.width / 2, yPrincipal);
 
   if (temSegunda) {
-    ctx.font = `600 ${fonte}px ${FONTE_TEXTO}`;
+    ajustarFonte(linhas[1], 600, fonte, FONTE_TEXTO);
     ctx.fillStyle = "#ffffff";
     ctx.shadowColor = "rgba(0,0,0,0.7)";
     ctx.shadowBlur = 8;

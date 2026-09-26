@@ -17,7 +17,7 @@ export const FASES = [
     rotulo: "FASE 2 · MITOCÔNDRIA",
     titulo: "Mitocôndria",
     objetivo:
-      "Faça a respiração celular: quebre a glicose no citoplasma, leve o piruvato ao Ciclo de Krebs, entregue o NADH à cadeia respiratória e gire a ATP sintase.",
+      "Faça a respiração celular: quebre o combustível (glicose, ácido graxo ou aminoácido — muda a cada ciclo), passe pelo Ciclo de Krebs, entregue o NADH no complexo I ou o FADH₂ no complexo II e gire a ATP sintase. Fuja dos radicais livres e dos jatos de prótons!",
     controles: "WASD mover · ESPAÇO interagir com a estação",
     estrelas: [1, 3, 5], // ciclos completos
   },

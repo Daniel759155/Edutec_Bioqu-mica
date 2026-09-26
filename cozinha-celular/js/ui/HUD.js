@@ -179,6 +179,13 @@ export class HUD {
     this._pulsar(this.el.objetivo);
   }
 
+  // Troca os nomes das etapas (a rota da fase 2 muda a cada ciclo).
+  fluxoEtapas(nomes) {
+    this.el.etapasFluxo.forEach((etapa, i) => {
+      etapa.textContent = nomes[i] || "";
+    });
+  }
+
   fluxo(passo) {
     this.el.etapasFluxo.forEach((etapa, i) => {
       etapa.classList.toggle("feita", i < passo);

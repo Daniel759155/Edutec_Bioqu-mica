@@ -21,6 +21,8 @@ const VERTEX_SHADER = /* glsl */ `
   }
 `;
 
+// Gradiente radial do Figma ("Chão – citoplasma"): centro azul translúcido
+// que se dissolve no fundo escuro, com faixas suaves que ondulam.
 const FRAGMENT_SHADER = /* glsl */ `
   uniform vec3 uCorBase;
   uniform vec3 uCorBrilho;
@@ -29,13 +31,14 @@ const FRAGMENT_SHADER = /* glsl */ `
   varying float vOnda;
 
   void main() {
+    float d = distance(vUv, vec2(0.5)) * 2.0;
+    vec3 cor = mix(uCorBrilho, uCorBase, smoothstep(0.0, 0.7, d));
+    float alfa = mix(0.55, 0.35, smoothstep(0.0, 0.7, d)) * (1.0 - smoothstep(0.7, 1.0, d));
+
     float faixas = sin((vUv.x + vUv.y) * 12.0 + uTempo * 0.6) * 0.5 + 0.5;
-    vec3 cor = mix(uCorBase, uCorBrilho, faixas * 0.25 + vOnda * 0.6 + 0.2);
+    cor += (faixas * 0.05 + vOnda * 0.12) * uCorBrilho;
 
-    float vinheta = smoothstep(1.05, 0.15, distance(vUv, vec2(0.5)));
-    cor *= vinheta;
-
-    gl_FragColor = vec4(cor, 1.0);
+    gl_FragColor = vec4(cor, alfa);
   }
 `;
 
@@ -48,5 +51,7 @@ export function criarMaterialCitoplasma(corBase, corBrilho) {
     },
     vertexShader: VERTEX_SHADER,
     fragmentShader: FRAGMENT_SHADER,
+    transparent: true,
+    depthWrite: false,
   });
 }

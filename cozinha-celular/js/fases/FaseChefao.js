@@ -16,6 +16,28 @@ const VITAMINAS = {
   E: { cor: 0xffe14d, nome: "VITAMINA E", faseNome: "fase lipídica" },
 };
 
+const RAIO_CHAO = 42;
+
+function texturaChao() {
+  const tamanho = 1024;
+  const canvas = document.createElement("canvas");
+  canvas.width = canvas.height = tamanho;
+  const ctx = canvas.getContext("2d");
+  const meio = tamanho / 2;
+  const gradiente = ctx.createRadialGradient(meio, meio, 0, meio, meio, meio);
+  const borda = (RAIO_ARENA + 0.6) / RAIO_CHAO;
+  gradiente.addColorStop(0, "#3a0a22");
+  gradiente.addColorStop(borda * 0.7, "#470b27");
+  gradiente.addColorStop(borda, "#5e0c2a");
+  gradiente.addColorStop(Math.min(1, borda * 1.6), "#7a0a2a");
+  gradiente.addColorStop(1, "#8f0c30");
+  ctx.fillStyle = gradiente;
+  ctx.fillRect(0, 0, tamanho, tamanho);
+  const textura = new THREE.CanvasTexture(canvas);
+  textura.colorSpace = THREE.SRGBColorSpace;
+  return textura;
+}
+
 export class FaseChefao extends FaseBase {
   constructor(ctx, info) {
     super(ctx, info);
@@ -24,10 +46,8 @@ export class FaseChefao extends FaseBase {
   }
 
   construir() {
-    const chao = new THREE.Mesh(
-      new THREE.CircleGeometry(RAIO_ARENA + 1, 96),
-      new THREE.MeshStandardMaterial({ color: 0x2a0618, emissive: 0x1a020c, emissiveIntensity: 0.8, roughness: 0.6 })
-    );
+    // Chão do Figma: centro escuro que vai ficando carmim até as bordas da tela.
+    const chao = new THREE.Mesh(new THREE.CircleGeometry(RAIO_CHAO, 96), new THREE.MeshBasicMaterial({ map: texturaChao() }));
     chao.rotation.x = -Math.PI / 2;
     chao.receiveShadow = true;
     this.grupo.add(chao);

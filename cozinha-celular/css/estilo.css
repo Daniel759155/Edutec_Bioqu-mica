@@ -693,17 +693,17 @@ button:focus-visible {
   bottom: calc(30 * var(--u));
   left: 50%;
   transform: translateX(-50%);
-  width: calc(520 * var(--u));
+  width: calc(590 * var(--u));
   height: calc(100 * var(--u));
   border-radius: calc(16 * var(--u));
   align-items: center;
-  gap: calc(30 * var(--u));
+  gap: calc(28 * var(--u));
   padding-left: calc(30 * var(--u));
 }
 
 .powerup {
   position: relative;
-  width: calc(135 * var(--u));
+  width: calc(158 * var(--u));
   height: calc(76 * var(--u));
   display: flex;
   align-items: center;
@@ -737,9 +737,9 @@ button:focus-visible {
 
 .powerup-nome {
   position: relative;
-  margin-left: calc(6 * var(--u));
-  width: calc(60 * var(--u));
-  font-size: calc(15 * var(--u));
+  margin-left: calc(14 * var(--u));
+  width: calc(72 * var(--u));
+  font-size: calc(16 * var(--u));
   line-height: 1.2;
   color: #d8e8ff;
 }
@@ -1199,12 +1199,12 @@ button:focus-visible {
   position: absolute;
   right: calc(40 * var(--u));
   top: calc(40 * var(--u));
-  width: calc(320 * var(--u));
+  min-width: calc(320 * var(--u));
   height: calc(90 * var(--u));
   border-radius: calc(15.75 * var(--u));
   align-items: center;
   gap: calc(9 * var(--u));
-  padding-left: calc(15 * var(--u));
+  padding: 0 calc(22 * var(--u)) 0 calc(15 * var(--u));
 }
 
 .hud-antioxidantes .hud-rotulo {

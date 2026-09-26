@@ -62,5 +62,5 @@ export const TEMAS = {
   ribossomo: { gradiente: ["#17406b", "#112f55", "#0b1e3f", "#08142e", "#040a1c"], neblina: 0x08142e, densidade: 0.018, luzes: [0x4dc3ff, 0x9b4dff, 0x22d3a6] },
   mitocondria: { gradiente: ["#5a1a12", "#421211", "#2a0a10", "#1a060d", "#10030a"], neblina: 0x1a060d, densidade: 0.014, luzes: [0xff9a4d, 0xffd24d, 0xff4fb0] },
   laboratorio: { gradiente: ["#0f4a4a", "#0c3c42", "#082a33", "#05202b", "#03121a"], neblina: 0x03121a, densidade: 0.012, luzes: [0x7ffff0, 0xff6fd8, 0x4dc3ff] },
-  chefao: { gradiente: ["#4a0a2a", "#34071f", "#1e0414", "#120312", "#05020f"], neblina: 0x120312, densidade: 0.02, luzes: [0xff2e63, 0xff9a3d, 0x9b4dff] },
+  chefao: { gradiente: ["#2a0618", "#45081f", "#6a0a28", "#8f0c30", "#a00e36"], neblina: 0x5a0822, densidade: 0.008, luzes: [0xff2e63, 0xff9a3d, 0x9b4dff] },
 };

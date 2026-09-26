@@ -17,8 +17,10 @@ export class CameraSeguidora {
     this._tremidaForca = 0;
   }
 
-  enquadrar({ deslocamento = DESLOCAMENTO_PADRAO, alturaOlhar = 0.6, alvoFixo = null } = {}) {
+  enquadrar({ deslocamento = DESLOCAMENTO_PADRAO, alturaOlhar = 0.6, alvoFixo = null, fov = 50 } = {}) {
     this.deslocamento.copy(deslocamento);
+    this.camera.fov = fov;
+    this.camera.updateProjectionMatrix();
     this.alturaOlhar = alturaOlhar;
     this.alvoFixo = alvoFixo ? alvoFixo.clone() : null;
   }

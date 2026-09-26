@@ -7,22 +7,60 @@ import * as THREE from "three";
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 import { criarRotulo } from "../utils/RotuloTexto.js";
 
-const CORES_BASE = { A: 0xff5c7a, U: 0xffd24d, G: 0x4dff9a, C: 0x4dc3ff };
+const CORES_BASE = { A: "#ff5c7a", U: "#ffd24d", G: "#4dff9a", C: "#4dc3ff" };
 const ESPACO = 0.62;
 const ALTURA = 2.35;
-const GEOMETRIA_BLOCO = new RoundedBoxGeometry(0.5, 0.5, 0.18, 3, 0.1);
+const GEOMETRIA_BLOCO = new RoundedBoxGeometry(0.5, 0.5, 0.12, 3, 0.1);
+const GEOMETRIA_FACE = new THREE.PlaneGeometry(0.66, 0.66);
+const texturasBase = {};
+
+// Face do nucleotídeo como no Figma: bloco arredondado com gradiente
+// (cor da base → roxo escuro), borda branca fina, brilho e a letra.
+function texturaBase(base) {
+  if (texturasBase[base]) return texturasBase[base];
+  const canvas = document.createElement("canvas");
+  canvas.width = canvas.height = 160;
+  const ctx = canvas.getContext("2d");
+  const cor = CORES_BASE[base];
+  const x = 23;
+  const lado = 114;
+  const raio = 31;
+  const caminho = () => {
+    ctx.beginPath();
+    ctx.roundRect(x, x, lado, lado, raio);
+  };
+
+  ctx.shadowColor = cor;
+  ctx.shadowBlur = 22;
+  const gradiente = ctx.createLinearGradient(x + lado, x, x, x + lado);
+  gradiente.addColorStop(0.11, cor);
+  gradiente.addColorStop(0.89, "#2a1766");
+  ctx.fillStyle = gradiente;
+  caminho();
+  ctx.fill();
+
+  ctx.shadowBlur = 0;
+  ctx.lineWidth = 4;
+  ctx.strokeStyle = "rgba(255,255,255,0.6)";
+  caminho();
+  ctx.stroke();
+
+  ctx.fillStyle = "#ffffff";
+  ctx.font = '900 66px "Montserrat", "Segoe UI", sans-serif';
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(base, 80, 84);
+
+  const textura = new THREE.CanvasTexture(canvas);
+  textura.colorSpace = THREE.SRGBColorSpace;
+  texturasBase[base] = textura;
+  return textura;
+}
 
 export class FitaRNAm {
   constructor() {
     this.grupo = new THREE.Group();
     this.grupo.position.set(0, ALTURA, 1.05);
-
-    const fio = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.05, 0.05, 26, 8),
-      new THREE.MeshBasicMaterial({ color: 0x9fd8ff, transparent: true, opacity: 0.3 })
-    );
-    fio.rotation.z = Math.PI / 2;
-    this.grupo.add(fio);
 
     this.trilho = new THREE.Group();
     this.grupo.add(this.trilho);
@@ -37,22 +75,30 @@ export class FitaRNAm {
     this.blocos = [];
     this.marcadores = [];
 
+    // Fio branco luminoso só sob os códons (como no Figma), andando junto com eles.
+    const comprimento = (codons.length * 3 - 1) * ESPACO + 0.9;
+    const fio = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.06, 0.06, comprimento, 10),
+      new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.6 })
+    );
+    fio.rotation.z = Math.PI / 2;
+    fio.position.set(((codons.length * 3 - 1) * ESPACO) / 2, 0, -0.08);
+    this.trilho.add(fio);
+
     codons.forEach((codon, c) => {
       [...codon].forEach((base, b) => {
         const x = (c * 3 + b) * ESPACO;
-        const material = new THREE.MeshPhysicalMaterial({
-          color: CORES_BASE[base],
-          emissive: CORES_BASE[base],
-          emissiveIntensity: 0.35,
-          roughness: 0.3,
-          clearcoat: 0.8,
-          transparent: true,
-        });
+        // Corpo escuro (dá volume) + face desenhada com a arte do Figma.
+        const material = new THREE.MeshStandardMaterial({ color: 0x2a1766, roughness: 0.4, transparent: true });
         const bloco = new THREE.Mesh(GEOMETRIA_BLOCO, material);
         bloco.position.x = x;
-        const letra = criarRotulo([base], "#ffffff", { largura: 0.9, fonte: 64, titulo: true, brilho: false });
-        letra.position.z = 0.12;
-        bloco.add(letra);
+        const face = new THREE.Mesh(
+          GEOMETRIA_FACE,
+          new THREE.MeshBasicMaterial({ map: texturaBase(base), transparent: true, depthWrite: false })
+        );
+        face.position.z = 0.07;
+        bloco.add(face);
+        bloco.userData.face = face;
         this.trilho.add(bloco);
         this.blocos.push(bloco);
       });
@@ -69,7 +115,7 @@ export class FitaRNAm {
       this.trilho.remove(filho);
       filho.traverse((o) => {
         if (o.material) {
-          if (o.material.map) o.material.map.dispose();
+          if (o.material.map && !Object.values(texturasBase).includes(o.material.map)) o.material.map.dispose();
           o.material.dispose();
         }
       });
@@ -105,7 +151,9 @@ export class FitaRNAm {
       // Códons já lidos ficam apagados, como se já tivessem passado pelo ribossomo.
       for (let b = 0; b < 3; b++) {
         const bloco = this.blocos[c * 3 + b];
-        bloco.material.opacity = c < indiceAtual ? 0.45 : 1;
+        const opacidade = c < indiceAtual ? 0.45 : 1;
+        bloco.material.opacity = opacidade;
+        bloco.userData.face.material.opacity = opacidade;
       }
     });
   }

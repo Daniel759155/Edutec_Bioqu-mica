@@ -9,7 +9,6 @@ import { Ribossomo } from "../entidades/Ribossomo.js";
 import { FitaRNAm } from "../entidades/FitaRNAm.js";
 import { criarMaterialCitoplasma } from "../efeitos/ShaderCitoplasma.js";
 import { criarRotulo } from "../utils/RotuloTexto.js";
-import { CORES } from "../utils/Config.js";
 import { sortear } from "../dados/Conteudo.js";
 import {
   AMINOACIDOS_FASE1,
@@ -19,8 +18,13 @@ import {
   aminoacidoDoCodon,
 } from "../dados/CodigoGenetico.js";
 
-const RAIO_ARENA = 10.2;
-const RAIO_ESTACOES = 7.2;
+// Proporções do Figma: arena compacta, ribossomo e RNAm grandes no centro.
+const RAIO_BORDA = 6.6;
+const RAIO_ARENA = RAIO_BORDA - 0.4;
+const RAIO_ESTACOES = 5.3;
+// Ângulo de cada estação na arena (0 = direita, 90° = frente), como no Figma:
+// o canto de trás à esquerda fica livre para o painel de pedidos.
+const ANGULOS_ESTACOES = { Met: 166, Phe: 126, Gly: 62, Ala: 32, Ser: 2, Leu: -28 };
 const PONTOS_AMINOACIDO = 50;
 const TIPOS_POWERUP = ["nad", "mg"];
 
@@ -32,30 +36,33 @@ export class Fase1Ribossomo extends FaseBase {
 
   construir() {
     // Plataforma de citoplasma com borda brilhante.
-    const chao = new THREE.Mesh(new THREE.CircleGeometry(11, 96), criarMaterialCitoplasma(0x0e2a52, CORES.info));
+    const chao = new THREE.Mesh(new THREE.CircleGeometry(RAIO_BORDA * 1.15, 96), criarMaterialCitoplasma(0x1a4f85, 0x2b7fb8));
     chao.rotation.x = -Math.PI / 2;
     chao.receiveShadow = true;
     this.grupo.add(chao);
     this.chao = chao;
 
     const borda = new THREE.Mesh(
-      new THREE.TorusGeometry(11, 0.06, 8, 128),
-      new THREE.MeshBasicMaterial({ color: 0x7fe7ff, transparent: true, opacity: 0.8 })
+      new THREE.TorusGeometry(RAIO_BORDA, 0.05, 8, 128),
+      new THREE.MeshBasicMaterial({ color: 0x7fe7ff, transparent: true, opacity: 0.45 })
     );
     borda.rotation.x = Math.PI / 2;
     borda.position.y = 0.05;
     this.grupo.add(borda);
 
     this.ribossomo = new Ribossomo(new THREE.Vector3(0, 0, -1.2));
+    this.ribossomo.grupo.scale.setScalar(1.2);
     this.grupo.add(this.ribossomo.grupo);
 
     this.fita = new FitaRNAm();
-    this.fita.grupo.position.z = -0.15;
+    this.fita.grupo.position.z = 0.75;
+    this.fita.grupo.scale.setScalar(1.3);
     this.grupo.add(this.fita.grupo);
 
-    this.estacoes = Object.values(AMINOACIDOS_FASE1).map((aminoacido, i, lista) => {
-      const angulo = (i / lista.length) * Math.PI * 2 + Math.PI / 6;
-      const posicao = new THREE.Vector3(Math.cos(angulo) * RAIO_ESTACOES, 0, Math.sin(angulo) * RAIO_ESTACOES);
+    this.estacoes = Object.values(AMINOACIDOS_FASE1).map((aminoacido) => {
+      const angulo = THREE.MathUtils.degToRad(ANGULOS_ESTACOES[aminoacido.sigla]);
+      // Anel um pouco achatado na profundidade para as estações da frente não ficarem sob o HUD.
+      const posicao = new THREE.Vector3(Math.cos(angulo) * RAIO_ESTACOES, 0, Math.sin(angulo) * RAIO_ESTACOES * 0.86);
       const estacao = new EstacaoAminoacido(aminoacido, posicao);
       this.grupo.add(estacao.grupo);
       return estacao;
@@ -83,7 +90,7 @@ export class Fase1Ribossomo extends FaseBase {
     this._atualizarIndicador();
 
     const jogador = this.ctx.jogador;
-    jogador.teleportar(0, 4.6);
+    jogador.teleportar(-1.6, 2.4);
     jogador.limitar = (pos, raio) => {
       const limite = RAIO_ARENA - raio;
       const distancia = Math.hypot(pos.x, pos.z);
@@ -95,21 +102,21 @@ export class Fase1Ribossomo extends FaseBase {
       const rx = pos.x - this.ribossomo.posicao.x;
       const rz = pos.z - this.ribossomo.posicao.z;
       const dr = Math.hypot(rx, rz);
-      const minimo = 1.5 + raio;
+      const minimo = 1.8 + raio;
       if (dr < minimo && dr > 0.001) {
         pos.x = this.ribossomo.posicao.x + (rx / dr) * minimo;
         pos.z = this.ribossomo.posicao.z + (rz / dr) * minimo;
       }
     };
-    // Olha um pouco mais alto que o padrão para a fita de RNAm não ficar sob o cronômetro.
-    this.ctx.camera.enquadrar({ alturaOlhar: 1.4 });
+    // Câmera fixa mostrando a arena inteira, como no Figma.
+    this.ctx.camera.enquadrar({ deslocamento: new THREE.Vector3(0, 6.2, 16.2), alvoFixo: new THREE.Vector3(0, 0.3, -1.8), alturaOlhar: 0, fov: 38 });
     this._mostrarPedidoAtual();
     this.ctx.hud.powerups(this.powerups);
   }
 
   posicaoAleatoria() {
     const angulo = Math.random() * Math.PI * 2;
-    const raio = 3 + Math.random() * 5;
+    const raio = 2.6 + Math.random() * 3;
     return new THREE.Vector3(Math.cos(angulo) * raio, 0.7, Math.sin(angulo) * raio);
   }
 

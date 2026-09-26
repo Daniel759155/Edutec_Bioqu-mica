@@ -22,6 +22,22 @@ const EVENTOS = [
 const POSICAO_ENZIMA = new THREE.Vector3(0, 0, 0);
 const ESCALA_ENZIMA = 1.6;
 
+function texturaFrenteBancada() {
+  const canvas = document.createElement("canvas");
+  canvas.width = 4;
+  canvas.height = 256;
+  const ctx = canvas.getContext("2d");
+  const gradiente = ctx.createLinearGradient(0, 0, 0, 256);
+  gradiente.addColorStop(0, "#1b6f73");
+  gradiente.addColorStop(0.35, "#0f4d55");
+  gradiente.addColorStop(1, "#06222b");
+  ctx.fillStyle = gradiente;
+  ctx.fillRect(0, 0, 4, 256);
+  const textura = new THREE.CanvasTexture(canvas);
+  textura.colorSpace = THREE.SRGBColorSpace;
+  return textura;
+}
+
 export class Fase3Laboratorio extends FaseBase {
   constructor(ctx, info) {
     super(ctx, info);
@@ -31,16 +47,25 @@ export class Fase3Laboratorio extends FaseBase {
   }
 
   construir() {
-    const bancada = new THREE.Mesh(
-      new THREE.BoxGeometry(60, 1, 18),
-      new THREE.MeshStandardMaterial({ color: 0x145a62, emissive: 0x0a2b33, emissiveIntensity: 0.6, roughness: 0.35, metalness: 0.2 })
-    );
-    bancada.position.set(0, -0.5, -4);
+    // Bancada vista de frente (Figma): a borda luminosa vira a "linha do
+    // horizonte" e a face frontal desce em gradiente verde-água.
+    const FRENTE = 0.9;
+    const materialTopo = new THREE.MeshStandardMaterial({ color: 0x145a62, emissive: 0x0a2b33, emissiveIntensity: 0.6, roughness: 0.35, metalness: 0.2 });
+    const materialFrente = new THREE.MeshBasicMaterial({ map: texturaFrenteBancada() });
+    const bancada = new THREE.Mesh(new THREE.BoxGeometry(60, 6, 18), [
+      materialTopo,
+      materialTopo,
+      materialTopo,
+      materialTopo,
+      materialFrente,
+      materialTopo,
+    ]);
+    bancada.position.set(0, -3, FRENTE - 9);
     bancada.receiveShadow = true;
     this.grupo.add(bancada);
 
-    const friso = new THREE.Mesh(new THREE.BoxGeometry(60, 0.06, 0.06), new THREE.MeshBasicMaterial({ color: 0x7ffff0 }));
-    friso.position.set(0, 0.01, 5);
+    const friso = new THREE.Mesh(new THREE.BoxGeometry(60, 0.07, 0.07), new THREE.MeshBasicMaterial({ color: 0x7ffff0 }));
+    friso.position.set(0, 0.01, FRENTE);
     this.grupo.add(friso);
 
     this.bolhas = [];
@@ -126,8 +151,8 @@ export class Fase3Laboratorio extends FaseBase {
     jogador.definirEstresse(0);
 
     this.ctx.camera.enquadrar({
-      deslocamento: new THREE.Vector3(0, 2.6, 9.5),
-      alturaOlhar: 1.5,
+      deslocamento: new THREE.Vector3(0, 2.1, 10.5),
+      alturaOlhar: 1.3,
       alvoFixo: new THREE.Vector3(0, 0, 0),
     });
     this.ctx.hud.controlesLaboratorio({
